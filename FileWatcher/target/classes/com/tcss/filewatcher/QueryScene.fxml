@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="638.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.QuerySceneController">
+    <TableView fx:id="querySceneTable" layoutX="2.0" layoutY="216.0" prefHeight="615.0" prefWidth="713.0"
+               AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <columns>
+          <TableColumn fx:id="myDateColumn" prefWidth="75.0" text="Date"/>
+          <TableColumn fx:id="myTimeColumn" prefWidth="75.0" text="Time"/>
+          <TableColumn fx:id="myModificationType" prefWidth="115.33323669433594" text="Modification Type"/>
+          <TableColumn fx:id="myDirectory" prefWidth="445.6667175292969"
+                       text="Directory                                                                                                                 "/>
+      </columns>
+    </TableView>
+</AnchorPane>

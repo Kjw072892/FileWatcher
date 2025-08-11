@@ -60,58 +60,58 @@
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="All Extensions"/>
-                <String fx:value=".doc"/>
-                <String fx:value=".docx"/>
-                <String fx:value=".xls"/>
-                <String fx:value=".xlsx"/>
-                <String fx:value=".ppt"/>
-                <String fx:value=".pptx"/>
-                <String fx:value=".pdf"/>
-                <String fx:value=".txt"/>
-                <String fx:value=".md"/>
-                <String fx:value=".rtf"/>
-                <String fx:value=".csv"/>
-                <String fx:value=".java"/>
-                <String fx:value=".py"/>
-                <String fx:value=".cpp"/>
-                <String fx:value=".c"/>
-                <String fx:value=".cs"/>
-                <String fx:value=".rb"/>
-                <String fx:value=".go"/>
-                <String fx:value=".sh"/>
+                <String fx:value=".7z"/>
+                <String fx:value=".bak"/>
                 <String fx:value=".bat"/>
-                <String fx:value=".ps1"/>
+                <String fx:value=".bin"/>
+                <String fx:value=".c"/>
                 <String fx:value=".cmd"/>
-                <String fx:value=".vbs"/>
-                <String fx:value=".pl"/>
+                <String fx:value=".cpp"/>
+                <String fx:value=".cs"/>
+                <String fx:value=".csv"/>
+                <String fx:value=".dll"/>
+                <String fx:value=".dmg"/>
+                <String fx:value=".doc"/>
+                <String fx:value=".docm"/>
+                <String fx:value=".docx"/>
+                <String fx:value=".env"/>
+                <String fx:value=".exe"/>
+                <String fx:value=".go"/>
+                <String fx:value=".gz"/>
+                <String fx:value=".img"/>
+                <String fx:value=".ini"/>
+                <String fx:value=".iso"/>
+                <String fx:value=".java"/>
                 <String fx:value=".js"/>
                 <String fx:value=".json"/>
+                <String fx:value=".md"/>
+                <String fx:value=".msi"/>
+                <String fx:value=".old"/>
+                <String fx:value=".pdf"/>
+                <String fx:value=".pl"/>
+                <String fx:value=".ppt"/>
+                <String fx:value=".pptm"/>
+                <String fx:value=".pptx"/>
+                <String fx:value=".ps1"/>
+                <String fx:value=".py"/>
+                <String fx:value=".rar"/>
+                <String fx:value=".rb"/>
+                <String fx:value=".rpm"/>
+                <String fx:value=".rtf"/>
+                <String fx:value=".run"/>
+                <String fx:value=".sh"/>
+                <String fx:value=".sql"/>
+                <String fx:value=".swp"/>
+                <String fx:value=".tar"/>
+                <String fx:value=".tmp"/>
+                <String fx:value=".txt"/>
+                <String fx:value=".vbs"/>
+                <String fx:value=".xls"/>
+                <String fx:value=".xlsm"/>
+                <String fx:value=".xlsx"/>
                 <String fx:value=".xml"/>
                 <String fx:value=".yaml"/>
-                <String fx:value=".ini"/>
-                <String fx:value=".env"/>
-                <String fx:value=".sql"/>
                 <String fx:value=".zip"/>
-                <String fx:value=".rar"/>
-                <String fx:value=".7z"/>
-                <String fx:value=".tar"/>
-                <String fx:value=".gz"/>
-                <String fx:value=".iso"/>
-                <String fx:value=".dmg"/>
-                <String fx:value=".img"/>
-                <String fx:value=".exe"/>
-                <String fx:value=".msi"/>
-                <String fx:value=".dll"/>
-                <String fx:value=".run"/>
-                <String fx:value=".bin"/>
-                <String fx:value=".rpm"/>
-                <String fx:value=".tmp"/>
-                <String fx:value=".bak"/>
-                <String fx:value=".old"/>
-                <String fx:value=".swp"/>
-                <String fx:value=".docm"/>
-                <String fx:value=".xlsm"/>
-                <String fx:value=".pptm"/>
             </FXCollections>
         </items>
     </ComboBox>
@@ -132,17 +132,17 @@
             AnchorPane.rightAnchor="50.0"/>
 
     <TextField fx:id="myDirectoryToQueryTB" layoutX="242.0" layoutY="263.0" prefHeight="25.0" prefWidth="307.0"
-               promptText="All Directories" AnchorPane.rightAnchor="50.0"/>
+                AnchorPane.rightAnchor="50.0"/>
 
     <Label layoutX="246.0" layoutY="246.0" text="Directory to query"/>
 
     <Label layoutX="56.0" layoutY="246.0" text="Query by extension" AnchorPane.leftAnchor="55.0"/>
 
-    <Button fx:id="myQueryButton" disable="true" layoutX="245.0" layoutY="297.0" mnemonicParsing="false"
+    <Button fx:id="myQueryButton"  layoutX="245.0" layoutY="297.0" mnemonicParsing="false"
             prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);"
             text="Query"/>
 
-    <Button fx:id="myClearButton" disable="true" layoutX="483.0" layoutY="297.0" mnemonicParsing="false"
+    <Button fx:id="myClearButton"  layoutX="483.0" layoutY="297.0" mnemonicParsing="false"
             prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);"
             text="Clear" AnchorPane.rightAnchor="50.0"/>
 
@@ -153,7 +153,8 @@
                     accessibleText="Start file watcher" maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
                     minWidth="25.0" mnemonicParsing="false" onAction="#handleStartFileWatcher" prefHeight="25.0"
                     prefWidth="25.0"
-                    style="-fx-background-radius: 95; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+                    style="-fx-background-radius: 95;
+                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
                     <Tooltip text="Start File Watcher"/>
@@ -171,7 +172,8 @@
             <Button fx:id="myStopIconBtn" disable="true" maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
                     minWidth="25.0" mnemonicParsing="false" onAction="#handleStopFileWatcher" prefHeight="25.0"
                     prefWidth="25.0"
-                    style="-fx-background-radius: 95; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+                    style="-fx-background-radius: 95;
+                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
                     <Tooltip text="Stop File Watcher"/>
@@ -188,7 +190,8 @@
             <Button fx:id="myFileWatcherViewerIconBtn" disable="true" maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
                     minWidth="25.0" mnemonicParsing="false" onAction="#handleFileWatcherButton" prefHeight="25.0"
                     prefWidth="25.0"
-                    style="-fx-background-radius: 95; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+                    style="-fx-background-radius: 95;
+                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
                     <Tooltip text="View File Watcher (live)"/>
@@ -204,7 +207,8 @@
 
             <Button id="emailIconButton" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0"
                     mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0"
-                    style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+                    style="-fx-background-radius: 95;
+                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
                     <Tooltip text="Open Email Preferences"/>
@@ -244,63 +248,62 @@
     <!--
            Query ComboBox
        -->
-    <ComboBox fx:id="myQueryByExtensionComBox" layoutX="49.0" layoutY="263.0" prefHeight="25.0" prefWidth="161.0"
-              promptText="All Extensions">
+    <ComboBox fx:id="myQueryByExtensionComBox" layoutX="49.0" layoutY="263.0" prefHeight="25.0" prefWidth="161.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="All Extensions"/>
-                <String fx:value=".doc"/>
-                <String fx:value=".docx"/>
-                <String fx:value=".xls"/>
-                <String fx:value=".xlsx"/>
-                <String fx:value=".ppt"/>
-                <String fx:value=".pptx"/>
-                <String fx:value=".pdf"/>
-                <String fx:value=".txt"/>
-                <String fx:value=".md"/>
-                <String fx:value=".rtf"/>
-                <String fx:value=".csv"/>
-                <String fx:value=".java"/>
-                <String fx:value=".py"/>
-                <String fx:value=".cpp"/>
-                <String fx:value=".c"/>
-                <String fx:value=".cs"/>
-                <String fx:value=".rb"/>
-                <String fx:value=".go"/>
-                <String fx:value=".sh"/>
+                <String fx:value=".7z"/>
+                <String fx:value=".bak"/>
                 <String fx:value=".bat"/>
-                <String fx:value=".ps1"/>
+                <String fx:value=".bin"/>
+                <String fx:value=".c"/>
                 <String fx:value=".cmd"/>
-                <String fx:value=".vbs"/>
-                <String fx:value=".pl"/>
+                <String fx:value=".cpp"/>
+                <String fx:value=".cs"/>
+                <String fx:value=".csv"/>
+                <String fx:value=".dll"/>
+                <String fx:value=".dmg"/>
+                <String fx:value=".doc"/>
+                <String fx:value=".docm"/>
+                <String fx:value=".docx"/>
+                <String fx:value=".env"/>
+                <String fx:value=".exe"/>
+                <String fx:value=".go"/>
+                <String fx:value=".gz"/>
+                <String fx:value=".img"/>
+                <String fx:value=".ini"/>
+                <String fx:value=".iso"/>
+                <String fx:value=".java"/>
                 <String fx:value=".js"/>
                 <String fx:value=".json"/>
+                <String fx:value=".md"/>
+                <String fx:value=".msi"/>
+                <String fx:value=".old"/>
+                <String fx:value=".pdf"/>
+                <String fx:value=".pl"/>
+                <String fx:value=".ppt"/>
+                <String fx:value=".pptm"/>
+                <String fx:value=".pptx"/>
+                <String fx:value=".ps1"/>
+                <String fx:value=".py"/>
+                <String fx:value=".rar"/>
+                <String fx:value=".rb"/>
+                <String fx:value=".rpm"/>
+                <String fx:value=".rtf"/>
+                <String fx:value=".run"/>
+                <String fx:value=".sh"/>
+                <String fx:value=".sql"/>
+                <String fx:value=".swp"/>
+                <String fx:value=".tar"/>
+                <String fx:value=".tmp"/>
+                <String fx:value=".txt"/>
+                <String fx:value=".vbs"/>
+                <String fx:value=".xls"/>
+                <String fx:value=".xlsm"/>
+                <String fx:value=".xlsx"/>
                 <String fx:value=".xml"/>
                 <String fx:value=".yaml"/>
-                <String fx:value=".ini"/>
-                <String fx:value=".env"/>
-                <String fx:value=".sql"/>
                 <String fx:value=".zip"/>
-                <String fx:value=".rar"/>
-                <String fx:value=".7z"/>
-                <String fx:value=".tar"/>
-                <String fx:value=".gz"/>
-                <String fx:value=".iso"/>
-                <String fx:value=".dmg"/>
-                <String fx:value=".img"/>
-                <String fx:value=".exe"/>
-                <String fx:value=".msi"/>
-                <String fx:value=".dll"/>
-                <String fx:value=".run"/>
-                <String fx:value=".bin"/>
-                <String fx:value=".rpm"/>
-                <String fx:value=".tmp"/>
-                <String fx:value=".bak"/>
-                <String fx:value=".old"/>
-                <String fx:value=".swp"/>
-                <String fx:value=".docm"/>
-                <String fx:value=".xlsm"/>
-                <String fx:value=".pptm"/>
             </FXCollections>
         </items>
     </ComboBox>

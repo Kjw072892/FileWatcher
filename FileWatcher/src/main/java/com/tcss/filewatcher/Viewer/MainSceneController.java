@@ -38,7 +38,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     public TableView<DirectoryEntry> myDirectoriesToMonitorTable;
 
-
     /**
      * Stores the date inside the date column.
      */
@@ -242,6 +241,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     public void setStage(final Stage theStage) {
         myStage = theStage;
     }
+
+
 
     /**
      * Starts the filewatcher sequences.

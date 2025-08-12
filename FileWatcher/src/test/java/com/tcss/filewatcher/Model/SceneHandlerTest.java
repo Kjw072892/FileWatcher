@@ -14,7 +14,12 @@ import java.util.logging.Logger;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit tests for SceneHandler Class.
@@ -25,13 +30,19 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class SceneHandlerTest {
 
-    /** Test implementation of SceneHandler. */
+    /**
+     * Test implementation of SceneHandler.
+     */
     private TestSceneHandler mySceneHandler;
 
-    /** Test logger handler to capture log messages. */
+    /**
+     * Test logger handler to capture log messages.
+     */
     private TestLogHandler myTestLogHandler;
 
-    /** Logger instance for testing. */
+    /**
+     * Logger instance for testing.
+     */
     private Logger myLogger;
 
     @BeforeEach
@@ -74,12 +85,6 @@ class SceneHandlerTest {
                 "Watcher running property should be true after start");
     }
 
-    @Test
-    void testWatcherRunningPropertyAfterPause() {
-        SceneHandler.pauseWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(),
-                "Watcher running property should be true when paused");
-    }
 
     @Test
     void testWatcherRunningPropertyAfterStop() {
@@ -108,14 +113,6 @@ class SceneHandlerTest {
                 "Should still be running after multiple starts");
     }
 
-    @Test
-    void testStartWatcherAfterPause() {
-        SceneHandler.pauseWatcher();
-        SceneHandler.startWatcher();
-
-        assertTrue(SceneHandler.watcherRunningProperty(),
-                "Should be running after start from paused state");
-    }
 
     // Stop watcher tests
     @Test
@@ -136,137 +133,6 @@ class SceneHandlerTest {
                 "Should remain not running when stopping inactive watcher");
     }
 
-    @Test
-    void testStopWatcherFromPausedState() {
-        SceneHandler.pauseWatcher();
-        SceneHandler.stopWatcher();
-
-        assertFalse(SceneHandler.watcherRunningProperty(),
-                "Should not be running after stopping from paused state");
-    }
-
-    // Pause watcher tests
-    @Test
-    void testPauseWatcher() {
-        SceneHandler.pauseWatcher();
-
-        assertTrue(SceneHandler.watcherRunningProperty(),
-                "Should be considered running when paused");
-    }
-
-    @Test
-    void testPauseWatcherAfterStart() {
-        SceneHandler.startWatcher();
-        SceneHandler.pauseWatcher();
-
-        assertTrue(SceneHandler.watcherRunningProperty(),
-                "Should be considered running when paused after start");
-    }
-
-    @Test
-    void testPauseWatcherMultipleTimes() {
-        SceneHandler.pauseWatcher();
-        SceneHandler.pauseWatcher(); // Pause again
-
-        assertTrue(SceneHandler.watcherRunningProperty(),
-                "Should still be considered running after multiple pauses");
-    }
-
-    // File watcher status tests
-    @Test
-    void testFileWatcherStatusWhenNotRunning() {
-        boolean status = SceneHandler.fileWatcherStatus();
-
-        assertAll("Status when not running test",
-                () -> assertFalse(status, "Status should return false when not running"),
-                () -> assertTrue(myTestLogHandler.hasLoggedMessage("is not running"),
-                        "Should log 'is not running' message"));
-    }
-
-    @Test
-    void testFileWatcherStatusWhenRunning() {
-        SceneHandler.startWatcher();
-        boolean status = SceneHandler.fileWatcherStatus();
-
-        assertAll("Status when running test",
-                () -> assertTrue(status, "Status should return true when running"),
-                () -> assertTrue(myTestLogHandler.hasLoggedMessage("is running"),
-                        "Should log 'is running' message"));
-    }
-
-    @Test
-    void testFileWatcherStatusWhenPaused() {
-        SceneHandler.pauseWatcher();
-        boolean status = SceneHandler.fileWatcherStatus();
-
-        assertAll("Status when paused test",
-                () -> assertTrue(status, "Status should return true when paused"),
-                () -> assertTrue(myTestLogHandler.hasLoggedMessage("is running"),
-                        "Should log 'is running' message for paused state"));
-    }
-
-    @Test
-    void testFileWatcherStatusLogging() {
-        // Test logging for not running state
-        SceneHandler.fileWatcherStatus();
-        assertTrue(myTestLogHandler.hasLoggedLevel(Level.INFO), "Should log at INFO level");
-
-        myTestLogHandler.clear();
-
-        // Test logging for running state
-        SceneHandler.startWatcher();
-        SceneHandler.fileWatcherStatus();
-        assertTrue(myTestLogHandler.hasLoggedLevel(Level.INFO), "Should log at INFO level when running");
-    }
-
-
-
-
-
-    // State transition tests
-    @Test
-    void testWatcherStateTransitions() {
-        // Initial state
-        assertFalse(SceneHandler.watcherRunningProperty(), "Should start not running");
-
-        // Start -> Stop
-        SceneHandler.startWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Should be running after start");
-
-        SceneHandler.stopWatcher();
-        assertFalse(SceneHandler.watcherRunningProperty(), "Should not be running after stop");
-
-        // Start -> Pause -> Stop
-        SceneHandler.startWatcher();
-        SceneHandler.pauseWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Should be running when paused");
-
-        SceneHandler.stopWatcher();
-        assertFalse(SceneHandler.watcherRunningProperty(), "Should not be running after stop from pause");
-
-        // Pause -> Start
-        SceneHandler.pauseWatcher();
-        SceneHandler.startWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Should be running after start from pause");
-    }
-
-    // Property change event tests (testing the abstract implementation)
-    @Test
-    void testPropertyChangeEvent() {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "testProperty", "oldValue", "newValue");
-
-        // Should not throw exception when calling propertyChange
-        assertDoesNotThrow(() -> mySceneHandler.propertyChange(event),
-                "Property change should not throw exception");
-    }
-
-    @Test
-    void testPropertyChangeEventWithNullValues() {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, null, null, null);
-
-        assertDoesNotThrow(() -> mySceneHandler.propertyChange(event),
-                "Property change with null values should not throw exception");
-    }
 
     // Multiple cycles tests
     @Test
@@ -283,8 +149,6 @@ class SceneHandlerTest {
     @Test
     void testMultiplePauseStartCycles() {
         for (int i = 0; i < 5; i++) {
-            SceneHandler.pauseWatcher();
-            assertTrue(SceneHandler.watcherRunningProperty(), "Should be paused in cycle " + i);
 
             SceneHandler.startWatcher();
             assertTrue(SceneHandler.watcherRunningProperty(), "Should be running in cycle " + i);
@@ -306,7 +170,7 @@ class SceneHandlerTest {
                     if (threadId % 2 == 0) {
                         SceneHandler.startWatcher();
                     } else {
-                        SceneHandler.pauseWatcher();
+                        SceneHandler.stopWatcher();
                     }
 
                     // Call status method
@@ -333,14 +197,6 @@ class SceneHandlerTest {
                 () -> assertTrue(SceneHandler.fileWatcherStatus(), "File watcher status should be true"));
     }
 
-    @Test
-    void testPauseWatcherInternalState() {
-        SceneHandler.pauseWatcher();
-
-        assertAll("Pause watcher internal state",
-                () -> assertTrue(SceneHandler.watcherRunningProperty(), "Running property should be true when paused"),
-                () -> assertTrue(SceneHandler.fileWatcherStatus(), "File watcher status should be true when paused"));
-    }
 
     @Test
     void testStopWatcherInternalState() {
@@ -353,25 +209,71 @@ class SceneHandlerTest {
     }
 
     @Test
-    void testComplexStateSequence() {
-        // Test a complex sequence of state changes
-        SceneHandler.startWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Step 1: Should be running");
+    void testAddMonitoredDirectory() {
+        String path = "/test/path";
+        String extension = ".txt";
 
-        SceneHandler.pauseWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Step 2: Should be running when paused");
+        SceneHandler.addMonitoredDirectory(path, extension);
 
-        SceneHandler.startWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Step 3: Should be running after restart from pause");
+        List<String> extensions = SceneHandler.getExtensionsFromDir(path);
+        assertAll("Add monitored directory",
+                () -> assertTrue(extensions.contains(extension), "Extension should be added"),
+                () -> assertEquals(1, extensions.size(), "Should have one extension")
+        );
+    }
 
-        SceneHandler.stopWatcher();
-        assertFalse(SceneHandler.watcherRunningProperty(), "Step 4: Should not be running after stop");
+    @Test
+    void testAddMonitoredDirectoryNormalizesPath() {
+        String path1 = "/test/./path";
+        String path2 = "/test/path";
+        String extension = ".txt";
 
-        SceneHandler.pauseWatcher();
-        assertTrue(SceneHandler.watcherRunningProperty(), "Step 5: Should be running when paused from stopped");
+        SceneHandler.addMonitoredDirectory(path1, extension);
 
-        SceneHandler.stopWatcher();
-        assertFalse(SceneHandler.watcherRunningProperty(), "Step 6: Should not be running after final stop");
+        List<String> extensions = SceneHandler.getExtensionsFromDir(path2);
+        assertNotNull(extensions, "Should find extensions with normalized path");
+        assertTrue(extensions.contains(extension), "Should find extension with normalized path");
+    }
+
+    @Test
+    void testRemoveMonitoredExtension() {
+        String path = "/test/path";
+        String extension = ".txt";
+
+        SceneHandler.addMonitoredDirectory(path, extension);
+        SceneHandler.removeMonitoredExtension(path, extension);
+
+        List<String> extensions = SceneHandler.getExtensionsFromDir(path);
+        assertNull(extensions, "Directory should be removed when last extension is removed");
+    }
+
+    @Test
+    void testRemoveMonitoredDirectory() {
+        String path = "/test/path";
+        String extension = ".txt";
+
+        SceneHandler.addMonitoredDirectory(path, extension);
+        SceneHandler.removeMonitoredDirectory(path);
+
+        List<String> extensions = SceneHandler.getExtensionsFromDir(path);
+        assertNull(extensions, "Extensions should be null after directory removal");
+    }
+
+    @Test
+    void testMultipleExtensionsForDirectory() {
+        String path = "/test/path";
+        String extension1 = ".txt";
+        String extension2 = ".pdf";
+
+        SceneHandler.addMonitoredDirectory(path, extension1);
+        SceneHandler.addMonitoredDirectory(path, extension2);
+
+        List<String> extensions = SceneHandler.getExtensionsFromDir(path);
+        assertAll("Multiple extensions",
+                () -> assertEquals(2, extensions.size(), "Should have two extensions"),
+                () -> assertTrue(extensions.contains(extension1), "Should contain first extension"),
+                () -> assertTrue(extensions.contains(extension2), "Should contain second extension")
+        );
     }
 
     /**

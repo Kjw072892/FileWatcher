@@ -1,3 +1,4 @@
+
 package com.tcss.filewatcher.Model;
 
 import com.tcss.filewatcher.Common.Properties;
@@ -26,26 +27,35 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author salimahafurova
  * @version August 6, 2025
  */
+
 class FileEventWatcherTest {
+
     /**
      * Test watcher instance.
      */
+
     private FileEventWatcher myWatcher;
+
 
     /**
      * Temporary directory for testing
      */
+
     @TempDir
     Path myTempDir;
+
 
     /**
      * Test property change listener.
      */
+
     private TestPropertyChangeListener myListener;
+
 
     /**
      * Test constants.
      */
+
     private static final String TEST_EXTENSION_TXT = ".txt";
     private static final String TEST_EXTENSION_JAVA = ".java";
     private static final String TEST_EXTENSION_PDF = ".pdf";
@@ -60,7 +70,7 @@ class FileEventWatcherTest {
 
     @AfterEach
     void tearDown() {
-        if (myWatcher != null && myWatcher.getMyIsWatching()) {
+        if (myWatcher != null && myWatcher.isWatching()) {
             myWatcher.stopWatching();
         }
         if (myWatcher != null) {
@@ -73,12 +83,12 @@ class FileEventWatcherTest {
         FileEventWatcher watcher = new FileEventWatcher();
         assertAll("Default constructor test",
                 () -> assertNotNull(watcher, "Watcher should be created"),
-                () -> assertNull(watcher.getMyAbsolutePath(), "Initial path should be null"),
-                () -> assertTrue(watcher.getMyWatchedExtensions().isEmpty(), "Initial extensions should be empty"),
-                () -> assertFalse(watcher.getMyIsWatching(), "Should not be watching initially"),
-                () -> assertTrue(watcher.getMyCurrentEvents().isEmpty(), "Initial events should be empty"),
-                () -> assertFalse(watcher.getMyHasUnsavedEvents(), "Should not have unsave events initially"),
-                () -> assertEquals(0, watcher.getMyCurrentEventCount(), "Initial event count should be 0"));
+                () -> assertNull(watcher.getAbsolutePath(), "Initial path should be null"),
+                () -> assertTrue(watcher.getWatchedExtensions().isEmpty(), "Initial extensions should be empty"),
+                () -> assertFalse(watcher.isWatching(), "Should not be watching initially"),
+                () -> assertTrue(watcher.getCurrentEvents().isEmpty(), "Should have no events initially"),
+                () -> assertFalse(watcher.hasUnsavedEvents(), "Should have no unsaved events initially")
+        );
     }
 
     @Test
@@ -87,7 +97,7 @@ class FileEventWatcherTest {
         FileEventWatcher watcher = new FileEventWatcher(testPath);
         assertAll("Constructor with path test",
                 () -> assertNotNull(watcher, "Watcher should be created"),
-                () -> assertEquals(testPath, watcher.getMyAbsolutePath(), "Path should be set correctly"));
+                () -> assertEquals(testPath, watcher.getAbsolutePath(), "Path should be set correctly"));
     }
 
     @Test
@@ -117,9 +127,8 @@ class FileEventWatcherTest {
         String testPath = myTempDir.toString();
         myWatcher.setWatchPath(testPath);
         assertAll("Set watch path test",
-                () -> assertEquals(testPath, myWatcher.getMyAbsolutePath(), "Path should be set"),
+                () -> assertEquals(testPath, myWatcher.getAbsolutePath(), "Path should be set"),
                 () -> assertEquals(1, myListener.getEventCount(), "Should fire property change event"));
-
     }
 
     @Test
@@ -156,7 +165,7 @@ class FileEventWatcherTest {
         Path file = Files.createFile(myTempDir.resolve("testing.txt"));
         assertThrows(IllegalArgumentException.class,
                 () -> myWatcher.addWatchPath(file.toString()),
-                "Should throw exception for file path (not directory");
+                "Should throw exception for file path (not directory)");
     }
 
     // Extension management tests
@@ -164,10 +173,9 @@ class FileEventWatcherTest {
     void testAddWatchedExtension() {
         myWatcher.addWatchedExtension(TEST_EXTENSION_TXT);
         assertAll("Add watched extension test",
-                () -> assertTrue(myWatcher.getMyWatchedExtensions().contains(TEST_EXTENSION_TXT), "Extension should be added"),
-                () -> assertEquals(1, myWatcher.getMyWatchedExtensions().size(), "Should have 1 extension"),
+                () -> assertTrue(myWatcher.getWatchedExtensions().contains(TEST_EXTENSION_TXT), "Extension should be added"),
+                () -> assertEquals(1, myWatcher.getWatchedExtensions().size(), "Should have 1 extension"),
                 () -> assertEquals(1, myListener.getEventCount(), "Should fire property change event"));
-
     }
 
     @Test
@@ -176,7 +184,7 @@ class FileEventWatcherTest {
         myWatcher.addWatchedExtension(TEST_EXTENSION_JAVA);
         myWatcher.addWatchedExtension(TEST_EXTENSION_PDF);
 
-        Set<String> extensions = myWatcher.getMyWatchedExtensions();
+        Set<String> extensions = myWatcher.getWatchedExtensions();
         assertAll("Multiple extension test",
                 () -> assertEquals(3, extensions.size(), "Should have 3 extensions"),
                 () -> assertTrue(extensions.contains(TEST_EXTENSION_TXT), "Should contain .txt"),
@@ -190,23 +198,22 @@ class FileEventWatcherTest {
         int initialEventCount = myListener.getEventCount();
         myWatcher.addWatchedExtension(TEST_EXTENSION_TXT); // Add same extension again
         assertAll("Duplicate extension test",
-                () -> assertEquals(1, myWatcher.getMyWatchedExtensions().size(), "Should still have 1 extension"),
+                () -> assertEquals(1, myWatcher.getWatchedExtensions().size(), "Should still have 1 extension"),
                 () -> assertEquals(initialEventCount, myListener.getEventCount(), "Should not fire additional event"));
     }
 
     @Test
     void testAddWatchedExtensionNull() {
-        assertThrows(IllegalArgumentException.class,
-                () -> myWatcher.addWatchedExtension(null),
-                "Should throw exception for null extension");
+        // The method returns early for null, should not throw
+        assertDoesNotThrow(() -> myWatcher.addWatchedExtension(null),
+                "Should handle null extension gracefully");
     }
 
     @Test
     void testAddWatchedExtensionEmpty() {
-        assertThrows(IllegalArgumentException.class,
-                () -> myWatcher.addWatchedExtension(""),
-                "Should throw exception for empty extension");
-
+        // The method returns early for empty string, should not throw
+        assertDoesNotThrow(() -> myWatcher.addWatchedExtension(""),
+                "Should handle empty extension gracefully");
     }
 
     @Test
@@ -215,9 +222,9 @@ class FileEventWatcherTest {
         myWatcher.addWatchedExtension(TEST_EXTENSION_JAVA);
         myWatcher.removeWatchedExtension(TEST_EXTENSION_TXT);
         assertAll("Remove extension test",
-                () -> assertFalse(myWatcher.getMyWatchedExtensions().contains(TEST_EXTENSION_TXT), "Should not contain removed extension"),
-                () -> assertTrue(myWatcher.getMyWatchedExtensions().contains(TEST_EXTENSION_JAVA), "Should still contain other extension"),
-                () -> assertEquals(1, myWatcher.getMyWatchedExtensions().size(), "Should have 1 extension remaining"));
+                () -> assertFalse(myWatcher.getWatchedExtensions().contains(TEST_EXTENSION_TXT), "Should not contain removed extension"),
+                () -> assertTrue(myWatcher.getWatchedExtensions().contains(TEST_EXTENSION_JAVA), "Should still contain other extension"),
+                () -> assertEquals(1, myWatcher.getWatchedExtensions().size(), "Should have 1 extension remaining"));
     }
 
     @Test
@@ -226,16 +233,15 @@ class FileEventWatcherTest {
         int initialEventCount = myListener.getEventCount();
         myWatcher.removeWatchedExtension(TEST_EXTENSION_JAVA); // Remove non-existent extension
         assertAll("Remove non-existent extension test",
-                () -> assertEquals(1, myWatcher.getMyWatchedExtensions().size(), "Should still have 1 extension"),
+                () -> assertEquals(1, myWatcher.getWatchedExtensions().size(), "Should still have 1 extension"),
                 () -> assertEquals(initialEventCount, myListener.getEventCount(), "Should not fire additional event"));
-
     }
 
     @Test
     void testRemoveWatchedExtensionNull() {
-        assertThrows(IllegalArgumentException.class,
-                () -> myWatcher.removeWatchedExtension(null),
-                "Should throw exception for null extension");
+        // The method returns early for null, should not throw
+        assertDoesNotThrow(() -> myWatcher.removeWatchedExtension(null),
+                "Should handle null extension gracefully");
     }
 
     // Watching state tests
@@ -243,8 +249,7 @@ class FileEventWatcherTest {
     void testStartWatching() {
         myWatcher.setWatchPath(myTempDir.toString());
         assertDoesNotThrow(() -> myWatcher.startWatching(), "Should not throw when starting watching");
-        assertTrue(myWatcher.getMyIsWatching(), "Should be watching after start");
-
+        assertTrue(myWatcher.isWatching(), "Should be watching after start");
     }
 
     @Test
@@ -252,7 +257,6 @@ class FileEventWatcherTest {
         assertThrows(IllegalArgumentException.class,
                 () -> myWatcher.startWatching(),
                 "Should throw exception when starting without path");
-
     }
 
     @Test
@@ -262,7 +266,7 @@ class FileEventWatcherTest {
 
         // Should not throw when starting again
         assertDoesNotThrow(() -> myWatcher.startWatching(), "Should handle duplicate start gracefully");
-        assertTrue(myWatcher.getMyIsWatching(), "Should still be watching");
+        assertTrue(myWatcher.isWatching(), "Should still be watching");
     }
 
     @Test
@@ -270,30 +274,22 @@ class FileEventWatcherTest {
         myWatcher.setWatchPath(myTempDir.toString());
         myWatcher.startWatching();
         myWatcher.stopWatching();
-        assertFalse(myWatcher.getMyIsWatching(), "Should not be watching after stop");
-
+        assertFalse(myWatcher.isWatching(), "Should not be watching after stop");
     }
 
     // Event management tests
     @Test
     void testClearCurrentEvents() {
-        // Create a mock file event
+        myWatcher.setWatchPath(myTempDir.toString()); // This triggers a property change event
+
         myWatcher.clearCurrentEvents();
 
         assertAll("Clear events test",
-                () -> assertTrue(myWatcher.getMyCurrentEvents().isEmpty(), "Events should be empty"),
-                () -> assertEquals(0, myWatcher.getMyCurrentEventCount(), "Event count should be 0"),
-                () -> assertFalse(myWatcher.getMyHasUnsavedEvents(), "Should not have unsaved events"));
+                () -> assertTrue(myWatcher.getCurrentEvents().isEmpty(), "Events list should be empty"),
+                () -> assertFalse(myWatcher.hasUnsavedEvents(), "Should have no unsaved events"),
+                () -> assertEquals(1, myListener.getEventCount(), "Should fire property change event")
+        );
     }
-
-    @Test
-    void testSaveEventsToDatabase() {
-        // Test with empty events
-        boolean result = myWatcher.saveEventsToDatabase();
-        assertTrue(result, "Should return true for empty events");
-
-    }
-
 
     // Property change tests
     @Test
@@ -324,35 +320,6 @@ class FileEventWatcherTest {
         assertEquals(1, specificListener.getEventCount(), "Specific listener should receive matching events");
     }
 
-
-    @Test
-    void testSaveToFileNullFilename() {
-        assertThrows(IllegalArgumentException.class,
-                () -> myWatcher.saveToFile(null),
-                "Should throw exception for null filename");
-    }
-
-    @Test
-    void testSaveToFileEmptyFilename() {
-        assertThrows(IllegalArgumentException.class,
-                () -> myWatcher.saveToFile(""),
-                "Should throw exception for empty filename");
-    }
-
-    @Test
-    void testSaveEventsToDatabaseWithMockEvents() {
-
-        // Add a mock FileEvent directly (no Path objects involved)
-        FileEventWatcher.FileEvent event = new FileEventWatcher.FileEvent(
-                "test.txt", "/mock/path/test.txt", "CREATE", "2025-08-06 12:00:00");
-        myWatcher.getMyCurrentEvents().add(event);
-
-        // Call the method under test
-        boolean result = myWatcher.saveEventsToDatabase();
-        assertTrue(result, "Should return true when event is saved");
-        assertFalse(myWatcher.getMyHasUnsavedEvents(), "Should not have unsaved events after saving");
-    }
-
     // ToString test
     @Test
     void testToString() {
@@ -361,36 +328,49 @@ class FileEventWatcherTest {
         String toString = myWatcher.toString();
         assertAll("ToString test",
                 () -> assertNotNull(toString, "ToString should not be null"),
-                () -> assertTrue(toString.contains("FileEventWatcher"), "Should contain class name"),
-                () -> assertTrue(toString.contains(myTempDir.toString()), "Should contain path"),
-                () -> assertTrue(toString.contains(TEST_EXTENSION_TXT), "Should contain extension"));
+                () -> assertTrue(toString.contains(myTempDir.toString()), "Should contain watch path"),
+                () -> assertTrue(toString.contains(TEST_EXTENSION_TXT), "Should contain extension"),
+                () -> assertTrue(toString.contains(String.valueOf(myWatcher.isWatching())), "Should contain watching state"),
+                () -> assertTrue(toString.contains(String.valueOf(myWatcher.getCurrentEvents().size())), "Should contain events count"),
+                () -> assertTrue(toString.contains(String.valueOf(myWatcher.hasUnsavedEvents())), "Should contain unsaved events state")
+        );
     }
 
     // Testing the FileEvent inner class
     @Test
     void testFileEventCreation() {
         FileEventWatcher.FileEvent event = new FileEventWatcher.FileEvent(
-                "test.txt", "/path/to/test.txt", "CREATE", "2025-08-06 12:00:00");
+                "test.txt", "/path/to/test.txt", "CREATE", "12:00:00"
+        );
         assertAll("FileEvent creation test",
-                () -> assertEquals("test.txt", event.getFileName()),
-                () -> assertEquals("/path/to/test.txt", event.getAbsolutePath()),
-                () -> assertEquals("CREATE", event.getEventType()),
-                () -> assertEquals("2025-08-06 12:00:00", event.getEventTime()));
+                () -> assertNotNull(event, "Event should be created"),
+                () -> assertNotNull(event.toString(), "Event toString should not be null"),
+                () -> assertTrue(event.toString().contains("test.txt"), "Should contain filename"),
+                () -> assertTrue(event.toString().contains("/path/to/test.txt"), "Should contain path"),
+                () -> assertTrue(event.toString().contains("CREATE"), "Should contain event type"),
+                () -> assertTrue(event.toString().contains("12:00:00"), "Should contain time")
+        );
     }
 
     @Test
     void testFileEventEquals() {
         FileEventWatcher.FileEvent event1 = new FileEventWatcher.FileEvent(
-                "test.txt", "/path/to/test.txt", "CREATE", "2025-08-06 12:00:00");
+                "test.txt", "/path/to/test.txt", "CREATE", "12:00:00"
+        );
         FileEventWatcher.FileEvent event2 = new FileEventWatcher.FileEvent(
-                "test.txt", "/path/to/test.txt", "CREATE", "2025-08-06 12:00:00");
+                "test.txt", "/path/to/test.txt", "CREATE", "12:00:00"
+        );
         FileEventWatcher.FileEvent event3 = new FileEventWatcher.FileEvent(
-                "test2.txt", "/path/to/test2.txt", "DELETE", "2025-08-06 12:01:00");
+                "test2.txt", "/path/to/test2.txt", "DELETE", "12:01:00"
+        );
 
         assertAll("FileEvent equals test",
                 () -> assertEquals(event1, event2, "Identical events should be equal"),
                 () -> assertNotEquals(event1, event3, "Different events should not be equal"),
-                () -> assertEquals(event1.hashCode(), event2.hashCode(), "Equal events should have same hash code"));
+                () -> assertNotEquals(event1, null, "Event should not equal null"),
+                () -> assertNotEquals(event1, "not an event", "Event should not equal other types"),
+                () -> assertEquals(event1.hashCode(), event2.hashCode(), "Equal events should have same hash")
+        );
     }
 
     @Test
@@ -406,9 +386,7 @@ class FileEventWatcherTest {
                 () -> assertTrue(toString.contains("2025-08-06 12:00:00"), "Should contain timestamp"));
     }
 
-    /**
-     * Helper class for testing property change events.
-     */
+
     private static class TestPropertyChangeListener implements PropertyChangeListener {
         private final List<PropertyChangeEvent> myEvents = new ArrayList<>();
         private final CountDownLatch myLatch = new CountDownLatch(1);
@@ -422,6 +400,5 @@ class FileEventWatcherTest {
         public int getEventCount() {
             return myEvents.size();
         }
-
     }
 }

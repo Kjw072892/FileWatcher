@@ -3,12 +3,14 @@ package com.tcss.filewatcher.Model;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.sqlite.SQLiteDataSource;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -55,14 +57,11 @@ class FileDirectoryDataBaseTest {
         assertEquals(0, myDataBase.getTableSize(), "Initial table size should be 0");
     }
 
-    // Insert directory tests
+    /// Insert directory tests
     @Test
     void testInsertDirectory() {
-        boolean result = myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
-        assertAll("Insert directory test",
-                () -> assertTrue(result, "Insert should return true"),
-                () -> assertEquals(1, myDataBase.getTableSize(), "Table size should be 1 after insert"));
-
+        myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
+        assertEquals(1, myDataBase.getTableSize(), "Table size should be 1 after insert");
     }
 
     @Test
@@ -73,22 +72,31 @@ class FileDirectoryDataBaseTest {
         assertEquals(3, myDataBase.getTableSize(), "Should have 3 entries after multiple inserts");
     }
 
-    @Test
-    void testInsertDirectoryWithNullValues() {
-        // Test behavior with null values - should not crash but may fail to insert
-        assertDoesNotThrow(() -> {
-            myDataBase.insertDirectory(null, null, null, null);
-            // The result may be true or false depending on database constraints
-        }, "Should not throw exception with null values");
-    }
 
     @Test
     void testInsertDirectoryWithEmptyStrings() {
-         myDataBase.insertDirectory("", "", "", "");
-        // Should handle empty strings gracefully
-        assertDoesNotThrow(() ->
-                        myDataBase.getTableSize(),
-                "Should not crash after inserting empty strings");
+        assertThrows(IllegalArgumentException.class, () -> {
+            myDataBase.insertDirectory("", "", "", "");
+        }, "Empty strings should throw exception");
+    }
+
+    // Remove directory tests
+    @Test
+    void testRemoveDirectory() {
+        // Insert a directory first
+        myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
+        assertEquals(1, myDataBase.getTableSize(), "Should have 1 entry after insert");
+
+        // Remove it
+        myDataBase.removeDirectory(TEST_DIRECTORY, TEST_FILE_EXTENSION);
+        assertEquals(0, myDataBase.getTableSize(), "Should have 0 entries after removal");
+    }
+
+    @Test
+    void testRemoveNonExistentDirectory() {
+        // Try to remove a directory that doesn't exist
+        myDataBase.removeDirectory("/nonexistent", ".txt");
+        assertEquals(0, myDataBase.getTableSize(), "Should still have 0 entries");
     }
 
     // Clear database tests
@@ -98,18 +106,15 @@ class FileDirectoryDataBaseTest {
         myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
         myDataBase.insertDirectory("2025-01-02", "13:30:45", ".java", "/home/user/project");
         assertEquals(2, myDataBase.getTableSize(), "Should have 2 entries before clear");
-        boolean result = myDataBase.clearDatabase();
-        assertAll("Clear database test",
-                () -> assertTrue(result, "Clear should return true"),
-                () -> assertEquals(0, myDataBase.getTableSize(), "Table size should be 0 after clear"));
+
+        myDataBase.clearDatabase();
+        assertEquals(0, myDataBase.getTableSize(), "Table size should be 0 after clear");
     }
 
     @Test
     void testClearEmptyDatabase() {
-        boolean result = myDataBase.clearDatabase();
-        assertAll("Clear empty database test",
-                () -> assertTrue(result, "Clear empty database should return true"),
-                () -> assertEquals(0, myDataBase.getTableSize(), "Table size should remain 0"));
+        myDataBase.clearDatabase();
+        assertEquals(0, myDataBase.getTableSize(), "Table size should remain 0");
     }
 
     // Get table size tests
@@ -124,20 +129,24 @@ class FileDirectoryDataBaseTest {
         myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
         assertEquals(1, myDataBase.getTableSize(), "Size should be 1 after one insert");
         myDataBase.insertDirectory("2025-01-02", "14:30:45", ".java", "/home/user/src");
-        assertEquals(2, myDataBase.getTableSize(), "Size should be 0 after clear");
+        assertEquals(2, myDataBase.getTableSize(), "Size should be 2 after two inserts"); // Fixed message
+    }
 
+    @Test
+    void testInsertDirectoryWithInvalidTimeFormat() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            myDataBase.insertDirectory(TEST_DATE, "invalid-time", TEST_FILE_EXTENSION, TEST_DIRECTORY);
+        }, "Invalid time format should throw exception");
+    }
+
+    @Test
+    void testInsertDirectoryWithInvalidDateFormat() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            myDataBase.insertDirectory("invalid-date", TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
+        }, "Invalid date format should throw exception");
     }
 
     // Get all entries tests
-    @Test
-    void testGetTableSizeAfterClear() {
-        myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
-        assertEquals(1, myDataBase.getTableSize(), "Size should be 1 after insert");
-        myDataBase.clearDatabase();
-        assertEquals(0, myDataBase.getTableSize(), "Size should be 0 after clear");
-
-    }
-
     @Test
     void testGetAllEntriesEmpty() {
         List<DirectoryEntry> entries = myDataBase.getAllEntries();
@@ -202,8 +211,7 @@ class FileDirectoryDataBaseTest {
         String specialTime = "23:59:59";
         String specialExtension = ".special-file_ext";
         String specialDirectory = "/path/with spaces/ and-special_chars/СЛАВА УКРАИНА";
-        boolean result = myDataBase.insertDirectory(specialDate, specialTime, specialExtension, specialDirectory);
-        assertTrue(result, "Should handle special characters");
+        myDataBase.insertDirectory(specialDate, specialTime, specialExtension, specialDirectory);
         assertEquals(1, myDataBase.getTableSize(), "Should have 1 entry with special characters");
         List<DirectoryEntry> entries = myDataBase.getAllEntries();
         DirectoryEntry entry = entries.getFirst();
@@ -217,11 +225,9 @@ class FileDirectoryDataBaseTest {
     @Test
     void testInsertDirectoryWithLongStrings() {
         String longDirectory = "/very/long/path/that/goes/on/and/on/with/many/subdirectories/to/test/string/length/handling";
-        boolean result = myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION,longDirectory);
-        assertTrue(result, "Should handle long strings");
+        myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, longDirectory);
         List<DirectoryEntry> entries = myDataBase.getAllEntries();
         assertEquals(longDirectory, entries.getFirst().getDirectory(), "Long directory path should be preserved");
-
     }
 
     @Test

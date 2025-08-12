@@ -15,10 +15,20 @@ import javafx.stage.Stage;
  */
 public abstract class SceneHandler {
 
+    /**
+     * Indicates whether the file watcher has started.
+     */
     private static boolean myIsWatcherStarted = false;
 
+    /**
+     * Indicates whether the file watcher is currently paused.
+     */
     private static final Hashtable<String, List<String>> myMonitoredDirectory = new Hashtable<>();
 
+    /**
+     * Returns whether the watcher is running or paused
+     * @return true if the watcher is started or paused, false otherwise
+     */
     public static boolean watcherRunningProperty() {
 
         return myIsWatcherStarted;

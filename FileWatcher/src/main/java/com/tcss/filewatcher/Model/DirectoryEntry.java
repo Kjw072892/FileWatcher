@@ -77,13 +77,13 @@ public class DirectoryEntry {
         myTime = new SimpleStringProperty(theTime);
         myFileName = new SimpleStringProperty(theFileName);
         myDirectory = new SimpleStringProperty(theDirectory);
-         myFileExtension = new SimpleStringProperty(extractExtension(theFileName));
+        myFileExtension = new SimpleStringProperty(extractExtension(theFileName));
     }
 
     private String extractExtension(final String fileName) {
-    int index = fileName.lastIndexOf('.');
-    return (index != -1) ? fileName.substring(index) : "";
-}
+        int index = fileName.lastIndexOf('.');
+        return (index != -1) ? fileName.substring(index) : "";
+    }
 
 
     /**
@@ -128,11 +128,12 @@ public class DirectoryEntry {
      * @return the string representation of the file extension.
      */
     public String getFileExtension() {
-    return (myFileExtension != null) ? myFileExtension.get() : "";
-}
+        return (myFileExtension != null) ? myFileExtension.get() : "";
+    }
 
     /**
      * Gets the file name.
+     *
      * @return the string representation of the file name.
      */
     public String getFileName() {

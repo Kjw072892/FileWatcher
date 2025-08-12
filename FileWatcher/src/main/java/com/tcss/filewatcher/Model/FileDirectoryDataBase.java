@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import org.sqlite.SQLiteDataSource;
 
 /**
@@ -57,7 +62,7 @@ public class FileDirectoryDataBase {
      * Creates a new table or connects the database to the table.
      */
     private void createTable() {
-        final String query = """
+        String query = """
                 CREATE TABLE IF NOT EXISTS watchList (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 date TEXT NOT NULL,
@@ -67,15 +72,39 @@ public class FileDirectoryDataBase {
                 )
                 """;
 
-        try (final Connection conn = myDataSource.getConnection();
-             final Statement stmt = conn.createStatement()) {
+        try (Connection conn = myDataSource.getConnection();
+             Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate(query);
             System.out.println("Table 'filewatcher' created successfully or already exists.");
 
-        }catch (final SQLException sqlException) {
-            System.out.println("Error creating table: " + sqlException.getMessage());
-            throw new RuntimeException("Failed to create table: ", sqlException);
+        } catch (final SQLException theSQLException) {
+            System.out.println("Error creating table: " + theSQLException.getMessage());
+            throw new RuntimeException("Failed to create table: ", theSQLException);
+        }
+    }
+
+    /**
+     * Validates a date string against the format "yyyy-MM-dd"
+     */
+    private boolean isValidDate(String date) {
+        try {
+            LocalDate.parse(date);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Validates a time string against the format "HH:mm:ss"
+     */
+    private boolean isValidTime(String time) {
+        try {
+            LocalTime.parse(time);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
         }
     }
 
@@ -90,7 +119,10 @@ public class FileDirectoryDataBase {
     public void insertDirectory(final String theDate, final String theTime,
                                 final String theFileExtension,
                                 final String theDirectory) {
-        final String insertSQL = "INSERT INTO watchList (date, time, file_extension, " +
+        if (!isValidDate(theDate) || !isValidTime(theTime)) {
+            throw new IllegalArgumentException("Invalid date format. Expected format: yyyy-MM-dd or Invalid time format. Expected format: HH:mm:ss");
+        }
+          final String insertSQL = "INSERT INTO watchList (date, time, file_extension, " +
                 "directory) " +
                 "VALUES (?, ?, ?, ?)";
         try (final Connection conn = myDataSource.getConnection();
@@ -109,6 +141,12 @@ public class FileDirectoryDataBase {
         }
     }
 
+    /**
+     * Removes a directory from the watchList database based on the directory
+     *
+     * @param theDirectory the directory to be removed
+     * @param theExtension the file extension associated with the directory
+     */
     public void removeDirectory(final String theDirectory, final String theExtension) {
        final String removeDir = "DELETE FROM watchList WHERE directory = ? AND " +
                "file_extension = ?";
@@ -116,14 +154,14 @@ public class FileDirectoryDataBase {
        try(final Connection conn = myDataSource.getConnection();
        final PreparedStatement pstmt = conn.prepareStatement(removeDir)){
 
-           pstmt.setString(1, theDirectory);
-           pstmt.setString(2, theExtension);
+            pstmt.setString(1, theDirectory);
+            pstmt.setString(2, theExtension);
 
-           pstmt.executeUpdate();
+            pstmt.executeUpdate();
 
-       } catch(final SQLException theSQLException) {
-           System.out.println("Unable to remove the directory");
-       }
+        } catch (final SQLException theSQLException) {
+            System.out.println("Unable to remove the directory");
+        }
     }
 
     /**
@@ -167,11 +205,11 @@ public class FileDirectoryDataBase {
      */
     public List<DirectoryEntry> getAllEntries() {
         final List<DirectoryEntry> sqlEntries = new ArrayList<>();
-        final String query ="""
-        SELECT date, time, file_extension, directory
-        FROM watchList
-        ORDER BY date DESC , time DESC
-        """;
+        final String query = """
+                SELECT date, time, file_extension, directory
+                FROM watchList
+                ORDER BY date DESC , time DESC
+                """;
 
         try (final Connection conn = myDataSource.getConnection();
         final Statement stmt = conn.createStatement();

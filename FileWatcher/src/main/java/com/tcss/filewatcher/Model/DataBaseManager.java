@@ -17,18 +17,33 @@ import java.sql.PreparedStatement;
  * @version 7/23/25
  */
 public class DataBaseManager {
-    private SQLiteDataSource ds;
+
+    /**
+     * The SQLite data source for database connections.
+     */
+    private SQLiteDataSource myDs;
+
+    /**
+     * The JDBC URL for the SQLite database file.
+     */
     private static final String DB_URL = "jdbc:sqlite:filewatcher.db";
 
+    /**
+     * Constructs a new DataBaseManager, initializing the database and creating the table if needed.
+     */
     public DataBaseManager() {
         initializeDatabase();
         createTable();
     }
 
+    /**
+     * Initializes the SQLite data source and sets the database URL.
+     * Throws a RuntimeException if initialization fails.
+     */
     private void initializeDatabase() {
         try {
-            ds = new SQLiteDataSource();
-            ds.setUrl(DB_URL);
+            myDs = new SQLiteDataSource();
+            myDs.setUrl(DB_URL);
             System.out.println("Database connection established successfully");
         } catch (Exception e) {
             System.out.println("invalid");
@@ -36,6 +51,10 @@ public class DataBaseManager {
         }
     }
 
+    /**
+     * Creates the 'filewatcher' table in the database if it does not already exist.
+     * Throws a RuntimeException if table creation fails.
+     */
     private void createTable() {
         String query = """
                 CREATE TABLE IF NOT EXISTS filewatcher (
@@ -48,40 +67,52 @@ public class DataBaseManager {
                 )""";
 
 
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(query);
             System.out.println("Table 'filewatcher' created successfully or already exists.");
-        } catch (SQLException e) {
-            System.out.println("Error creating table: " + e.getMessage());
-            throw new RuntimeException("Failed to create table: ", e);
+        } catch (SQLException theE) {
+            System.out.println("Error creating table: " + theE.getMessage());
+            throw new RuntimeException("Failed to create table: ", theE);
         }
     }
 
-    public final void insertFileEvent(final String currentDate, final String currentTime,
-                                      final String absolutePath, final String fileName,
-                                      final String eventType) {
+    /**
+     * Inserts a file event into the database.
+     *
+     * @param theCurrentDate  the current date of the event in "yyyy-MM-dd" format
+     * @param theCurrentTime  the current time of the event in "HH:mm:ss" format
+     * @param theAbsolutePath the absolute path of the file
+     * @param theFileName     the name of the file
+     * @param theEventType    the type of event (e.g., CREATED, MODIFIED, DELETED)
+     * @throws IllegalArgumentException if any parameter is null
+     */
+    public final void insertFileEvent(final String theCurrentDate, final String theCurrentTime,
+                                      final String theAbsolutePath, final String theFileName,
+                                      final String theEventType) {
 
         String insertSQL = "INSERT INTO filewatcher (event_date, event_time, file_name, absolute_path, event_type) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
 
-            pstmt.setObject(1, currentDate);
-            pstmt.setObject(2, currentTime);
-            pstmt.setObject(3, absolutePath);
-            pstmt.setObject(4, fileName);
-            pstmt.setObject(5, eventType);
+            pstmt.setObject(1, theCurrentDate);
+            pstmt.setObject(2, theCurrentTime);
+            pstmt.setObject(3, theAbsolutePath);
+            pstmt.setObject(4, theFileName);
+            pstmt.setObject(5, theEventType);
             pstmt.executeUpdate();
 
-        } catch (SQLException e) {
-            System.out.println("Error inserting file event: " + e.getMessage());
+        } catch (SQLException theE) {
+            System.out.println("Error inserting file event: " + theE.getMessage());
         }
     }
 
-
+    /**
+     * Deletes all records from the 'filewatcher' table.
+     */
     public final void clearDatabase() {
         String deleteSQL = "DELETE FROM filewatcher";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
             int rowsDeleted = stmt.executeUpdate(deleteSQL);
             System.out.println("Deleted" + rowsDeleted + " rows from database");
@@ -90,9 +121,14 @@ public class DataBaseManager {
         }
     }
 
+    /**
+     * Returns the number of records in the 'filewatcher' table.
+     *
+     * @return the number of records, or -1 if an error occurs
+     */
     public final int getTableSize() {
         String countItems = "SELECT COUNT(*) FROM filewatcher";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(countItems)) {
 
@@ -108,17 +144,22 @@ public class DataBaseManager {
         }
     }
 
-    // query by file name returns the list of string arrays where each array contain [event_date,
-    // event_time, file_name, absolute_path, event_type]
-    public final List<DirectoryEntry> queryByExtension(final String extension) {
+
+    /**
+     * Queries file events by file extension.
+     *
+     * @param theExtension the file extension to search for (e.g., ".txt")
+     * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
+     */
+    public final List<DirectoryEntry> queryByExtension(final String theExtension) {
         List<DirectoryEntry> results = new ArrayList<>();
         String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE file_name LIKE ? "
                 + "ORDER by event_date, event_time";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             // Make sure file name start with dot for searching
             String searchPattern;
-            searchPattern = "%" + extension;
+            searchPattern = "%" + theExtension;
             pstmt.setString(1, searchPattern);
             final ResultSet resultSet = pstmt.executeQuery();
             addToResultList(results, resultSet);
@@ -127,6 +168,7 @@ public class DataBaseManager {
         }
         return results;
     }
+
 
     private void addToResultList(List<DirectoryEntry> results, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
@@ -142,12 +184,18 @@ public class DataBaseManager {
         }
     }
 
-    // query events by event type
-    public final List<DirectoryEntry> queryByEventType(final String theEventType) {
+     /**
+     * Queries file events by event type.
+     *
+     * @param theEventType the event type to search for (e.g., "CREATED")
+     * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
+     * @throws IllegalArgumentException if event type is null
+     */
+   public final List<DirectoryEntry> queryByEventType(final String theEventType) {
         List<DirectoryEntry> results = new ArrayList<>();
         String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE event_type = ? "
                 + "ORDER BY event_date, event_time";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, theEventType.toUpperCase());
@@ -159,43 +207,60 @@ public class DataBaseManager {
         return results;
     }
 
-    // queries by directory path
+    /**
+     * Queries file events by directory path.
+     *
+     * @param theDirectoryPath the directory path to search for
+     * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
+     * @throws IllegalArgumentException if the directory path is null
+     */
     public final List<DirectoryEntry> queryByDirectory(final String theDirectoryPath) {
         List<DirectoryEntry> results = new ArrayList<>();
         String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE absolute_path "
                 + "LIKE ? ORDER BY event_date, event_time";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, theDirectoryPath + "%");
             ResultSet rs = pstmt.executeQuery();
             addToResultList(results, rs);
 
-        } catch (SQLException e) {
-            System.out.println("Error querying by directory: " + e.getMessage());
+        } catch (SQLException theE) {
+            System.out.println("Error querying by directory: " + theE.getMessage());
         }
         return results;
     }
 
-    // Query events within a date range.
+    /**
+     * Queries file events within a date range.
+     *
+     * @param theStartDate the start date (inclusive) in "yyyy-MM-dd HH:mm:ss" format
+     * @param theEndDate   the end date (inclusive) in "yyyy-MM-dd HH:mm:ss" format
+     * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
+     * @throws IllegalArgumentException if either date is null
+     */
     public final List<DirectoryEntry> queryByDateRange(final String theStartDate,
                                                        final String theEndDate) {
         List<DirectoryEntry> results = new ArrayList<>();
         String query = "SELECT event_date, event_time, file_name, absolute_path, event_type " +
                 "FROM filewatcher WHERE event_date BETWEEN ? AND ? ORDER BY event_date, event_time";
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, theStartDate);
             pstmt.setString(2, theEndDate);
             ResultSet rs = pstmt.executeQuery();
             addToResultList(results, rs);
 
-        } catch (SQLException e) {
-            System.out.println("Error querying by date range: " + e.getMessage());
+        } catch (SQLException theE) {
+            System.out.println("Error querying by date range: " + theE.getMessage());
         }
         return results;
     }
 
-    // Retrieve all file events from database
+    /**
+     * Retrieves all file events from the database.
+     *
+     * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
+     */
     public final List<DirectoryEntry> getAllEntries() {
         final List<DirectoryEntry> sqlEntries = new ArrayList<>();
         final String query = """
@@ -204,7 +269,7 @@ public class DataBaseManager {
                 ORDER BY event_date, event_time
                 """;
 
-        try (Connection conn = ds.getConnection();
+        try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             addToResultList(sqlEntries, rs);
@@ -213,12 +278,6 @@ public class DataBaseManager {
             System.out.println("Error retrieving entries: " + theSQLexception.getMessage());
         }
         return sqlEntries;
-    }
-
-
-    // close database cnxn, don't need for SQLite, but I think its good practice
-    public void close() {
-        System.out.println("Database manager closed");
     }
 
 }

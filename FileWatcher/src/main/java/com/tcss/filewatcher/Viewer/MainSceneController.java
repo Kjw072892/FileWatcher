@@ -140,7 +140,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     /**
      * Logger object to log errors and potential actions for debugging purposes.
      */
-    private final static Logger MY_LOGGER = Logger.getLogger("Main Scene Controller");
+    private final Logger MY_LOGGER = Logger.getLogger("Main Scene Controller");
 
     /**
      * The stage for the child scene fireWatcher (live).
@@ -208,9 +208,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         if (myFileDirectoryDatabase.getTableSize() > 0) {
             myTableView.addAll(myFileDirectoryDatabase.getAllEntries());
 
-            myQueryButton.setDisable(false);
-            myClearButton.setDisable(false);
-
             for (DirectoryEntry entry : myFileDirectoryDatabase.getAllEntries()) {
                 String dir = entry.getDirectory();
                 String ext = entry.getFileExtension();
@@ -224,9 +221,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         if (clearSQLData) {
             myFileDirectoryDatabase.clearDatabase();
         }
-
-        myDeleteDirectoryBTN.setDisable(myTableView.isEmpty());
-
     }
 
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
@@ -405,6 +399,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             extension = myMonitorByExtensionComBox.getPromptText();
         }
 
+        myDirectoryToQueryTB.clear();
+        myQueryByExtensionComBox.setPromptText("");
 
         final String directory = myDirectoryToMonitorTB.getText();
 
@@ -418,8 +414,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         final boolean dirCheck =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getDirectory().equals(directory));
+
         final boolean extCheck =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals(extension));
+
+        final boolean isAllExtOn =
+                myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals("All Extensions"));
 
         if (dirCheck && extCheck) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -427,6 +427,18 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             alert.setHeaderText("Unable to add directory");
             alert.setContentText("You are trying to add a directory that has already been " +
                     "added!");
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.showAndWait();
+            return;
+        } else if (dirCheck && isAllExtOn) {
+             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Action");
+            alert.setHeaderText("Unable to add directory");
+            alert.setContentText(""" 
+                    You are trying to watch a specific file extension
+                    under a directory that is already watching all file extensions!
+                    """);
             Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/FileWatcherIcons.png"))));
             alert.showAndWait();
@@ -477,11 +489,25 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                         String selectedDirectory = selectedItem.getDirectory();
                         String selectedExtension = selectedItem.getFileExtension();
 
-                        myDirectoryToMonitorTB.setText(selectedDirectory);
+                        myDeleteDirectoryBTN.setDisable(false);
+                        myQueryButton.setDisable(false);
+                        myClearButton.setDisable(false);
+
+                        myDirectoryToQueryTB.setText(selectedDirectory);
+                        myQueryByExtensionComBox.setPromptText(selectedExtension);
                         myMonitorByExtensionComBox.setPromptText(selectedExtension);
+                        myDirectoryToMonitorTB.setText(selectedDirectory);
                     }
                 }
         );
+    }
+
+    @FXML
+    private void handleClearButton() {
+        myDirectoryToQueryTB.clear();
+        myQueryByExtensionComBox.setPromptText("");
+        myClearButton.setDisable(true);
+        myQueryButton.setDisable(true);
     }
 
     /**
@@ -522,13 +548,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                     entry.getFileExtension());
             removeMonitoredExtension(entry.getDirectory(), entry.getFileExtension());
         }
-
-        if (myTableView.isEmpty()) {
-            myDeleteDirectoryBTN.setDisable(true);
-            myQueryButton.setDisable(true);
-        }
-
     }
+
 
     /**
      * Adds the filewatcher live scene to the mains property change listener.

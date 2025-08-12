@@ -206,6 +206,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     private void initialize() {
 
         addPropertyChangeListener(this);
+        myFileWatcher = new FileEventWatcher();
+
+        myFileWatcher.connectToControllers(this, null);
 
         myDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         myTime.setCellValueFactory(cellData -> cellData.getValue().timeProperty());
@@ -225,7 +228,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             }
         }
 
-        myFileWatcher = new FileEventWatcher();
 
         //Only used for debugging.
         if (clearSQLData) {
@@ -259,6 +261,18 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         if (myFileWatcher == null) {
             myFileWatcher = new FileEventWatcher();
+        }
+
+        for (final DirectoryEntry theEntry : myTableView) {
+            String dir = theEntry.getDirectory();
+            String ext = theEntry.getFileExtension();
+
+            myFileWatcher.addWatchPath(dir);
+
+            if (ext != null && !"All Extensions".equals(ext)) {
+                String normalized = ext.startsWith(".") ? ext : "." + ext;
+                myFileWatcher.addWatchedExtension(normalized);
+            }
         }
 
         try {
@@ -376,8 +390,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             openQueryScene();
             myChanges.firePropertyChange(Properties.QUERY_ALL.toString(), null, "All " +
                     "Extensions");
-        }
-        else {
+        } else {
             System.out.println("test");
             openQueryScene();
             myChanges.firePropertyChange(Properties.QUERY_DIRECTORY_EXTENSION.toString(),
@@ -498,7 +511,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         final boolean isAllExtOn =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals("All Extensions"));
 
-        if(dirCheck){
+        if (dirCheck) {
             listOfUsedExten = getExtensionsFromDir(finalDirectory);
         }
 
@@ -646,7 +659,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                     entry.getFileExtension());
             removeMonitoredExtension(entry.getDirectory(), entry.getFileExtension());
         }
-        if(myTableView.isEmpty()) {
+        if (myTableView.isEmpty()) {
             myQueryMenuItem.setDisable(true);
             myQueryButton.setDisable(true);
             myDeleteDirectoryBTN.setDisable(true);

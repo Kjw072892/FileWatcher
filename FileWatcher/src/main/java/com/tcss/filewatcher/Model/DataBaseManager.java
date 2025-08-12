@@ -70,7 +70,7 @@ public class DataBaseManager {
         try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(query);
-            System.out.println("Table 'filewatcher' created successfully or already exists.");
+            System.out.println("Table 'filewatcher' initialized.");
         } catch (SQLException theE) {
             System.out.println("Error creating table: " + theE.getMessage());
             throw new RuntimeException("Failed to create table: ", theE);
@@ -114,8 +114,7 @@ public class DataBaseManager {
         String deleteSQL = "DELETE FROM filewatcher";
         try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
-            int rowsDeleted = stmt.executeUpdate(deleteSQL);
-            System.out.println("Deleted" + rowsDeleted + " rows from database");
+            stmt.executeUpdate(deleteSQL);
         } catch (SQLException e) {
             System.out.println("Error clearing database: " + e.getMessage());
         }
@@ -184,14 +183,14 @@ public class DataBaseManager {
         }
     }
 
-     /**
+    /**
      * Queries file events by event type.
      *
      * @param theEventType the event type to search for (e.g., "CREATED")
      * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
      * @throws IllegalArgumentException if event type is null
      */
-   public final List<DirectoryEntry> queryByEventType(final String theEventType) {
+    public final List<DirectoryEntry> queryByEventType(final String theEventType) {
         List<DirectoryEntry> results = new ArrayList<>();
         String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE event_type = ? "
                 + "ORDER BY event_date, event_time";

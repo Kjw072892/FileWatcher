@@ -84,17 +84,17 @@ public class FileDirectoryDataBase {
         }
     }
 
-    /**
-     * Validates a date string against the format "yyyy-MM-dd"
-     */
-    private boolean isValidDate(String date) {
-        try {
-            LocalDate.parse(date);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
+//    /**
+//     * Validates a date string against the format "yyyy-MM-dd"
+//     */
+//    private boolean isValidDate(String date) {
+//        try {
+//            LocalDate.parse(date);
+//            return true;
+//        } catch (DateTimeParseException e) {
+//            return false;
+//        }
+//    }
 
     /**
      * Validates a time string against the format "HH:mm:ss"
@@ -119,14 +119,17 @@ public class FileDirectoryDataBase {
     public void insertDirectory(final String theDate, final String theTime,
                                 final String theFileExtension,
                                 final String theDirectory) {
-        if (!isValidDate(theDate) || !isValidTime(theTime)) {
-            throw new IllegalArgumentException("Invalid date format. Expected format: yyyy-MM-dd or Invalid time format. Expected format: HH:mm:ss");
+        if (//!isValidDate(theDate)||
+                !isValidTime(theTime)) {
+            throw new IllegalArgumentException("Invalid date format. Expected format: dd " +
+                    "MMM, yyyy" +
+                    " or Invalid time format. Expected format: HH:mm:ss");
         }
-          final String insertSQL = "INSERT INTO watchList (date, time, file_extension, " +
+        final String insertSQL = "INSERT INTO watchList (date, time, file_extension, " +
                 "directory) " +
                 "VALUES (?, ?, ?, ?)";
         try (final Connection conn = myDataSource.getConnection();
-             final PreparedStatement prepStmnt = conn.prepareStatement(insertSQL) ) {
+             final PreparedStatement prepStmnt = conn.prepareStatement(insertSQL)) {
 
             prepStmnt.setObject(1, theDate);
             prepStmnt.setObject(2, theTime);
@@ -148,11 +151,11 @@ public class FileDirectoryDataBase {
      * @param theExtension the file extension associated with the directory
      */
     public void removeDirectory(final String theDirectory, final String theExtension) {
-       final String removeDir = "DELETE FROM watchList WHERE directory = ? AND " +
-               "file_extension = ?";
+        final String removeDir = "DELETE FROM watchList WHERE directory = ? AND " +
+                "file_extension = ?";
 
-       try(final Connection conn = myDataSource.getConnection();
-       final PreparedStatement pstmt = conn.prepareStatement(removeDir)){
+        try (final Connection conn = myDataSource.getConnection();
+             final PreparedStatement pstmt = conn.prepareStatement(removeDir)) {
 
             pstmt.setString(1, theDirectory);
             pstmt.setString(2, theExtension);
@@ -170,7 +173,7 @@ public class FileDirectoryDataBase {
     public void clearDatabase() {
         final String deleteSQL = "DELETE FROM watchList";
         try (final Connection conn = myDataSource.getConnection();
-        final Statement stmt = conn.createStatement()) {
+             final Statement stmt = conn.createStatement()) {
 
             int rowsDeleted = stmt.executeUpdate(deleteSQL);
             System.out.println("Deleted " + rowsDeleted + " rows from database");
@@ -187,8 +190,8 @@ public class FileDirectoryDataBase {
     public int getTableSize() {
         final String countItems = "SELECT COUNT(*) FROM watchList";
         try (final Connection conn = myDataSource.getConnection();
-        final Statement stmt = conn.createStatement();
-        final ResultSet rs = stmt.executeQuery(countItems)) {
+             final Statement stmt = conn.createStatement();
+             final ResultSet rs = stmt.executeQuery(countItems)) {
             if (rs.next()) {
                 return rs.getInt(1);
             } else {
@@ -212,8 +215,8 @@ public class FileDirectoryDataBase {
                 """;
 
         try (final Connection conn = myDataSource.getConnection();
-        final Statement stmt = conn.createStatement();
-        final ResultSet rs = stmt.executeQuery(query)) {
+             final Statement stmt = conn.createStatement();
+             final ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
 
                 String date = rs.getString("date");
@@ -221,7 +224,7 @@ public class FileDirectoryDataBase {
                 String extension = rs.getString("file_extension");
                 String directory = rs.getString("directory");
 
-                DirectoryEntry entry = new DirectoryEntry(date, time, extension,directory);
+                DirectoryEntry entry = new DirectoryEntry(date, time, extension, directory);
 
                 sqlEntries.add(entry);
             }

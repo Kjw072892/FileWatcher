@@ -527,7 +527,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             return;
         }
 
-        @SuppressWarnings("unchecked") final WatchEvent<Path> pathEvent = (WatchEvent<Path>) theEvent;
+
+        final WatchEvent<Path> pathEvent = (WatchEvent<Path>) theEvent;
         final Path filename = pathEvent.context();
         final Path child = theDir.resolve(filename);
 

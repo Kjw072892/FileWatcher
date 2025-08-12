@@ -28,11 +28,13 @@
         </Menu>
 
         <Menu text="File System _Watcher">
-            <MenuItem id="openLiveEventsMenuItem" disable="true" mnemonicParsing="false" onAction="#handleFileWatcherButton" text="Open Live Events" />
+            <MenuItem fx:id="myFileWatcherViewerMenuItem" id="openLiveEventsMenuItem" disable="true"
+                      mnemonicParsing="false"
+                       onAction="#handleFileWatcherButton" text="Open Live Events" />
         </Menu>
 
         <Menu text="_Database">
-            <MenuItem fx:id="myQueryMenuItem" disable="true" mnemonicParsing="false" text="Query" />
+            <MenuItem fx:id="myQueryMenuItem" onAction="#handleQueryIconButton" disable="true" mnemonicParsing="false" text="Query" />
 
         </Menu>
 
@@ -52,7 +54,13 @@
     <ComboBox fx:id="myMonitorByExtensionComBox" layoutX="49.0" layoutY="163.0" prefHeight="25.0" prefWidth="161.0" promptText="All Extensions" AnchorPane.leftAnchor="49.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <String fx:value="All Extensions" />
+                 <String fx:value="All Extensions" />
+                <String fx:value=".csv" />
+                <String fx:value=".docx" />
+                <String fx:value=".log" />
+                <String fx:value=".pdf" />
+                <String fx:value=".txt" />
+                <String fx:value=".xlsx" />
                 <String fx:value=".7z" />
                 <String fx:value=".bak" />
                 <String fx:value=".bat" />
@@ -61,12 +69,10 @@
                 <String fx:value=".cmd" />
                 <String fx:value=".cpp" />
                 <String fx:value=".cs" />
-                <String fx:value=".csv" />
                 <String fx:value=".dll" />
                 <String fx:value=".dmg" />
                 <String fx:value=".doc" />
                 <String fx:value=".docm" />
-                <String fx:value=".docx" />
                 <String fx:value=".env" />
                 <String fx:value=".exe" />
                 <String fx:value=".go" />
@@ -80,7 +86,6 @@
                 <String fx:value=".md" />
                 <String fx:value=".msi" />
                 <String fx:value=".old" />
-                <String fx:value=".pdf" />
                 <String fx:value=".pl" />
                 <String fx:value=".ppt" />
                 <String fx:value=".pptm" />
@@ -97,11 +102,9 @@
                 <String fx:value=".swp" />
                 <String fx:value=".tar" />
                 <String fx:value=".tmp" />
-                <String fx:value=".txt" />
                 <String fx:value=".vbs" />
                 <String fx:value=".xls" />
                 <String fx:value=".xlsm" />
-                <String fx:value=".xlsx" />
                 <String fx:value=".xml" />
                 <String fx:value=".yaml" />
                 <String fx:value=".zip" />
@@ -126,7 +129,8 @@
 
     <Label layoutX="56.0" layoutY="246.0" text="Query by extension" AnchorPane.leftAnchor="55.0" />
 
-    <Button fx:id="myQueryButton" disable="true" layoutX="245.0" layoutY="297.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Query" />
+    <Button fx:id="myQueryButton" onAction="#handleQueryButton" layoutX="245.0" layoutY="297.0" mnemonicParsing="false"
+            prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Query" />
 
     <Button fx:id="myClearButton" onAction="#handleClearButton" disable="true" layoutX="483.0" layoutY="297.0" mnemonicParsing="false"
             prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Clear" AnchorPane.rightAnchor="50.0" />
@@ -191,7 +195,7 @@
             </Button>
 
 
-            <Button id="queryIconButton" maxHeight="25.0" maxWidth="104.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleQueryScene" prefHeight="25.0" prefWidth="104.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+            <Button id="queryIconButton" maxHeight="25.0" maxWidth="104.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleQueryIconButton" prefHeight="25.0" prefWidth="104.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
                     <Tooltip text="Query Historical Records" />
@@ -208,10 +212,17 @@
     <!--
            Query ComboBox
        -->
-    <ComboBox fx:id="myQueryByExtensionComBox" layoutX="49.0" layoutY="263.0" prefHeight="25.0" prefWidth="161.0">
+    <ComboBox fx:id="myQueryByExtensionComBox" onAction="#handleQueryComboBox" layoutX="49.0" layoutY="263.0" prefHeight="25.0"
+              prefWidth="161.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="All Extensions" />
+                <String fx:value=".csv" />
+                <String fx:value=".docx" />
+                <String fx:value=".log" />
+                <String fx:value=".pdf" />
+                <String fx:value=".txt" />
+                <String fx:value=".xlsx" />
                 <String fx:value=".7z" />
                 <String fx:value=".bak" />
                 <String fx:value=".bat" />
@@ -220,12 +231,10 @@
                 <String fx:value=".cmd" />
                 <String fx:value=".cpp" />
                 <String fx:value=".cs" />
-                <String fx:value=".csv" />
                 <String fx:value=".dll" />
                 <String fx:value=".dmg" />
                 <String fx:value=".doc" />
                 <String fx:value=".docm" />
-                <String fx:value=".docx" />
                 <String fx:value=".env" />
                 <String fx:value=".exe" />
                 <String fx:value=".go" />
@@ -239,7 +248,6 @@
                 <String fx:value=".md" />
                 <String fx:value=".msi" />
                 <String fx:value=".old" />
-                <String fx:value=".pdf" />
                 <String fx:value=".pl" />
                 <String fx:value=".ppt" />
                 <String fx:value=".pptm" />
@@ -256,11 +264,9 @@
                 <String fx:value=".swp" />
                 <String fx:value=".tar" />
                 <String fx:value=".tmp" />
-                <String fx:value=".txt" />
                 <String fx:value=".vbs" />
                 <String fx:value=".xls" />
                 <String fx:value=".xlsm" />
-                <String fx:value=".xlsx" />
                 <String fx:value=".xml" />
                 <String fx:value=".yaml" />
                 <String fx:value=".zip" />

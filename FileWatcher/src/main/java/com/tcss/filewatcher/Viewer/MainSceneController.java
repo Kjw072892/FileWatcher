@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,7 +86,14 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     /**
      * Clears the textboxes and sets the combobox to default.
      */
+    @FXML
     public Button myClearButton;
+
+    /**
+     * Opens the filewatcher viewer (live) if started.
+     */
+    @FXML
+    public MenuItem myFileWatcherViewerMenuItem;
 
     /**
      * The combobox that gives the user a number of extensions to choose from.
@@ -207,6 +216,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         if (myFileDirectoryDatabase.getTableSize() > 0) {
             myTableView.addAll(myFileDirectoryDatabase.getAllEntries());
+            myQueryMenuItem.setDisable(false);
 
             for (DirectoryEntry entry : myFileDirectoryDatabase.getAllEntries()) {
                 String dir = entry.getDirectory();
@@ -235,7 +245,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     public void setStage(final Stage theStage) {
         myStage = theStage;
     }
-
 
 
     /**
@@ -288,16 +297,15 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
-    /**
-     * Opens the Query Scene
-     */
-    @FXML
-    private void handleQueryScene() {
+
+    private void openQueryScene() {
         try {
-            final FXMLLoader queryFxmlLoader =
-                    new FXMLLoader(MainSceneController.class.getResource("/com/tcss/filewatcher/QueryScene.fxml"));
-            final Scene queryScene = new Scene(queryFxmlLoader.load());
-            final QuerySceneController querySceneController = queryFxmlLoader.getController();
+            final FXMLLoader querySceneFxmlLoader =
+                    new FXMLLoader(MainSceneController
+                            .class.getResource("/com/tcss/filewatcher/QueryScene.fxml"));
+            final Scene queryScene = new Scene(querySceneFxmlLoader.load());
+            final QuerySceneController querySceneController =
+                    querySceneFxmlLoader.getController();
             final Stage queryStage = new Stage();
 
             querySceneController.setMyMainSceneController(this);
@@ -306,6 +314,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             queryStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/record_icon.png"))));
 
+            querySceneController.setStage(queryStage);
+
             queryStage.show();
             queryStage.setResizable(false);
 
@@ -313,6 +323,67 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         } catch (final IOException theIOE) {
             MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!");
         }
+    }
+
+    /**
+     * Opens the historical Query scene.
+     */
+    @FXML
+    private void handleQueryIconButton() {
+        openQueryScene();
+        myChanges.firePropertyChange(Properties.QUERY_ALL.toString(), null, null);
+    }
+
+    /**
+     * Opens the Query Scene
+     */
+    @FXML
+    private void handleQueryButton() {
+
+        if (myDirectoryToQueryTB.getText().isEmpty() && myQueryByExtensionComBox.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Empty Query");
+            alert.setHeaderText("Unable To Query!");
+            alert.setContentText("""
+                    There is nothing to query against!
+                    Please try again!
+                    """);
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.showAndWait();
+            return;
+        }
+
+
+        if (!myDirectoryToQueryTB.getText().isEmpty()
+                && (myQueryByExtensionComBox.getValue() == null)) {
+            openQueryScene();
+            myChanges.firePropertyChange(Properties.QUERY_DIRECTORY.toString(),
+                    myDirectoryToQueryTB.getText(), null);
+
+        } else if (myDirectoryToQueryTB.getText().isEmpty()
+                && myQueryByExtensionComBox.getValue() != null
+                && !myQueryByExtensionComBox.getValue().equals("All Extensions")) {
+
+            openQueryScene();
+            myChanges.firePropertyChange(Properties.QUERY_EXTENSION.toString(), null,
+                    myQueryByExtensionComBox.getValue());
+
+        } else if (myDirectoryToQueryTB.getText().isEmpty()
+                && myQueryByExtensionComBox.getValue().equals("All Extensions")) {
+
+            openQueryScene();
+            myChanges.firePropertyChange(Properties.QUERY_ALL.toString(), null, "All " +
+                    "Extensions");
+        }
+        else {
+            System.out.println("test");
+            openQueryScene();
+            myChanges.firePropertyChange(Properties.QUERY_DIRECTORY_EXTENSION.toString(),
+                    myDirectoryToQueryTB.getText(), myQueryByExtensionComBox.getValue());
+        }
+
     }
 
 
@@ -402,18 +473,24 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         myDirectoryToQueryTB.clear();
         myQueryByExtensionComBox.setPromptText("");
 
-        final String directory = myDirectoryToMonitorTB.getText();
+        String directory = myDirectoryToMonitorTB.getText();
+        directory = directory.replace("\"", "");
 
-        if (directory == null || directory.isBlank() || !Files.isDirectory(Path.of(directory))) {
+
+        if (directory.isBlank() || !Files.isDirectory(Path.of(directory))) {
             MY_LOGGER.warning("Invalid or nonexistent directory: '" + directory + "'");
             return;
         }
 
+        final String finalDirectory = directory;
+
         final String date = java.time.LocalDate.now().format(myFormatedDate);
         final String time = java.time.LocalTime.now().withNano(0).format(myFormatedTime);
 
+        List<String> listOfUsedExten = new ArrayList<>();
+
         final boolean dirCheck =
-                myTableView.stream().anyMatch(theEvent -> theEvent.getDirectory().equals(directory));
+                myTableView.stream().anyMatch(theEvent -> theEvent.getDirectory().equals(finalDirectory));
 
         final boolean extCheck =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals(extension));
@@ -421,18 +498,24 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         final boolean isAllExtOn =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals("All Extensions"));
 
-        if (dirCheck && extCheck) {
+        if(dirCheck){
+            listOfUsedExten = getExtensionsFromDir(finalDirectory);
+        }
+
+        if (listOfUsedExten.contains(extension) || (dirCheck && extCheck)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Duplicate directories");
             alert.setHeaderText("Unable to add directory");
             alert.setContentText("You are trying to add a directory that has already been " +
                     "added!");
             Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/FileWatcherIcons.png"))));
             alert.showAndWait();
             return;
+
         } else if (dirCheck && isAllExtOn) {
-             Alert alert = new Alert(Alert.AlertType.WARNING);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Action");
             alert.setHeaderText("Unable to add directory");
             alert.setContentText(""" 
@@ -440,7 +523,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                     under a directory that is already watching all file extensions!
                     """);
             Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/FileWatcherIcons.png"))));
             alert.showAndWait();
             return;
         }
@@ -471,8 +555,17 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         myClearButton.setDisable(false);
         myQueryButton.setDisable(false);
+        myQueryMenuItem.setDisable(false);
         myChanges.firePropertyChange(Properties.NEW_ENTRY.toString(), null, entry);
 
+    }
+
+    @FXML
+    private void handleQueryComboBox() {
+        if (myQueryByExtensionComBox.getPromptText() == null) {
+            myQueryButton.setDisable(false);
+            myClearButton.setDisable(false);
+        }
     }
 
     /**
@@ -494,24 +587,29 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                         myClearButton.setDisable(false);
 
                         myDirectoryToQueryTB.setText(selectedDirectory);
-                        myQueryByExtensionComBox.setPromptText(selectedExtension);
-                        myMonitorByExtensionComBox.setPromptText(selectedExtension);
+                        myQueryByExtensionComBox.setValue(selectedExtension);
                         myDirectoryToMonitorTB.setText(selectedDirectory);
                     }
                 }
         );
     }
 
+
+    /**
+     * Disables and enables the clear button, query button and combo-boxes
+     */
     @FXML
     private void handleClearButton() {
         myDirectoryToQueryTB.clear();
-        myQueryByExtensionComBox.setPromptText("");
+        myQueryByExtensionComBox.setPromptText(null);
+        myQueryByExtensionComBox.setValue(null);
         myClearButton.setDisable(true);
-        myQueryButton.setDisable(true);
+        myQueryByExtensionComBox.setDisable(false);
     }
 
     /**
      * Handles the delete button.
+     * Removes the entry from the local List and from the watch list on the database.
      */
     @FXML
     private void handleDeleteButton() {
@@ -534,7 +632,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         final boolean doesDirExist =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getDirectory().equals(entry.getDirectory()));
 
-            //If the extension and the directory no longer exists, remove both.
+        //If the extension and the directory no longer exists, remove both.
         if (!doesExtExist && !doesDirExist) {
 
             myChanges.firePropertyChange(Properties.REMOVED_EXTENSION.toString(), entry.getDirectory(),
@@ -547,6 +645,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             myChanges.firePropertyChange(Properties.REMOVED_EXTENSION.toString(), entry.getDirectory(),
                     entry.getFileExtension());
             removeMonitoredExtension(entry.getDirectory(), entry.getFileExtension());
+        }
+        if(myTableView.isEmpty()) {
+            myQueryMenuItem.setDisable(true);
+            myQueryButton.setDisable(true);
+            myDeleteDirectoryBTN.setDisable(true);
         }
     }
 
@@ -582,10 +685,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         } else if (theEvent.getPropertyName().equals(Properties.START.toString())) {
             myStartIconBtn.setDisable(true);
             myStopIconBtn.setDisable(false);
+            myFileWatcherViewerMenuItem.setDisable(false);
 
         } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())) {
             myStartIconBtn.setDisable(false);
             myStopIconBtn.setDisable(true);
+            myFileWatcherViewerMenuItem.setDisable(true);
 
         } else if (theEvent.getPropertyName().equals(Properties.NEW_ENTRY.toString())) {
             myDeleteDirectoryBTN.setDisable(false);

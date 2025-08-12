@@ -120,22 +120,26 @@ public class DataBaseManager {
             String searchPattern;
             searchPattern = "%" + extension;
             pstmt.setString(1, searchPattern);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String date = rs.getString("event_date");
-                String time = rs.getString("event_time");
-                String fileName = rs.getString("file_name");
-                String directory = rs.getString("absolute_path");
-                String eventType = rs.getString("event_type");
-
-                DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
-
-                results.add(entry);
-            }
+            final ResultSet resultSet = pstmt.executeQuery();
+            addToResultList(results, resultSet);
         } catch (SQLException e) {
             System.out.println("Error querying by extension: " + e.getMessage());
         }
         return results;
+    }
+
+    private void addToResultList(List<DirectoryEntry> results, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            String date = resultSet.getString("event_date");
+            String time = resultSet.getString("event_time");
+            String fileName = resultSet.getString("file_name");
+            String directory = resultSet.getString("absolute_path");
+            String eventType = resultSet.getString("event_type");
+
+            DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
+
+            results.add(entry);
+        }
     }
 
     // query events by event type
@@ -148,17 +152,7 @@ public class DataBaseManager {
 
             pstmt.setString(1, theEventType.toUpperCase());
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String date = rs.getString("event_date");
-                String time = rs.getString("event_time");
-                String fileName = rs.getString("file_name");
-                String directory = rs.getString("absolute_path");
-                String eventType = rs.getString("event_type");
-
-                DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
-
-                results.add(entry);
-            }
+            addToResultList(results, rs);
         } catch (SQLException e) {
             System.out.println("Error querying by event type: " + e.getMessage());
         }
@@ -174,17 +168,7 @@ public class DataBaseManager {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, theDirectoryPath + "%");
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String date = rs.getString("event_date");
-                String time = rs.getString("event_time");
-                String fileName = rs.getString("file_name");
-                String directory = rs.getString("absolute_path");
-                String eventType = rs.getString("event_type");
-
-                DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
-
-                results.add(entry);
-            }
+            addToResultList(results, rs);
 
         } catch (SQLException e) {
             System.out.println("Error querying by directory: " + e.getMessage());
@@ -203,19 +187,7 @@ public class DataBaseManager {
             pstmt.setString(1, theStartDate);
             pstmt.setString(2, theEndDate);
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-
-                String date = rs.getString("event_date");
-                String time = rs.getString("event_time");
-                String fileName = rs.getString("file_name");
-                String directory = rs.getString("absolute_path");
-                String eventType = rs.getString("event_type");
-
-                DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
-
-                results.add(entry);
-
-            }
+            addToResultList(results, rs);
 
         } catch (SQLException e) {
             System.out.println("Error querying by date range: " + e.getMessage());
@@ -235,18 +207,7 @@ public class DataBaseManager {
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-
-                String date = rs.getString("event_date");
-                String time = rs.getString("event_time");
-                String fileName = rs.getString("file_name");
-                String directory = rs.getString("absolute_path");
-                String eventType = rs.getString("event_type");
-
-                DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
-
-                sqlEntries.add(entry);
-            }
+            addToResultList(sqlEntries, rs);
 
         } catch (final SQLException theSQLexception) {
             System.out.println("Error retrieving entries: " + theSQLexception.getMessage());

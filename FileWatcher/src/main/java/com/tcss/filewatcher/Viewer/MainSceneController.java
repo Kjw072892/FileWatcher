@@ -4,6 +4,7 @@ import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.DirectoryEntry;
 import com.tcss.filewatcher.Model.FileDirectoryDataBase;
 import com.tcss.filewatcher.Model.FileEventWatcher;
+import com.tcss.filewatcher.Model.RegDataBaseManager;
 import com.tcss.filewatcher.Model.SceneHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -406,26 +407,30 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     private void handleEmailRegistrationScene() {
 
-        try {
-            final FXMLLoader emailClientFxmlLoader =
-                    new FXMLLoader(MainSceneController.class.getResource("/com/tcss" +
-                            "/filewatcher/EmailClientScene.fxml"));
-            final Scene emailClientScene = new Scene(emailClientFxmlLoader.load());
+        final RegDataBaseManager regDataBaseManager = new RegDataBaseManager();
 
-            final Stage emailRegStage = new Stage();
+        if(!regDataBaseManager.hasAUserAlreadyRegistered()) {
+            try {
+                final FXMLLoader emailClientFxmlLoader =
+                        new FXMLLoader(MainSceneController.class.getResource("/com/tcss" +
+                                "/filewatcher/EmailClientScene.fxml"));
+                final Scene emailClientScene = new Scene(emailClientFxmlLoader.load());
 
-            emailRegStage.setScene(emailClientScene);
+                final Stage emailRegStage = new Stage();
 
-            emailRegStage.setTitle("Email Registration");
+                emailRegStage.setScene(emailClientScene);
 
-            emailRegStage.getIcons().add(new Image(Objects.requireNonNull(
-                    getClass().getResourceAsStream("/icons/email_Icon.png"))));
+                emailRegStage.setTitle("Email Registration");
 
-            emailRegStage.show();
-            emailRegStage.setResizable(false);
+                emailRegStage.getIcons().add(new Image(Objects.requireNonNull(
+                        getClass().getResourceAsStream("/icons/email_Icon.png"))));
 
-        } catch (final IOException theIOE) {
-            MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!");
+                emailRegStage.show();
+                emailRegStage.setResizable(false);
+
+            } catch (final IOException theIOE) {
+                MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!");
+            }
         }
 
     }

@@ -14,6 +14,7 @@ module com.tcss.filewatcher {
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
     requires javafx.graphics;
+    requires com.opencsv;
 
     opens com.tcss.filewatcher to javafx.fxml;
     exports com.tcss.filewatcher.Viewer;

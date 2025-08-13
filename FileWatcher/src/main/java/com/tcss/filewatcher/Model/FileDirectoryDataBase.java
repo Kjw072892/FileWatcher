@@ -84,17 +84,18 @@ public class FileDirectoryDataBase {
         }
     }
 
-//    /**
-//     * Validates a date string against the format "yyyy-MM-dd"
-//     */
-//    private boolean isValidDate(String date) {
-//        try {
-//            LocalDate.parse(date);
-//            return true;
-//        } catch (DateTimeParseException e) {
-//            return false;
-//        }
-//    }
+    /**
+     * Validates a date string against the format "dd MMM, yyyy" (e.g., "01 Jan, 2025")
+     */
+    private boolean isValidDate(String date) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
 
     /**
      * Validates a time string against the format "HH:mm:ss"
@@ -119,7 +120,7 @@ public class FileDirectoryDataBase {
     public void insertDirectory(final String theDate, final String theTime,
                                 final String theFileExtension,
                                 final String theDirectory) {
-        if (//!isValidDate(theDate)||
+        if (!isValidDate(theDate)||
                 !isValidTime(theTime)) {
             throw new IllegalArgumentException("Invalid date format. Expected format: dd " +
                     "MMM, yyyy" +

@@ -23,6 +23,7 @@ module com.tcss.filewatcher {
     requires com.google.api.client.extensions.jetty.auth;
     requires com.google.api.client.extensions.java6.auth;
     requires com.google.api.client.auth;
+    requires com.opencsv;
 
     opens com.tcss.filewatcher to javafx.fxml;
     exports com.tcss.filewatcher.Viewer;

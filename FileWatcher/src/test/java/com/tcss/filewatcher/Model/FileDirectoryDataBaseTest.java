@@ -3,7 +3,6 @@ package com.tcss.filewatcher.Model;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.sqlite.SQLiteDataSource;
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 /**
@@ -31,7 +29,7 @@ class FileDirectoryDataBaseTest {
     /**
      * Test data constants.
      */
-    private static final String TEST_DATE = "2025-01-01";
+    private static final String TEST_DATE = "01 Jan, 2025";
     private static final String TEST_TIME = "12:30:45";
     private static final String TEST_FILE_EXTENSION = ".txt";
     private static final String TEST_DIRECTORY = "/home/user/documents";
@@ -66,9 +64,9 @@ class FileDirectoryDataBaseTest {
 
     @Test
     void testInsertMultipleDirectories() {
-        myDataBase.insertDirectory("2020-01-01", "10:00:00", ".txt", "/path1");
-        myDataBase.insertDirectory("2020-01-02", "11:00:00", ".java", "/path2");
-        myDataBase.insertDirectory("2020-01-03", "12:00:00", ".pdf", "/path3");
+        myDataBase.insertDirectory("01 Jan, 2020", "10:00:00", ".txt", "/path1");
+        myDataBase.insertDirectory("02 Jan, 2020", "11:00:00", ".java", "/path2");
+        myDataBase.insertDirectory("03 Jan, 2020", "12:00:00", ".pdf", "/path3");
         assertEquals(3, myDataBase.getTableSize(), "Should have 3 entries after multiple inserts");
     }
 
@@ -104,7 +102,7 @@ class FileDirectoryDataBaseTest {
     void testClearDatabase() {
         // Insert some data first
         myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
-        myDataBase.insertDirectory("2025-01-02", "13:30:45", ".java", "/home/user/project");
+        myDataBase.insertDirectory("02 Jan, 2025", "13:30:45", ".java", "/home/user/project");
         assertEquals(2, myDataBase.getTableSize(), "Should have 2 entries before clear");
 
         myDataBase.clearDatabase();
@@ -128,8 +126,8 @@ class FileDirectoryDataBaseTest {
         assertEquals(0, myDataBase.getTableSize(), "Initial size should be 0");
         myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
         assertEquals(1, myDataBase.getTableSize(), "Size should be 1 after one insert");
-        myDataBase.insertDirectory("2025-01-02", "14:30:45", ".java", "/home/user/src");
-        assertEquals(2, myDataBase.getTableSize(), "Size should be 2 after two inserts"); // Fixed message
+        myDataBase.insertDirectory("02 Jan, 2025", "14:30:45", ".java", "/home/user/src");
+        assertEquals(2, myDataBase.getTableSize(), "Size should be 2 after two inserts");
     }
 
     @Test
@@ -172,27 +170,27 @@ class FileDirectoryDataBaseTest {
     @Test
     void testGetAllEntriesMultiple() {
         // Insert entries in non-chronological order to test ordering
-        myDataBase.insertDirectory("2025-01-01", "10:00:00", ".txt", "/path1");
-        myDataBase.insertDirectory("2025-01-03", "10:00:00", ".java", "/path3");
-        myDataBase.insertDirectory("2025-01-02", "10:00:00", ".pdf", "/path2");
-        myDataBase.insertDirectory("2025-01-03", "09:00:00", ".xml", "/path4");
+        myDataBase.insertDirectory("01 Jan, 2025", "10:00:00", ".txt", "/path1");
+        myDataBase.insertDirectory("03 Jan, 2025", "10:00:00", ".java", "/path3");
+        myDataBase.insertDirectory("02 Jan, 2025", "10:00:00", ".pdf", "/path2");
+        myDataBase.insertDirectory("03 Jan, 2025", "09:00:00", ".xml", "/path4");
         List<DirectoryEntry> entries = myDataBase.getAllEntries();
         assertAll("Multiple entries test",
                 () -> assertEquals(4, entries.size(), "Should have 4 entries"),
                 // Test ordering should be date DESC, time DESC
-                () -> assertEquals("2025-01-03", entries.getFirst().getDate(), "First entry should be latest date"),
+                () -> assertEquals("03 Jan, 2025", entries.getFirst().getDate(), "First entry should be latest date"),
                 () -> assertEquals("10:00:00", entries.getFirst().getTime(), "First entry should be later time"),
-                () -> assertEquals("2025-01-03", entries.get(1).getDate(), "Second entry should be same latest date"),
+                () -> assertEquals("03 Jan, 2025", entries.get(1).getDate(), "Second entry should be same latest date"),
                 () -> assertEquals("09:00:00", entries.get(1).getTime(), "Second entry should be earlier time"),
-                () -> assertEquals("2025-01-02", entries.get(2).getDate(), "Third entry should be middle date"),
-                () -> assertEquals("2025-01-01", entries.get(3).getDate(), "Fourth entry should be earliest date"));
+                () -> assertEquals("02 Jan, 2025", entries.get(2).getDate(), "Third entry should be middle date"),
+                () -> assertEquals("01 Jan, 2025", entries.get(3).getDate(), "Fourth entry should be earliest date"));
     }
 
     @Test
     void testGetAllEntriesAfterClear() {
         // Insert data
         myDataBase.insertDirectory(TEST_DATE, TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
-        myDataBase.insertDirectory("2025-01-02", "13:30:45", ".java", "/home/user/project");
+        myDataBase.insertDirectory("02 Jan, 2025", "13:30:45", ".java", "/home/user/project");
         assertEquals(2, myDataBase.getAllEntries().size(), "Should have 2 entries before clear");
 
         // Clear database
@@ -201,13 +199,12 @@ class FileDirectoryDataBaseTest {
         assertAll("Entries after clear test",
                 () -> assertNotNull(entries, "Entries should not be null after clear"),
                 () -> assertTrue(entries.isEmpty(), "Entries should be empty after clear"));
-
     }
 
     // Edge test cases
     @Test
     void testInsertDirectoryWithSpecialCharacters() {
-        String specialDate = "2025-12-31";
+        String specialDate = "31 Dec, 2025";
         String specialTime = "23:59:59";
         String specialExtension = ".special-file_ext";
         String specialDirectory = "/path/with spaces/ and-special_chars/СЛАВА УКРАИНА";

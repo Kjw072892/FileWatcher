@@ -1,0 +1,69 @@
+Index: src/main/java/com/tcss/filewatcher/Model/EmailFrequencyManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/tcss/filewatcher/Model/EmailFrequencyManager.java b/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java
+rename from src/main/java/com/tcss/filewatcher/Model/EmailFrequencyManager.java
+rename to src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java
+--- a/src/main/java/com/tcss/filewatcher/Model/EmailFrequencyManager.java	(revision b3ee3b2b50d6311593bbfaa53bbab23a94a6a61e)
++++ b/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java	(date 1755109576847)
+@@ -1,4 +1,4 @@
+-package com.tcss.filewatcher.Model;
++package com.tcss.filewatcher.Controller;
+ 
+ import java.time.Duration;
+ import java.time.LocalDateTime;
+@@ -6,10 +6,25 @@
+ import java.util.concurrent.ScheduledExecutorService;
+ import java.util.concurrent.TimeUnit;
+ 
++/**
++ * Automatically starts a runnable task at 5pm every day.
++ *
++ * @author ChatGPT 5
++ * @version 1.0.0
++ */
+ public class EmailFrequencyManager {
++
++    /**
++     * The scheduled executor service object, executes the task passed on set parameters.
++     */
+     private static final ScheduledExecutorService exec =
+             Executors.newSingleThreadScheduledExecutor();
+ 
++    /**
++     * Every day at 5pm, the runnable task is called.
++     *
++     * @param theTask a lambda expression with the task in the scope.
++     */
+     public static void startDailyAt5(final Runnable theTask) {
+         final LocalDateTime now = LocalDateTime.now();
+         LocalDateTime five = now.withHour(17).withMinute(0).withSecond(0).withNano(0);
+@@ -19,6 +34,9 @@
+         exec.scheduleAtFixedRate(theTask, initial, period, TimeUnit.MILLISECONDS);
+     }
+ 
++    /**
++     * Ensures that the scheduled executor service is properly shutdown.
++     */
+     public void shutdown() {
+         exec.shutdownNow(); }
+ }
+Index: src/main/java/module-info.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>module com.tcss.filewatcher {\r\n    requires javafx.controls;\r\n    requires javafx.fxml;\r\n    requires javafx.web;\r\n\r\n    requires org.controlsfx.controls;\r\n    requires com.dlsc.formsfx;\r\n    requires net.synedra.validatorfx;\r\n    requires org.kordamp.ikonli.javafx;\r\n    requires org.kordamp.bootstrapfx.core;\r\n    requires eu.hansolo.tilesfx;\r\n    requires java.logging;\r\n    requires java.sql;\r\n    requires org.xerial.sqlitejdbc;\r\n    requires java.desktop;\r\n    requires javafx.graphics;\r\n    requires com.google.api.client.json.gson;\r\n    requires com.google.api.services.gmail;\r\n    requires google.api.client;\r\n    requires jakarta.mail;\r\n    requires com.google.auth;\r\n    requires com.google.api.client;\r\n    requires com.google.api.client.extensions.jetty.auth;\r\n    requires com.google.api.client.extensions.java6.auth;\r\n    requires com.google.api.client.auth;\r\n    requires com.opencsv;\r\n\r\n    opens com.tcss.filewatcher to javafx.fxml;\r\n    exports com.tcss.filewatcher.Viewer;\r\n    opens com.tcss.filewatcher.Viewer to javafx.fxml;\r\n    exports com.tcss.filewatcher.Common;\r\n    opens com.tcss.filewatcher.Common to javafx.fxml;\r\n    exports com.tcss.filewatcher.Model;\r\n    opens com.tcss.filewatcher.Model to javafx.fxml;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/module-info.java b/src/main/java/module-info.java
+--- a/src/main/java/module-info.java	(revision b3ee3b2b50d6311593bbfaa53bbab23a94a6a61e)
++++ b/src/main/java/module-info.java	(date 1755109576810)
+@@ -32,4 +32,6 @@
+     opens com.tcss.filewatcher.Common to javafx.fxml;
+     exports com.tcss.filewatcher.Model;
+     opens com.tcss.filewatcher.Model to javafx.fxml;
++    exports com.tcss.filewatcher.Controller;
++    opens com.tcss.filewatcher.Controller to javafx.fxml;
+ }

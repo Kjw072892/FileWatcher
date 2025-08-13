@@ -31,4 +31,6 @@ module com.tcss.filewatcher {
     opens com.tcss.filewatcher.Common to javafx.fxml;
     exports com.tcss.filewatcher.Model;
     opens com.tcss.filewatcher.Model to javafx.fxml;
+    exports com.tcss.filewatcher.Controller;
+    opens com.tcss.filewatcher.Controller to javafx.fxml;
 }

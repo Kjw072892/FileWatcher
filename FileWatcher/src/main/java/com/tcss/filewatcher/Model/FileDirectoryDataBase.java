@@ -84,17 +84,17 @@ public class FileDirectoryDataBase {
         }
     }
 
-    /**
-     * Validates a date string against the format "yyyy-MM-dd"
-     */
-    private boolean isValidDate(String date) {
-        try {
-            LocalDate.parse(date);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
+//    /**
+//     * Validates a date string against the format "yyyy-MM-dd"
+//     */
+//    private boolean isValidDate(String date) {
+//        try {
+//            LocalDate.parse(date);
+//            return true;
+//        } catch (DateTimeParseException e) {
+//            return false;
+//        }
+//    }
 
     /**
      * Validates a time string against the format "HH:mm:ss"
@@ -119,12 +119,16 @@ public class FileDirectoryDataBase {
     public void insertDirectory(final String theDate, final String theTime,
                                 final String theFileExtension,
                                 final String theDirectory) {
-        if (!isValidDate(theDate) || !isValidTime(theTime)) {
-            throw new IllegalArgumentException("Invalid date format. Expected format: yyyy-MM-dd or Invalid time format. Expected format: HH:mm:ss");
+        if (//!isValidDate(theDate)||
+                !isValidTime(theTime)) {
+            throw new IllegalArgumentException("Invalid date format. Expected format: dd " +
+                    "MMM, yyyy" +
+                    " or Invalid time format. Expected format: HH:mm:ss");
         }
-        String insertSQL = "INSERT INTO watchList (date, time, file_extension, directory) " +
+        final String insertSQL = "INSERT INTO watchList (date, time, file_extension, " +
+                "directory) " +
                 "VALUES (?, ?, ?, ?)";
-        try (Connection conn = myDataSource.getConnection();
+        try (final Connection conn = myDataSource.getConnection();
              final PreparedStatement prepStmnt = conn.prepareStatement(insertSQL)) {
 
             prepStmnt.setObject(1, theDate);
@@ -150,8 +154,8 @@ public class FileDirectoryDataBase {
         final String removeDir = "DELETE FROM watchList WHERE directory = ? AND " +
                 "file_extension = ?";
 
-        try (Connection conn = myDataSource.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(removeDir)) {
+        try (final Connection conn = myDataSource.getConnection();
+             final PreparedStatement pstmt = conn.prepareStatement(removeDir)) {
 
             pstmt.setString(1, theDirectory);
             pstmt.setString(2, theExtension);
@@ -167,9 +171,9 @@ public class FileDirectoryDataBase {
      * Clears the watchList database.
      */
     public void clearDatabase() {
-        String deleteSQL = "DELETE FROM watchList";
-        try (Connection conn = myDataSource.getConnection();
-             Statement stmt = conn.createStatement()) {
+        final String deleteSQL = "DELETE FROM watchList";
+        try (final Connection conn = myDataSource.getConnection();
+             final Statement stmt = conn.createStatement()) {
 
             int rowsDeleted = stmt.executeUpdate(deleteSQL);
             System.out.println("Deleted " + rowsDeleted + " rows from database");
@@ -184,10 +188,10 @@ public class FileDirectoryDataBase {
      * Gives the number of items in the database
      */
     public int getTableSize() {
-        String countItems = "SELECT COUNT(*) FROM watchList";
-        try (Connection conn = myDataSource.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(countItems)) {
+        final String countItems = "SELECT COUNT(*) FROM watchList";
+        try (final Connection conn = myDataSource.getConnection();
+             final Statement stmt = conn.createStatement();
+             final ResultSet rs = stmt.executeQuery(countItems)) {
             if (rs.next()) {
                 return rs.getInt(1);
             } else {
@@ -210,9 +214,9 @@ public class FileDirectoryDataBase {
                 ORDER BY date DESC , time DESC
                 """;
 
-        try (Connection conn = myDataSource.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (final Connection conn = myDataSource.getConnection();
+             final Statement stmt = conn.createStatement();
+             final ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
 
                 String date = rs.getString("date");

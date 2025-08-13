@@ -51,15 +51,17 @@
          </padding>
          <Button fx:id="myHideButton" mnemonicParsing="false" onAction="#handleTabViewer" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 195;">
             <graphic>
-               <ImageView fitHeight="34.0" fitWidth="30.0">
+               <ImageView fitHeight="30.0" fitWidth="30.0">
                   <Image url="@../../../icons/hideIcon.png" />
                </ImageView>
             </graphic>
          </Button>
          <Button fx:id="mySaveReportButton" mnemonicParsing="false" onAction="#handleEmailEventSetup" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 195;">
             <graphic>
-               <ImageView fitHeight="25.0" fitWidth="27.0">
-                  <Image url="@../../../icons/saveIcon.png" />
+               <ImageView fitHeight="30.0" fitWidth="30.0">
+                  <image>
+                     <Image url="@../../../icons/email_Icon.png" />
+                  </image>
                </ImageView>
             </graphic>
          </Button>

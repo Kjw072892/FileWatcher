@@ -19,9 +19,6 @@ public class Main extends Application {
     public void start(final Stage theStage) throws IOException {
       FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/tcss/filewatcher/MainScene.fxml"));
 
-
-
-
         final Scene scene = new Scene(fxmlLoader.load());
 
         final MainSceneController mainSceneController = fxmlLoader.getController();

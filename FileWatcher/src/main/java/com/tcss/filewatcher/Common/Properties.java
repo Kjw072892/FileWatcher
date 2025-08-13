@@ -2,10 +2,6 @@ package com.tcss.filewatcher.Common;
 
 
 public enum Properties {
-    /**
-     * Stores the report in the SQLite database
-     */
-    SAVE,
 
     /**
      * Stops the filewatcher program, stores the report in the SQL database, clears the table
@@ -16,12 +12,6 @@ public enum Properties {
      * Starts the filewatcher program if it hasn't started yet
      */
     START,
-
-
-    /**
-     * The type of modification detected
-     */
-    TYPE,
 
     /**
      * The directory path that was added by the user
@@ -44,55 +34,6 @@ public enum Properties {
     REMOVED_EXTENSION,
 
     /**
-     * The new event type.
-     */
-    EVENT_TYPE,
-
-    /**
-     * The event has been cleared
-     */
-    EVENT_CLEARED,
-
-    /**
-     * The event has unsaved events.
-     */
-    HAS_UNSAVED_EVENTS,
-
-    /**
-     * The event saved to file
-     */
-    SAVED_TO_FILE,
-
-    /**
-     * The event was loaded from the file
-     */
-    LOADED_FROM_FILE,
-
-    /**
-     * A new File was created.
-     */
-    CREATE,
-
-    /**
-     * A file was deleted.
-     */
-    DELETE,
-    /**
-     * A file was modified.
-     */
-    MODIFY,
-
-    /**
-     * A new file event occurred.
-     */
-    NEW_EVENT,
-
-    /**
-     * The watcher is watching
-     */
-    WATCHING,
-
-    /**
      * The Watch path is set
      */
     WATCH_PATH_SET,
@@ -108,13 +49,28 @@ public enum Properties {
     NEW_ENTRY,
 
     /**
-     * The name of the file that was modified
-     */
-    FILE_NAME,
-
-    /**
      * A new entry was added.
      */
     NEW_FILE_EVENT,
+
+    /**
+     * Query Directory.
+     */
+    QUERY_DIRECTORY,
+
+    /**
+     * Query Extension.
+     */
+    QUERY_EXTENSION,
+
+    /**
+     * QUERY ALL.
+     */
+    QUERY_ALL,
+
+    /**
+     * Query a specific directory with a specific extension.
+     */
+    QUERY_DIRECTORY_EXTENSION,
 
 }

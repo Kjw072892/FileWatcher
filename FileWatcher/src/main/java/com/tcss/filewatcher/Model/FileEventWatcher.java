@@ -359,8 +359,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myIsWatching = true;
         myShouldStop.set(false);
 
-        myProperties = Properties.WATCHING;
-        myChanges.firePropertyChange(myProperties.toString(), oldWatching, true);
     }
 
     /**
@@ -529,7 +527,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             return;
         }
 
-        @SuppressWarnings("unchecked") final WatchEvent<Path> pathEvent = (WatchEvent<Path>) theEvent;
+
+        final WatchEvent<Path> pathEvent = (WatchEvent<Path>) theEvent;
         final Path filename = pathEvent.context();
         final Path child = theDir.resolve(filename);
 
@@ -605,15 +604,15 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     private String getEventTypeString(final WatchEvent.Kind<?> theKind, final Path theDir) {
         if (theKind == ENTRY_CREATE) {
 
-            return "CREATE";
+            return "CREATED";
 
         } else if (theKind == ENTRY_DELETE) {
 
-            return "DELETE";
+            return "DELETED";
 
         } else if (theKind == ENTRY_MODIFY) {
 
-            return "MODIFY";
+            return "MODIFIED";
         }
         return "UNKNOWN";
     }
@@ -626,8 +625,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     private synchronized void addFileEvent(final FileEvent theFileEvent) {
         myCurrentEvents.add(theFileEvent);
         setHasUnsavedEvents(true);
-        myProperties = Properties.NEW_EVENT;
-        myChanges.firePropertyChange(myProperties.toString(), null, theFileEvent);
     }
 
     /**
@@ -637,8 +634,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         final int oldSize = myCurrentEvents.size();
         myCurrentEvents.clear();
         setHasUnsavedEvents(false);
-        myProperties = Properties.EVENT_CLEARED;
-        myChanges.firePropertyChange(myProperties.toString(), oldSize, 0);
     }
 
     /**
@@ -647,10 +642,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      * @param theHasUnsaved true if there are unsaved events, false otherwise
      */
     private void setHasUnsavedEvents(final boolean theHasUnsaved) {
-        final boolean oldValue = myHasUnsavedEvents;
+
         myHasUnsavedEvents = theHasUnsaved;
-        myProperties = Properties.HAS_UNSAVED_EVENTS;
-        myChanges.firePropertyChange(myProperties.toString(), oldValue, myHasUnsavedEvents);
     }
 
     /**
@@ -726,8 +719,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
              final ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(this);
 
-            myProperties = Properties.SAVED_TO_FILE;
-            myChanges.firePropertyChange(myProperties.toString(), null, theFilename);
         }
     }
 
@@ -742,12 +733,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     public static FileEventWatcher loadFromFile(final String theFilename) throws IOException, ClassNotFoundException {
         try (final FileInputStream fileIn = new FileInputStream(theFilename);
              final ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            final FileEventWatcher watcher = (FileEventWatcher) in.readObject();
 
-            final Properties prop = Properties.LOADED_FROM_FILE;
-
-            watcher.myChanges.firePropertyChange(prop.toString(), null, theFilename);
-            return watcher;
+            return (FileEventWatcher) in.readObject();
         }
     }
 

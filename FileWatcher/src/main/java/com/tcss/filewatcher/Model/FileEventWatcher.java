@@ -3,6 +3,7 @@ package com.tcss.filewatcher.Model;
 import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Viewer.FileWatcherSceneController;
 import com.tcss.filewatcher.Viewer.MainSceneController;
+
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
@@ -49,33 +51,80 @@ import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
  */
 public class FileEventWatcher extends SceneHandler implements Serializable,
         PropertyChangeListener {
+    /**
+     * Serial version UID for serialization compatibility.
+     */
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // PropertyChangeSupport for notifying listeners
+    /**
+     * PropertyChangeSupport instance to manage property change listeners.
+     */
     private transient PropertyChangeSupport myChanges = new PropertyChangeSupport(this);
 
-    // Core fields that will be serialized
+    /**
+     * The absolute path of the directory being watched.
+     */
     private String myAbsolutePath;
+
+    /**
+     * Set of file extensions to watch for events.
+     */
     private final Set<String> myWatchedExtensions;
+
+    /**
+     * Flag indicating whether the watcher is currently active.
+     */
     private boolean myIsWatching;
+
+    /**
+     * List of currently captured file events.
+     */
     private final List<FileEvent> myCurrentEvents;
+
+    /**
+     * Flag indicating whether there are unsaved events.
+     */
     private boolean myHasUnsavedEvents;
 
-    // transient fields that won't be serialized
+    /**
+     * The watch service used to monitor file system events.
+     */
     private transient WatchService myWatchService;
 
-    // Database integration
+    /**
+     * The database manager for storing and querying file events.
+     */
     private transient DataBaseManager myDBManager;
+
+    /**
+     * Executor service for processing file events in a background thread.
+     */
     private transient ExecutorService myExecutorService;
+
+    /**
+     * Atomic boolean to control stopping the watcher.
+     */
     private transient AtomicBoolean myShouldStop;
+
+    /**
+     * Map of watch keys to their corresponding paths.
+     */
     private transient Map<WatchKey, Path> myWatchKeys;
+
+    /**
+     * Set of paths being watched.
+     */
     private final transient Set<Path> myWatchedPaths = new HashSet<>();
 
-
+    /**
+     * Properties for tracking changes in the watcher state.
+     */
     private Properties myProperties;
 
-    // Default Constructor
+    /**
+     * Default constructor initializes the watcher with no paths or extensions.
+     */
     public FileEventWatcher() {
         myWatchedExtensions = new HashSet<>();
         myCurrentEvents = new ArrayList<>();
@@ -86,13 +135,25 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
 
     }
 
-    // Constructor with file path
+    /**
+     * Constructor that initializes the watcher with a specific file path to watch.
+     *
+     * @param theFilePath the absolute path of the directory to watch
+     */
     public FileEventWatcher(final String theFilePath) {
         this();
+        if (theFilePath == null || theFilePath.trim().isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be null or empty");
+        }
         setWatchPath(theFilePath);
     }
 
-
+    /**
+     * Connects this watcher to the specified controllers for property change notifications.
+     *
+     * @param theMain             the main scene controller to connect to
+     * @param theFileWatcherScene the file watcher scene controller to connect to
+     */
     public void connectToControllers(final MainSceneController theMain,
                                      final FileWatcherSceneController theFileWatcherScene) {
 
@@ -105,7 +166,9 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
     }
 
-    // initialize transient fields after deserialization or construction
+    /**
+     * Initializes transient fields that are not serialized.
+     */
     private void initializeTransientFields() {
         if (myChanges == null) {
             myChanges = new PropertyChangeSupport(this);
@@ -121,6 +184,11 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
     }
 
+    /**
+     * Adds a directory to watch for file events.
+     *
+     * @param theFilePath the absolute path of the directory to watch
+     */
     public void addWatchPath(final String theFilePath) {
 
         if (theFilePath == null || theFilePath.trim().isEmpty()) {
@@ -149,16 +217,64 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myChanges.firePropertyChange(myProperties.toString(), null, path.toString());
     }
 
-    // sets path to watch for file events
+
+
+    /**
+     * Returns the absolute path of the file associated with this file system event.
+     *
+     * @return the absolute file path as a String (e.g., "/home/user/documents/example.txt")
+     */
+    public String getAbsolutePath() {
+        return myAbsolutePath;
+    }
+
+    /**
+     * Returns the set of file extensions being watched for events.
+     * @return a Set of file extensions (e.g., {".txt", ".jpg"})
+     */
+    public Set<String> getWatchedExtensions() {
+        return new HashSet<>(myWatchedExtensions);
+    }
+
+    /**
+     * Checks if the watcher is currently active and watching for file events.
+     * @return true if the watcher is active, false otherwise
+     */
+    public boolean isWatching() {
+        return myIsWatching;
+    }
+
+    /**
+     * Returns the list of currently captured file events.
+     * @return a List of FileEvent objects representing the current file events
+     */
+    public List<FileEvent> getCurrentEvents() {
+        return new ArrayList<>(myCurrentEvents);
+    }
+
+    /**
+     * Checks if there are any unsaved file events.
+     * @return true if there are unsaved events, false otherwise
+     */
+    public boolean hasUnsavedEvents() {
+        return myHasUnsavedEvents;
+    }
+
+    /**
+     * Sets the absolute path of the directory to watch.
+     *
+     * @param theFilePath the absolute path of the directory to watch
+     */
     public void setWatchPath(final String theFilePath) {
+        if (theFilePath == null || theFilePath.trim().isEmpty() ) {
+            throw new IllegalArgumentException("File path cannot be null or empty");
+        }
         // THESE ARE JUST DEBUG STATEMENTS TO SEE IF THE FILE PATH IS BEING WATCHED, IF THAT FILE EXISTS, AND CHECKS IF
         // THE PATH IS A DIRECTORY (NOT A FILE)
         System.out.println("Trying to watch: " + theFilePath);
         System.out.println("Exists: " + new File(theFilePath).exists());
         System.out.println("Is directory: " + new File(theFilePath).isDirectory());
-        if (theFilePath.trim().isEmpty()) {
-            throw new IllegalArgumentException("File path cannot be null or empty");
-        }
+
 
         final String oldPath = myAbsolutePath;
         myAbsolutePath = theFilePath;
@@ -167,7 +283,11 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myChanges.firePropertyChange(myProperties.toString(), oldPath, myAbsolutePath);
     }
 
-    // adds a file extension to watch
+    /**
+     * Adds a file extension to watch for events.
+     *
+     * @param theExtension the file extension to watch, e.g., ".txt"
+     */
     public void addWatchedExtension(final String theExtension) {
         if (theExtension == null || theExtension.trim().isEmpty()) {
             return;
@@ -188,7 +308,11 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
     }
 
-    // Removes a file extension from watching
+    /**
+     * Removes a file extension from the watched list.
+     *
+     * @param theExtension the file extension to remove, e.g., ".txt"
+     */
     public void removeWatchedExtension(final String theExtension) {
         if (theExtension == null) {
             return;
@@ -207,14 +331,19 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
     }
 
-    // start watching for file events using the WatchService pattern from tutorials
+    /**
+     * Starts watching the specified paths for file events.
+     *
+     * @throws IOException if an error occurs while initializing the watch service
+     */
     public void startWatching() throws IOException {
         if (myIsWatching) {
             return;
         }
-
+       if (myWatchedPaths.isEmpty()) {
+           throw new IllegalArgumentException("Watch path must be set before starting");
+       }
         for (Path thePath : myWatchedPaths) {
-
             if (!Files.exists(thePath)) {
                 throw new IllegalArgumentException("Watch path must be set and exist before " +
                         "starting");
@@ -230,13 +359,13 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myIsWatching = true;
         myShouldStop.set(false);
 
-        myProperties = Properties.WATCHING;
-        myChanges.firePropertyChange(myProperties.toString(), oldWatching, true);
     }
 
-    // Starts watching in a background thread to keep the UI responsive.
-    // This is the method that should be called from JavaFX
-    // applications
+    /**
+     * Starts watching the specified paths in a background thread.
+     *
+     * @throws IOException if an error occurs while initializing the watch service
+     */
     public void startBackgroundWatching() throws IOException {
         startWatching();
 
@@ -251,7 +380,9 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myExecutorService.submit(this::processEvents);
     }
 
-    // Stop watching for file events
+    /**
+     * Stops watching the currently watched paths for file events.
+     */
     public void stopWatching() {
         if (!myIsWatching) {
             return;
@@ -278,7 +409,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myChanges.firePropertyChange(myProperties.toString(), true, myIsWatching);
     }
 
-    // Initialize the watch service following the tutorial pattern
+
+    /**
+     * Initializes the watch service and registers all watched paths.
+     *
+     * @throws IOException if an error occurs while creating the watch service or registering directories
+     */
     private void initializeWatchService() throws IOException {
         myWatchService = FileSystems.getDefault().newWatchService();
         myWatchKeys.clear();
@@ -288,12 +424,22 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
     }
 
-    // register the given directory with the WatchService
+    /**
+     * Registers a directory with the watch service to monitor file events.
+     *
+     * @param theDir the directory to register
+     * @throws IOException if an error occurs while registering the directory
+     */
     private void registerDirectory(final Path theDir) throws IOException {
         final WatchKey key = theDir.register(myWatchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
         myWatchKeys.put(key, theDir);
     }
 
+    /**
+     * Unregisters a directory from the watch service.
+     *
+     * @param theDir the directory to unregister
+     */
     private void unregisterDirectory(final Path theDir) {
         WatchKey keyToRemove = null;
         for (Map.Entry<WatchKey, Path> entry : myWatchKeys.entrySet()) {
@@ -316,7 +462,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
 
     }
 
-    // register the given directory, and all its subdirectories with the WatchService
+    /**
+     * Walks through the directory tree starting from the specified path
+     *
+     * @param theStart the starting path to walk through
+     * @throws IOException if an error occurs while walking the directory tree or registering directories
+     */
     private void walkAndRegisterDirectories(final Path theStart) throws IOException {
         Files.walkFileTree(theStart, new SimpleFileVisitor<>() {
             @Override
@@ -327,7 +478,9 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         });
     }
 
-    // Process all events for keys queued to the watcher
+    /**
+     * Processes file system events in a background thread.
+     */
     public void processEvents() {
         if (!myIsWatching || myWatchService == null) {
             return;
@@ -355,13 +508,18 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                 }
             }
 
-        } catch (final InterruptedException e) {
+        } catch (final InterruptedException theE) {
             Thread.currentThread().interrupt();
-            System.out.println("Watch service interrupted: " + e.getMessage());
+            System.out.println("Watch service interrupted: " + theE.getMessage());
         }
     }
 
-    // Processes individual watch events
+    /**
+     * Processes a single file system event.
+     *
+     * @param theEvent the watch event to process
+     * @param theDir   the directory where the event occurred
+     */
     private void processWatchEvent(final WatchEvent<?> theEvent, final Path theDir) {
 
         final WatchEvent.Kind<?> kind = theEvent.kind();
@@ -369,7 +527,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             return;
         }
 
-        @SuppressWarnings("unchecked") final WatchEvent<Path> pathEvent = (WatchEvent<Path>) theEvent;
+
+        final WatchEvent<Path> pathEvent = (WatchEvent<Path>) theEvent;
         final Path filename = pathEvent.context();
         final Path child = theDir.resolve(filename);
 
@@ -379,8 +538,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                 if (Files.isDirectory(child)) {
                     walkAndRegisterDirectories(child);
                 }
-            } catch (final IOException x) {
-                System.out.println("Error registering new directory: " + x.getMessage());
+            } catch (final IOException theE) {
+                System.out.println("Error registering new directory: " + theE.getMessage());
 
             }
         }
@@ -416,7 +575,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myChanges.firePropertyChange(Properties.NEW_FILE_EVENT.toString(), null, entry);
     }
 
-    // check if a filename matches any of the watched extensions
+    /**
+     * Checks if the given filename matches any of the watched file extensions.
+     *
+     * @param theFilename the name of the file to check against watched extensions
+     * @return true if the filename matches any watched extension, false otherwise
+     */
     private boolean matchesWatchedExtensions(final String theFilename) {
         if (myWatchedExtensions.isEmpty()) {
             return true; // watch all files if no extensions specified
@@ -430,103 +594,155 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         return false;
     }
 
-    // converts WatchEvent.Kind to string
+    /**
+     * Returns a string representation of the event type based on the kind of event.
+     *
+     * @param theKind the kind of watch event (e.g., ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY)
+     * @param theDir  the directory where the event occurred
+     * @return a string representing the event type
+     */
     private String getEventTypeString(final WatchEvent.Kind<?> theKind, final Path theDir) {
         if (theKind == ENTRY_CREATE) {
 
-            return "CREATE";
+            return "CREATED";
 
         } else if (theKind == ENTRY_DELETE) {
 
-            return "DELETE";
+            return "DELETED";
 
         } else if (theKind == ENTRY_MODIFY) {
 
-            return "MODIFY";
+            return "MODIFIED";
         }
         return "UNKNOWN";
     }
 
-    // adds a file event to the current events list
+    /**
+     * Adds a file event to the current events list and notifies listeners.
+     *
+     * @param theFileEvent the file event to add
+     */
     private synchronized void addFileEvent(final FileEvent theFileEvent) {
         myCurrentEvents.add(theFileEvent);
         setHasUnsavedEvents(true);
-        myProperties = Properties.NEW_EVENT;
-        myChanges.firePropertyChange(myProperties.toString(), null, theFileEvent);
     }
 
-
-    // Clears current events list
+    /**
+     * Clears the list of current file events and resets the unsaved events flag.
+     */
     public synchronized void clearCurrentEvents() {
         final int oldSize = myCurrentEvents.size();
         myCurrentEvents.clear();
         setHasUnsavedEvents(false);
-        myProperties = Properties.EVENT_CLEARED;
-        myChanges.firePropertyChange(myProperties.toString(), oldSize, 0);
     }
 
-    // Sets the unsaved events flag
+    /**
+     * Sets the flag indicating whether there are unsaved events.
+     *
+     * @param theHasUnsaved true if there are unsaved events, false otherwise
+     */
     private void setHasUnsavedEvents(final boolean theHasUnsaved) {
-        final boolean oldValue = myHasUnsavedEvents;
+
         myHasUnsavedEvents = theHasUnsaved;
-        myProperties = Properties.HAS_UNSAVED_EVENTS;
-        myChanges.firePropertyChange(myProperties.toString(), oldValue, myHasUnsavedEvents);
     }
 
-
-    // PropertyChangeSupport methods
+    /**
+     * Adds a property change listener to this watcher.
+     *
+     * @param theListener the listener to add
+     */
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myChanges.addPropertyChangeListener(theListener);
     }
 
+    /**
+     * Removes a property change listener from this watcher.
+     *
+     * @param theListener the listener to remove
+     */
     public void removePropertyChangeListener(final PropertyChangeListener theListener) {
         myChanges.removePropertyChangeListener(theListener);
     }
 
+    /**
+     * Adds a property change listener for a specific property name.
+     *
+     * @param thePropertyName the name of the property to listen for changes
+     * @param theListener     the listener to add
+     */
     public void addPropertyChangeListener(final String thePropertyName, final PropertyChangeListener theListener) {
         myChanges.addPropertyChangeListener(thePropertyName, theListener);
     }
 
+    /**
+     * Removes a property change listener for a specific property name.
+     *
+     * @param thePropertyName the name of the property to stop listening for changes
+     * @param theListener     the listener to remove
+     */
     public void removePropertyChangeListener(final String thePropertyName, final PropertyChangeListener theListener) {
         myChanges.removePropertyChangeListener(thePropertyName, theListener);
     }
 
-    // Serialization support methods
+    /**
+     * Serializes this FileEventWatcher object to an ObjectOutputStream.
+     *
+     * @param theOut the ObjectOutputStream to write this object to
+     * @throws IOException if an I/O error occurs during serialization
+     */
     @Serial
     private void writeObject(final ObjectOutputStream theOut) throws IOException {
         theOut.defaultWriteObject();
     }
 
+    /**
+     * Deserializes this FileEventWatcher object from an ObjectInputStream.
+     *
+     * @param theIn the ObjectInputStream to read this object from
+     * @throws IOException            if an I/O error occurs during deserialization
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found
+     */
     @Serial
     private void readObject(final ObjectInputStream theIn) throws IOException, ClassNotFoundException {
         theIn.defaultReadObject();
         initializeTransientFields();
     }
 
-    // serializes this fileEventWatcher to a file
+    /**
+     * Saves the current state of this FileEventWatcher to a file.
+     *
+     * @param theFilename the name of the file to save the watcher state to
+     * @throws IOException if an I/O error occurs during saving
+     */
     public void saveToFile(final String theFilename) throws IOException {
         try (final FileOutputStream fileOut = new FileOutputStream(theFilename);
              final ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(this);
 
-            myProperties = Properties.SAVED_TO_FILE;
-            myChanges.firePropertyChange(myProperties.toString(), null, theFilename);
         }
     }
 
-    // deserializes a FileEventWatcher from a file
+    /**
+     * Loads a FileEventWatcher from a file.
+     *
+     * @param theFilename the name of the file to load the watcher state from
+     * @return the loaded FileEventWatcher instance
+     * @throws IOException            if an I/O error occurs during loading
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found
+     */
     public static FileEventWatcher loadFromFile(final String theFilename) throws IOException, ClassNotFoundException {
         try (final FileInputStream fileIn = new FileInputStream(theFilename);
              final ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            final FileEventWatcher watcher = (FileEventWatcher) in.readObject();
 
-            final Properties prop = Properties.LOADED_FROM_FILE;
-
-            watcher.myChanges.firePropertyChange(prop.toString(), null, theFilename);
-            return watcher;
+            return (FileEventWatcher) in.readObject();
         }
     }
 
+    /**
+     * Returns a string representation of this FileEventWatcher.
+     *
+     * @return a string representation of this watcher
+     */
     @Override
     public String toString() {
         return String.format("FileEventWatcher[path=%s, extensions=%s, watching = %s, events=%d, unsaved = %s]",
@@ -534,6 +750,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
 
     }
 
+    /**
+     * Handles property change events by updating the watcher state based on the event source
+     *
+     * @param theEvent A PropertyChangeEvent object describing the event source
+     *                 and the property that has changed.
+     */
     @Override
     public void propertyChange(final PropertyChangeEvent theEvent) {
 
@@ -572,16 +794,45 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
     }
 
-    // FileEvent inner class representing a file system event
+    /**
+     * Represents a file event with details about the file, its absolute path,
+     */
     public static class FileEvent implements Serializable {
+
+        /**
+         * Serial version UID for serialization compatibility.
+         */
         @Serial
         private static final long serialVersionUID = 1L;
 
+        /**
+         * The name of the file associated with the event.
+         */
         private final String myFileName;
+
+        /**
+         * The absolute path of the file associated with the event.
+         */
         private final String myAbsolutePath;
+
+        /**
+         * The type of event (e.g., CREATE, MODIFY, DELETE).
+         */
         private final String myEventType;
+
+        /**
+         * The time when the event occurred, formatted as a string.
+         */
         private final String myEventTime;
 
+        /**
+         * Constructs a FileEvent with the specified details.
+         *
+         * @param theFileName     the name of the file associated with the event
+         * @param theAbsolutePath the absolute path of the file associated with the event
+         * @param theEventType    the type of event (e.g., CREATE, MODIFY, DELETE)
+         * @param theEventTime    the time when the event occurred, formatted as a string
+         */
         public FileEvent(final String theFileName, final String theAbsolutePath, final String theEventType, final String theEventTime) {
             myFileName = theFileName;
             myAbsolutePath = theAbsolutePath;
@@ -590,11 +841,22 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
 
 
+        /**
+         * Returns the name of the file associated with this event.
+         *
+         * @return the name of the file
+         */
         @Override
         public String toString() {
             return String.format("[%s] %s - %s (%s)", myEventTime, myEventType, myFileName, myAbsolutePath);
         }
 
+        /**
+         * Checks if this FileEvent is equal to another object.
+         *
+         * @param theObj the object to compare with
+         * @return true if the objects are equal, false otherwise
+         */
         @Override
         public boolean equals(final Object theObj) {
             if (this == theObj) {
@@ -610,6 +872,11 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                     Objects.equals(myEventTime, fileEvent.myEventTime);
         }
 
+        /**
+         * Returns the hash code for this FileEvent.
+         *
+         * @return the hash code
+         */
         @Override
         public int hashCode() {
             return Objects.hash(myFileName, myAbsolutePath, myEventType, myEventTime);

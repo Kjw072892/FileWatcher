@@ -4,6 +4,7 @@ import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.DirectoryEntry;
 import com.tcss.filewatcher.Model.FileDirectoryDataBase;
 import com.tcss.filewatcher.Model.FileEventWatcher;
+import com.tcss.filewatcher.Model.RegDataBaseManager;
 import com.tcss.filewatcher.Model.SceneHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -94,6 +95,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
      */
     @FXML
     public MenuItem myFileWatcherViewerMenuItem;
+
+    /**
+     * Opens the email registration
+     */
+    @FXML
+    public Button myEmailIconButton;
 
     /**
      * The combobox that gives the user a number of extensions to choose from.
@@ -235,9 +242,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
-    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-        myChanges.addPropertyChangeListener(theListener);
-    }
 
     /**
      * Sets the current stage to this scene.
@@ -311,7 +315,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
-
+    @FXML
     private void openQueryScene() {
         try {
             final FXMLLoader querySceneFxmlLoader =
@@ -399,6 +403,37 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
     }
 
+
+    @FXML
+    private void handleEmailRegistrationScene() {
+
+        final RegDataBaseManager regDataBaseManager = new RegDataBaseManager();
+
+        if(!regDataBaseManager.hasAUserAlreadyRegistered()) {
+            try {
+                final FXMLLoader emailClientFxmlLoader =
+                        new FXMLLoader(MainSceneController.class.getResource("/com/tcss" +
+                                "/filewatcher/EmailClientScene.fxml"));
+                final Scene emailClientScene = new Scene(emailClientFxmlLoader.load());
+
+                final Stage emailRegStage = new Stage();
+
+                emailRegStage.setScene(emailClientScene);
+
+                emailRegStage.setTitle("Email Registration");
+
+                emailRegStage.getIcons().add(new Image(Objects.requireNonNull(
+                        getClass().getResourceAsStream("/icons/email_Icon.png"))));
+
+                emailRegStage.show();
+                emailRegStage.setResizable(false);
+
+            } catch (final IOException theIOE) {
+                MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!");
+            }
+        }
+
+    }
 
     /**
      * Opens the about File Watcher scene.
@@ -681,8 +716,16 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
      *
      * @param theScene the query scene.
      */
-    protected void setAboutSceneController(final QuerySceneController theScene) {
+    protected void setQuerySceneController(final QuerySceneController theScene) {
         theScene.addPropertyChangeListener(this);
+    }
+
+    /**
+     * Adds a listener to the listener list.
+     * @param theListener the scene that's listening for changes.
+     */
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        myChanges.addPropertyChangeListener(theListener);
     }
 
     /**

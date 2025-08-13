@@ -14,6 +14,15 @@ module com.tcss.filewatcher {
     requires org.xerial.sqlitejdbc;
     requires java.desktop;
     requires javafx.graphics;
+    requires com.google.api.client.json.gson;
+    requires com.google.api.services.gmail;
+    requires google.api.client;
+    requires jakarta.mail;
+    requires com.google.auth;
+    requires com.google.api.client;
+    requires com.google.api.client.extensions.jetty.auth;
+    requires com.google.api.client.extensions.java6.auth;
+    requires com.google.api.client.auth;
     requires com.opencsv;
 
     opens com.tcss.filewatcher to javafx.fxml;

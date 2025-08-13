@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
+import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -191,24 +192,18 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      */
     public void addWatchPath(final String theFilePath) {
 
-        if (theFilePath == null || theFilePath.trim().isEmpty()) {
-            throw new IllegalArgumentException("Path cannot be null or empty");
-        }
-
         final Path path = Path.of(theFilePath).toAbsolutePath().normalize();
-
-        if (!Files.exists(path) || !Files.isDirectory(path)) {
-            throw new IllegalArgumentException("Path must exist and be a directory: ");
-        }
-
         myWatchedPaths.add(path);
 
         try {
-            if (myWatchService == null) {
-                myWatchService = FileSystems.getDefault().newWatchService();
+            if (myIsWatching && myWatchService != null) {
+                 walkAndRegisterDirectories(path);
             }
-            walkAndRegisterDirectories(path);
-        } catch (final IOException theIOE) {
+
+        } catch (final ClosedWatchServiceException theCwse) {
+            System.err.println("WatchService closed while adding: " + path);
+        }
+        catch (final IOException theIOE) {
             System.err.println("Failed to register directory: " + path + " - " + theIOE.getMessage());
             myWatchedPaths.remove(path);
         }
@@ -216,8 +211,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myProperties = Properties.WATCH_PATH_SET;
         myChanges.firePropertyChange(myProperties.toString(), null, path.toString());
     }
-
-
 
     /**
      * Returns the absolute path of the file associated with this file system event.
@@ -402,7 +395,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                         false);
             } catch (final IOException e) {
                 System.out.println("Error closing watch services: " + e.getMessage());
+                myWatchService = null;
             }
+        }
+
+        if (myWatchKeys != null) {
+            myWatchKeys.clear();
         }
 
         myProperties = Properties.STOPPED_WATCHING;
@@ -418,8 +416,7 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     private void initializeWatchService() throws IOException {
         myWatchService = FileSystems.getDefault().newWatchService();
         myWatchKeys.clear();
-
-        for (Path start : myWatchedPaths) {
+        for (final Path start : myWatchedPaths) {
             walkAndRegisterDirectories(start);
         }
     }
@@ -508,6 +505,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                 }
             }
 
+        } catch (final ClosedWatchServiceException ignored) {
+            // normal during stop
         } catch (final InterruptedException theE) {
             Thread.currentThread().interrupt();
             System.out.println("Watch service interrupted: " + theE.getMessage());

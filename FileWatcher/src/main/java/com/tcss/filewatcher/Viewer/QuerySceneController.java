@@ -285,7 +285,7 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     protected void setMyMainSceneController(final MainSceneController theScene) {
         theScene.addPropertyChangeListener(this);
-        theScene.setAboutSceneController(this);
+        theScene.setQuerySceneController(this);
     }
 
     /**

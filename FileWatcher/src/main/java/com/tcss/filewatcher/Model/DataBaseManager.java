@@ -91,7 +91,8 @@ public class DataBaseManager {
                                       final String theAbsolutePath, final String theFileName,
                                       final String theEventType) {
 
-        String insertSQL = "INSERT INTO filewatcher (event_date, event_time, file_name, absolute_path, event_type) VALUES (?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO filewatcher (event_date, event_time, " +
+                "file_name, absolute_path, event_type) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
 
@@ -111,7 +112,7 @@ public class DataBaseManager {
      * Deletes all records from the 'filewatcher' table.
      */
     public final void clearDatabase() {
-        String deleteSQL = "DELETE FROM filewatcher";
+        final String deleteSQL = "DELETE FROM filewatcher";
         try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(deleteSQL);
@@ -126,7 +127,7 @@ public class DataBaseManager {
      * @return the number of records, or -1 if an error occurs
      */
     public final int getTableSize() {
-        String countItems = "SELECT COUNT(*) FROM filewatcher";
+        final String countItems = "SELECT COUNT(*) FROM filewatcher";
         try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(countItems)) {
@@ -151,8 +152,9 @@ public class DataBaseManager {
      * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
      */
     public final List<DirectoryEntry> queryByExtension(final String theExtension) {
-        List<DirectoryEntry> results = new ArrayList<>();
-        String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE file_name LIKE ? "
+        final List<DirectoryEntry> results = new ArrayList<>();
+        final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
+                "event_type FROM filewatcher WHERE file_name LIKE ? "
                 + "ORDER by event_date, event_time";
         try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -171,11 +173,11 @@ public class DataBaseManager {
 
     private void addToResultList(List<DirectoryEntry> results, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
-            String date = resultSet.getString("event_date");
-            String time = resultSet.getString("event_time");
-            String fileName = resultSet.getString("file_name");
-            String directory = resultSet.getString("absolute_path");
-            String eventType = resultSet.getString("event_type");
+            final String date = resultSet.getString("event_date");
+            final String time = resultSet.getString("event_time");
+            final String fileName = resultSet.getString("file_name");
+            final String directory = resultSet.getString("absolute_path");
+            final String eventType = resultSet.getString("event_type");
 
             DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
 
@@ -191,8 +193,9 @@ public class DataBaseManager {
      * @throws IllegalArgumentException if event type is null
      */
     public final List<DirectoryEntry> queryByEventType(final String theEventType) {
-        List<DirectoryEntry> results = new ArrayList<>();
-        String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE event_type = ? "
+        final List<DirectoryEntry> results = new ArrayList<>();
+        final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
+                "event_type FROM filewatcher WHERE event_type = ? "
                 + "ORDER BY event_date, event_time";
         try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -214,8 +217,9 @@ public class DataBaseManager {
      * @throws IllegalArgumentException if the directory path is null
      */
     public final List<DirectoryEntry> queryByDirectory(final String theDirectoryPath) {
-        List<DirectoryEntry> results = new ArrayList<>();
-        String query = "SELECT event_date, event_time, file_name, absolute_path, event_type FROM filewatcher WHERE absolute_path "
+        final List<DirectoryEntry> results = new ArrayList<>();
+        final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
+                "event_type FROM filewatcher WHERE absolute_path "
                 + "LIKE ? ORDER BY event_date, event_time";
         try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -239,8 +243,9 @@ public class DataBaseManager {
      */
     public final List<DirectoryEntry> queryByDateRange(final String theStartDate,
                                                        final String theEndDate) {
-        List<DirectoryEntry> results = new ArrayList<>();
-        String query = "SELECT event_date, event_time, file_name, absolute_path, event_type " +
+        final List<DirectoryEntry> results = new ArrayList<>();
+        final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
+                "event_type " +
                 "FROM filewatcher WHERE event_date BETWEEN ? AND ? ORDER BY event_date, event_time";
         try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

@@ -73,4 +73,14 @@ public enum Properties {
      */
     QUERY_DIRECTORY_EXTENSION,
 
+    /**
+     * Passes the email of the admin.
+     */
+    USERS_EMAIL,
+
+    /**
+     * Sent an email
+     */
+    EMAIL_SENT,
+
 }

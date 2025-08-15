@@ -586,7 +586,7 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                 java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, " +
                         "yyyy"));
         final String currentTime =
-                java.time.LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss"));
+                java.time.LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         final FileEvent fileEvent = new FileEvent(
                 filename.toString(),

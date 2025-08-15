@@ -1,6 +1,7 @@
 package com.tcss.filewatcher.Viewer;
 
 import com.tcss.filewatcher.Common.Properties;
+import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
 import com.tcss.filewatcher.Model.SceneHandler;
@@ -26,69 +27,69 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      * Controls the table.
      */
     @FXML
-    public TableView<DirectoryEntry> myFileWatcherTable;
+    private TableView<DirectoryEntry> myFileWatcherTable;
 
     /**
      * The date Column.
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myDateTableColumn;
+    private TableColumn<DirectoryEntry, String> myDateTableColumn;
 
     /**
      * The Time Column.
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myTimeTableColumn;
+    private TableColumn<DirectoryEntry, String> myTimeTableColumn;
 
     /**
      * The directory Column
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myDirectoriesColumn;
+    private TableColumn<DirectoryEntry, String> myDirectoriesColumn;
 
     /**
      * The modification type
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myModificationType;
+    private TableColumn<DirectoryEntry, String> myModificationType;
 
     /**
      * The name of the file
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myFileNameColumn;
+    private TableColumn<DirectoryEntry, String> myFileNameColumn;
 
 
     /**
      * Starts the filewatcher program.
      */
     @FXML
-    public Button myStartButton;
+    private Button myStartButton;
 
 
     /**
      * Stops the filewatcher program (Stores the records and clears the table).
      */
     @FXML
-    public Button myStopButton;
+    private Button myStopButton;
 
     /**
      * Clears the table without saving while the filewatcher is still active.
      */
     @FXML
-    public Button myResetButton;
+    private Button myResetButton;
 
     /**
      * Hides the table.
      */
     @FXML
-    public Button myHideButton;
+    private Button myHideButton;
 
     /**
      * Saves the report to mySQL.
      */
     @FXML
-    public Button mySaveReportButton;
+    private Button mySaveReportButton;
 
     /**
      * Gives the buttons the ability to fire changes.
@@ -194,7 +195,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      */
     protected void setMyMainSceneController(final MainSceneController theScene) {
         theScene.addPropertyChangeListener(this);
-        theScene.setFileWatcherSceneController(this);
+
     }
 
 
@@ -214,6 +215,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myChanges.addPropertyChangeListener(theListener);
     }
+
 
 
     /**

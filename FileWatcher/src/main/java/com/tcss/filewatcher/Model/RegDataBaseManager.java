@@ -176,6 +176,23 @@ public class RegDataBaseManager {
         }
     }
 
+    public final String getUsersEmailAddress() {
+        final String query = "SELECT email FROM registration";
+        try (final Connection conn = myDs.getConnection();
+        final Statement stmt = conn.createStatement();
+        final ResultSet rs = stmt.executeQuery(query)) {
+            if(rs.next()){
+                return rs.getString("email");
+            }
+
+        } catch (final SQLException theEvent) {
+            System.err.println("There are no registered users!");
+
+        }
+
+        return null;
+    }
+
     /**
      * Checks if a user is already registered. Only allowed 1 admin user.
      * 

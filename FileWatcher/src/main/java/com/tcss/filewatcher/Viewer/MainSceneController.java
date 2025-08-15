@@ -2,6 +2,7 @@ package com.tcss.filewatcher.Viewer;
 
 import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.DirectoryEntry;
+import com.tcss.filewatcher.Model.EmailClient;
 import com.tcss.filewatcher.Model.FileDirectoryDataBase;
 import com.tcss.filewatcher.Model.FileEventWatcher;
 import com.tcss.filewatcher.Model.RegDataBaseManager;
@@ -413,7 +414,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             try {
                 final FXMLLoader emailClientFxmlLoader =
                         new FXMLLoader(MainSceneController.class.getResource("/com/tcss" +
-                                "/filewatcher/EmailClientScene.fxml"));
+                                "/filewatcher/UserRegistrationScene.fxml"));
                 final Scene emailClientScene = new Scene(emailClientFxmlLoader.load());
 
                 final Stage emailRegStage = new Stage();
@@ -718,6 +719,15 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
      */
     protected void setQuerySceneController(final QuerySceneController theScene) {
         theScene.addPropertyChangeListener(this);
+    }
+
+        /**
+     * Adds the email client as a listener.
+     *
+     * @param theEmailClient the emailClient object.
+     */
+    public void setEmailClientListener(final EmailClient theEmailClient) {
+        theEmailClient.addPropertyChangeListener(this);
     }
 
     /**

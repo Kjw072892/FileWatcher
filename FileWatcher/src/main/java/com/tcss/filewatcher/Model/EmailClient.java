@@ -13,6 +13,7 @@ import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
 import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Viewer.EmailClientScene;
+import com.tcss.filewatcher.Viewer.MainSceneController;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
@@ -70,6 +71,7 @@ public class EmailClient implements PropertyChangeListener {
 
     /**
      * The directory path for the oauth2.0 token.
+     * Path is based on users operating home directory.
      */
     private static final File TOKENS_DIR =
             Paths.get(System.getProperty("user.home"), ".filewatcher_tokens").toFile();
@@ -84,10 +86,9 @@ public class EmailClient implements PropertyChangeListener {
     /**
      * Starts the Gmail Client API.
      */
-    private static boolean start(final String toAddress) {
+    private static boolean start(final String theToAddress, final Path theTmpPath) {
 
-
-        if (toAddress == null || toAddress.isBlank()) {
+        if (theToAddress == null || theToAddress.isBlank()) {
 
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -100,7 +101,7 @@ public class EmailClient implements PropertyChangeListener {
             });
             return false;
         }
-         MY_ADMIN_EMAIL_ADDRESS = toAddress;
+         MY_ADMIN_EMAIL_ADDRESS = theToAddress;
 
         try {
 
@@ -108,12 +109,9 @@ public class EmailClient implements PropertyChangeListener {
                     GoogleNetHttpTransport.newTrustedTransport(), MY_JSON_FACTORY, authorize())
                     .setApplicationName(MY_APPLICATION_NAME).build();
 
-            final Path outbox = Paths.get(System.getProperty("user.home"), ".filewatcher",
-                    "outbox");
+            Files.createDirectories(theTmpPath);
 
-            Files.createDirectories(outbox);
-
-            final Path csvPath = outbox.resolve("events.csv");
+            final Path csvPath = theTmpPath.resolve("events.csv");
 
             if (!Files.exists(csvPath)) {
                 throw new FileNotFoundException("CSV not found: " + csvPath);
@@ -121,7 +119,7 @@ public class EmailClient implements PropertyChangeListener {
 
             File csvFile = csvPath.toFile();
 
-            final MimeMessage email = createEmail(toAddress, csvFile);
+            final MimeMessage email = createEmail(theToAddress, csvFile);
             final Message sent = sendMessage(service, email);
 
             System.out.println("Sent message ID: " + sent.getId());
@@ -255,7 +253,7 @@ public class EmailClient implements PropertyChangeListener {
      * Adds the email client scene as a listener.
      * @param theEmailClientScene the emailClientScene object.
      */
-    public void addPropertyChangeListener(final EmailClientScene theEmailClientScene) {
+    public void addPropertyChangeListener(final MainSceneController theEmailClientScene) {
         theEmailClientScene.addPropertyChangeListener(this);
         theEmailClientScene.setEmailClientListener(this);
     }
@@ -271,12 +269,13 @@ public class EmailClient implements PropertyChangeListener {
     public void propertyChange(final PropertyChangeEvent theEvent) {
         if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {
             final String toAddress = (String) theEvent.getNewValue();
+            final Path tmpLocation = (Path) theEvent.getOldValue();
             new Thread(() -> {
 
-                boolean started = start(toAddress);
+                boolean isEmailSent = start(toAddress, tmpLocation);
 
                 Platform.runLater(() -> myChanges.firePropertyChange(Properties.EMAIL_SENT
-                        .toString(), null, started));
+                        .toString(), null, isEmailSent));
             }).start();
         }
     }

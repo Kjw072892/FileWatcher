@@ -10,7 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class EmailClientScene implements PropertyChangeListener {
+public class EmailClientScene{
 
     /**
      * The textbox where the user inputs a password
@@ -48,10 +48,6 @@ public class EmailClientScene implements PropertyChangeListener {
     @FXML
     private TextField myEmailTextBox;
 
-    /**
-     * Fires property changes.
-     */
-    private final PropertyChangeSupport myChanges = new PropertyChangeSupport(this);
 
     /**
      * Initializes the scene on startup.
@@ -66,6 +62,14 @@ public class EmailClientScene implements PropertyChangeListener {
      */
     @FXML
     private void handleMyRegisterButton() {
+        final String email = myEmailTextBox.getText();
+        final String password = myPasswordTextBox.getText();
+        final boolean isSend5pmSelected = mySend5pmCheckBox.isSelected();
+        final boolean isSendOnNewEventsSelected = mySendEveryNewEventCheckBox.isSelected();
+
+        final String selection = isSend5pmSelected ? mySend5pmCheckBox.getText() :
+                mySendEveryNewEventCheckBox.getText();
+
 
     }
 
@@ -105,26 +109,4 @@ public class EmailClientScene implements PropertyChangeListener {
 
     }
 
-    /**
-     * Adds the email client as a listener.
-     *
-     * @param theEmailClient the emailClient object.
-     */
-    public void setEmailClientListener(final EmailClient theEmailClient) {
-        theEmailClient.addPropertyChangeListener(this);
-    }
-
-    /**
-     * Adds the object as a listener.
-     *
-     * @param theListener the object listening for property changes.
-     */
-    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-        myChanges.addPropertyChangeListener(theListener);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-
-    }
 }

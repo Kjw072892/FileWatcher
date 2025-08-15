@@ -5,6 +5,7 @@ import com.tcss.filewatcher.Model.DirectoryEntry;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,27 +29,23 @@ public class CSVExporter {
      * Exports query results to a CSV file with query information header.
      *
      * @param theEntries   List of DirectoryEntry objects to export
-     * @param theFileName  Name of the output CSV file
+     * @param thePath  Name of the output CSV file
      * @param theQueryInfo Information about the query that generated these results
      * @throws IOException if an error occurs while writing the file
      */
-    public void exportToCSV(final List<DirectoryEntry> theEntries, final String theFileName,
+    public static void exportToCSV(final List<DirectoryEntry> theEntries,
+                                final Path thePath,
                             final String theQueryInfo) throws IOException {
         if (theEntries == null) {
             throw new IllegalArgumentException("Entries list cannot be null");
         }
-        if (theFileName == null || theFileName.trim().isEmpty()) {
+
+        if (thePath == null) {
             throw new IllegalArgumentException("File name cannot be null or empty");
         }
-        // Ensure file has .csv extension
-        String csvFileName;
-        if (theFileName.endsWith(".csv")) {
-            csvFileName = theFileName;
-        } else {
-            csvFileName = theFileName + ".csv";
-        }
-        try (FileWriter fileWriter = new FileWriter(csvFileName);
-             CSVWriter csvWriter = new CSVWriter(fileWriter)) {
+
+        try (final FileWriter fileWriter = new FileWriter(thePath.toFile());
+             final CSVWriter csvWriter = new CSVWriter(fileWriter)) {
 
             // Write header information about the query
             writeQueryHeader(csvWriter, theQueryInfo, theEntries.size());
@@ -58,7 +55,7 @@ public class CSVExporter {
 
             // Write data rows
             writeDataRows(csvWriter, theEntries);
-            System.out.println("Successfully exported " + theEntries.size() + " entries to " + csvFileName);
+            System.out.println("Successfully exported " + theEntries.size() + " entries to " + thePath.getFileName());
 
         }
     }
@@ -70,7 +67,9 @@ public class CSVExporter {
      * @param theQueryInfo   Information about the query
      * @param theRecordCount Number of records in the result
      */
-    private void writeQueryHeader(final CSVWriter theCsvWriter, final String theQueryInfo, final int theRecordCount) {
+    private static void writeQueryHeader(final CSVWriter theCsvWriter,
+                                        final String theQueryInfo,
+                                   final int theRecordCount) {
         // Write query information
         theCsvWriter.writeNext(new String[]{"File Watcher Query Results"});
         theCsvWriter.writeNext(new String[]{"Generated on: " + LocalDateTime.now().format(HEADER_DATE_FORMAT)});
@@ -90,7 +89,7 @@ public class CSVExporter {
      *
      * @param theCsvWriter CSVWriter instance to write to
      */
-    private void writeColumnHeaders(final CSVWriter theCsvWriter) {
+    private static void writeColumnHeaders(final CSVWriter theCsvWriter) {
         String[] headers = {
                 "Date",
                 "Time",
@@ -108,7 +107,8 @@ public class CSVExporter {
      * @param theCsvWriter CSVWriter instance to write to
      * @param theEntries   List of DirectoryEntry objects to write
      */
-    private void writeDataRows(final CSVWriter theCsvWriter, final List<DirectoryEntry> theEntries) {
+    private static void writeDataRows(final CSVWriter theCsvWriter,
+                                final List<DirectoryEntry> theEntries) {
         for (DirectoryEntry entry : theEntries) {
             String dateValue;
             if (entry.getDate() != null) {

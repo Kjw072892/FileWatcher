@@ -8,20 +8,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.EmailClientScene">
-
-    <TextField fx:id="myEmailTextBox" layoutX="51.0" layoutY="237.0" prefHeight="25.0" prefWidth="237.0"
-               promptText="Email:" AnchorPane.leftAnchor="51.0" />
-
-    <CheckBox fx:id="mySend5pmCheckBox" selected="true" onAction="#handleMySend5pmCheckBox" layoutX="390.0"
-              layoutY="241.0"
-              mnemonicParsing="false"
-              text="Send Email 5pm Everyday" AnchorPane.leftAnchor="390.0" />
-
-    <CheckBox fx:id="mySendEveryNewEventCheckBox" onAction="#handleMySendEveryNewEventCheckBox" layoutX="390.0" layoutY="278.0" mnemonicParsing="false"
-              text="Send Email After Every New Event" AnchorPane.leftAnchor="390.0" />
+<AnchorPane prefHeight="400.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.UserRegSceneController">
 
     <Label layoutX="200.0" layoutY="28.0" prefHeight="68.0" prefWidth="221.0" text="File Watcher" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="25.0">
         <font>
@@ -42,13 +32,24 @@
             <Font name="Impact" size="42.0" />
         </font>
     </Label>
+   <VBox layoutX="40.0" layoutY="197.0" prefHeight="110.0" prefWidth="280.0" spacing="15.0">
+      <children>
+      
+          <TextField fx:id="myEmailTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Email:" />
+      
+         <PasswordField fx:id="myPasswordTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Password:" />
+         <PasswordField fx:id="myVerifyPassword" prefHeight="25.0" prefWidth="237.0" promptText="Verify Password:" />
+      </children>
+   </VBox>
 
-    <Button fx:id="myRegisterButton" layoutX="192.0" layoutY="347.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="263.0" style="-fx-background-radius: 25Px;" text="Register" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
+    <CheckBox fx:id="mySend5pmCheckBox" layoutX="390.0" layoutY="218.0" mnemonicParsing="false" onAction="#handleMySend5pmCheckBox" selected="true" text="Send Email 5pm Everyday" AnchorPane.leftAnchor="390.0" />
+
+    <CheckBox fx:id="mySendEveryNewEventCheckBox" layoutX="390.0" layoutY="263.0" mnemonicParsing="false" onAction="#handleMySendEveryNewEventCheckBox" text="Send Email After Every New Event" AnchorPane.leftAnchor="390.0" />
+
+    <Button layoutX="192.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleMyRegisterButton" prefHeight="25.0" prefWidth="263.0" style="-fx-background-radius: 25Px;" text="Register" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
         <font>
             <Font name="Franklin Gothic Medium Cond" size="16.0" />
         </font>
     </Button>
-
-   <PasswordField fx:id="myPasswordTextBox" layoutX="51.0" layoutY="274.0" prefHeight="25.0" prefWidth="237.0" promptText="Password:" />
 
 </AnchorPane>

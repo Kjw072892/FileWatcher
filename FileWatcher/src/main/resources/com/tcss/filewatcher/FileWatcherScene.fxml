@@ -58,7 +58,7 @@
                </ImageView>
             </graphic>
          </Button>
-         <Button fx:id="mySaveReportButton" mnemonicParsing="false" onAction="#handleEmailEventSetup" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 195;">
+         <Button fx:id="mySaveReportButton" mnemonicParsing="false" onAction="#handleSendEmail" prefHeight="45.0" prefWidth="45.0" style="-fx-background-radius: 195;">
             <graphic>
                <ImageView fitHeight="30.0" fitWidth="30.0">
                   <image>

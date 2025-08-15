@@ -12,7 +12,7 @@ import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
 import com.tcss.filewatcher.Common.Properties;
-import com.tcss.filewatcher.Viewer.EmailClientScene;
+import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Viewer.MainSceneController;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
@@ -36,6 +36,7 @@ import java.security.GeneralSecurityException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -66,8 +67,8 @@ public class EmailClient implements PropertyChangeListener {
     /**
      * The path of the oauth.json file for o_auth credential checking.
      */
-    private static final Path CREDENTIALS_FILE_PATH =
-            Paths.get(System.getProperty("user.home"), ".filewatcher", "gmail_oauth.json");
+    private static final InputStream CREDENTIALS_FILE_PATH =
+            EmailClient.class.getResourceAsStream("/credentials/google_o_auth.json");
 
     /**
      * The directory path for the oauth2.0 token.
@@ -81,65 +82,72 @@ public class EmailClient implements PropertyChangeListener {
      */
     private static String MY_ADMIN_EMAIL_ADDRESS;
 
+    /**
+     * The property change support object.
+     */
     private final PropertyChangeSupport myChanges = new PropertyChangeSupport(this);
+
+    /**
+     * Google oauth authentication service.
+     */
+    private static volatile Gmail SERVICE;
+
+    private static Gmail getService() throws GeneralSecurityException, IOException {
+        if (SERVICE == null) {
+            synchronized (EmailClient.class) {
+                if (SERVICE == null) {
+                    SERVICE = new Gmail.Builder(
+                            GoogleNetHttpTransport.newTrustedTransport(),
+                            MY_JSON_FACTORY,
+                            authorize()
+                    ).setApplicationName(MY_APPLICATION_NAME).build();
+                }
+            }
+        }
+        return SERVICE;
+    }
 
     /**
      * Starts the Gmail Client API.
      */
-    private static boolean start(final String theToAddress, final Path theTmpPath) {
-
+    public static boolean start(final String theToAddress, final Path theCsvPath) {
         if (theToAddress == null || theToAddress.isBlank()) {
-
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Receiver Address Invalid");
                 alert.setContentText("""
-                        The receivers email address was not properly configured!
-                        Please make sure the address is configured and valid!
+                            The receiver's email address was not properly configured!
+                            Please make sure the address is configured and valid!
                         """);
                 alert.showAndWait();
             });
             return false;
         }
-         MY_ADMIN_EMAIL_ADDRESS = theToAddress;
 
         try {
+            Gmail service = getService();
 
-            final Gmail service = new Gmail.Builder(
-                    GoogleNetHttpTransport.newTrustedTransport(), MY_JSON_FACTORY, authorize())
-                    .setApplicationName(MY_APPLICATION_NAME).build();
-
-            Files.createDirectories(theTmpPath);
-
-            final Path csvPath = theTmpPath.resolve("events.csv");
-
-            if (!Files.exists(csvPath)) {
-                throw new FileNotFoundException("CSV not found: " + csvPath);
+            if (!Files.exists(theCsvPath)) {
+                throw new FileNotFoundException("CSV not found: " + theCsvPath);
             }
 
-            File csvFile = csvPath.toFile();
-
-            final MimeMessage email = createEmail(theToAddress, csvFile);
-            final Message sent = sendMessage(service, email);
+            File csvFile = theCsvPath.toFile();
+            MimeMessage email = createEmail(theToAddress, csvFile);
+            Message sent = sendMessage(service, email);
 
             System.out.println("Sent message ID: " + sent.getId());
+            return true;
 
-        } catch (final MessagingException | GeneralSecurityException |
-                       IOException theException) {
-
+        } catch (Exception ex) {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Unable to start Email Client");
-                alert.setContentText("""
-                        An Error occurred trying to start the email client!
-                        Please check with a developer to resolve the issue!
-                        """);
+                alert.setTitle("Unable to send email");
+                alert.setContentText("An error occurred while sending the email: " + ex.getMessage());
                 alert.showAndWait();
             });
+            ex.printStackTrace();
             return false;
-
         }
-        return true;
     }
 
     /**
@@ -150,26 +158,27 @@ public class EmailClient implements PropertyChangeListener {
      * @throws GeneralSecurityException thrown if the users email is unauthorized.
      */
     private static Credential authorize() throws IOException, GeneralSecurityException {
-        if (!Files.exists(CREDENTIALS_FILE_PATH)) {
-            throw new FileNotFoundException("Missing gmail_oauth.json file!" + CREDENTIALS_FILE_PATH.toAbsolutePath());
-        }
         if (!TOKENS_DIR.exists() && !TOKENS_DIR.mkdirs()) {
             throw new IOException("Could not create token dir: " + TOKENS_DIR.getAbsolutePath());
         }
 
-        try (InputStream in = Files.newInputStream(CREDENTIALS_FILE_PATH)) {
-            final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+        try (InputStream in = CREDENTIALS_FILE_PATH) {
+            Objects.requireNonNull(in, "credentials file not found at /credentials/google_o_auth.json");
+
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                     GoogleNetHttpTransport.newTrustedTransport(),
                     MY_JSON_FACTORY,
                     GoogleClientSecrets.load(MY_JSON_FACTORY, new InputStreamReader(in)),
-                    MY_SCOPES).setDataStoreFactory(new FileDataStoreFactory(TOKENS_DIR)).setAccessType("offline").build();
+                    MY_SCOPES
+            )
+                    .setDataStoreFactory(new FileDataStoreFactory(TOKENS_DIR))
+                    .setAccessType("offline")
+                    .build();
 
-            final String tokenKey =
-                    (MY_ADMIN_EMAIL_ADDRESS != null && !MY_ADMIN_EMAIL_ADDRESS.isBlank()) ?
-                            MY_ADMIN_EMAIL_ADDRESS : "admin";
+            String tokenKey = "user";
 
-            final LocalServerReceiver receiver =
-                    new LocalServerReceiver.Builder().setPort(8888).build();
+            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(-1).build();
+
             return new AuthorizationCodeInstalledApp(flow, receiver).authorize(tokenKey);
         }
     }
@@ -251,6 +260,7 @@ public class EmailClient implements PropertyChangeListener {
 
     /**
      * Adds the email client scene as a listener.
+     *
      * @param theEmailClientScene the emailClientScene object.
      */
     public void addPropertyChangeListener(final MainSceneController theEmailClientScene) {
@@ -269,14 +279,7 @@ public class EmailClient implements PropertyChangeListener {
     public void propertyChange(final PropertyChangeEvent theEvent) {
         if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {
             final String toAddress = (String) theEvent.getNewValue();
-            final Path tmpLocation = (Path) theEvent.getOldValue();
-            new Thread(() -> {
 
-                boolean isEmailSent = start(toAddress, tmpLocation);
-
-                Platform.runLater(() -> myChanges.firePropertyChange(Properties.EMAIL_SENT
-                        .toString(), null, isEmailSent));
-            }).start();
         }
     }
 

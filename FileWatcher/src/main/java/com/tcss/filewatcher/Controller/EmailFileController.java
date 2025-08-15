@@ -1,11 +1,7 @@
 package com.tcss.filewatcher.Controller;
 
-import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
-import com.tcss.filewatcher.Viewer.FileWatcherSceneController;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -38,20 +34,22 @@ public class EmailFileController {
      * @throws IOException Thrown if path generation is broken.
      */
     public static void send(final ObservableList<DirectoryEntry> theNewTable,
+                            final Path theTmpPath,
                             final String theQueryInfo) throws IOException {
 
-        CSVExporter.exportToCSV(theNewTable, generateCSVFilePath(), theQueryInfo);
+        CSVExporter.exportToCSV(theNewTable, theTmpPath, theQueryInfo);
     }
 
     /**
      * Starts the email automation where it emails all the events to the registered address.
      */
-    public static void start() {
+    public static void start(final Path theTmpPath) {
         EmailFrequencyManager.startDailyAt5(() -> {
             final DataBaseManager dataBaseManager = new DataBaseManager();
             final List<DirectoryEntry> dirList = dataBaseManager.getAllEntries();
             try {
-                send((ObservableList<DirectoryEntry>) dirList, "All Entries");
+                send((ObservableList<DirectoryEntry>) dirList, theTmpPath, "All " +
+                        "Entries");
             } catch (final IOException theEvent) {
                 System.err.println("Unable to start email automation: " + theEvent.getMessage());
             }
@@ -63,11 +61,18 @@ public class EmailFileController {
      *
      * @return the path of the temporary file.
      */
-    private static Path generateCSVFilePath() {
+    public static Path getTmpFilePath() {
         Path tmp = null;
-        try {
-            tmp = Files.createTempFile("csvFile", ".csv");
 
+        try {
+            String tmpDir = System.getProperty("java.io.tmpdir");
+            tmp = Path.of(tmpDir, "csvFile.csv");
+
+            if (Files.exists(tmp)) {
+                Files.delete(tmp);
+            }
+
+            Files.createFile(tmp);
             tmp.toFile().deleteOnExit();
 
         } catch (final IOException theIO) {

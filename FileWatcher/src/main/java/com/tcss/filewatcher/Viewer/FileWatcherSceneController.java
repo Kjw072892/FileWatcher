@@ -4,18 +4,23 @@ import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
+import com.tcss.filewatcher.Model.EmailClient;
+import static com.tcss.filewatcher.Model.EmailClient.start;
+import com.tcss.filewatcher.Model.FileExtensionHandler;
 import com.tcss.filewatcher.Model.SceneHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -73,23 +78,6 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     @FXML
     private Button myStopButton;
 
-    /**
-     * Clears the table without saving while the filewatcher is still active.
-     */
-    @FXML
-    private Button myResetButton;
-
-    /**
-     * Hides the table.
-     */
-    @FXML
-    private Button myHideButton;
-
-    /**
-     * Saves the report to mySQL.
-     */
-    @FXML
-    private Button mySaveReportButton;
 
     /**
      * Gives the buttons the ability to fire changes.
@@ -118,6 +106,11 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      */
     private final boolean clearDataBase = false;
 
+    /**
+     * The users Email address.
+     */
+    private String myUserEmailAddress;
+
 
     /**
      * Initializes the scene.
@@ -139,13 +132,13 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         myFileWatcherTable.setItems(myTableview);
 
 
-
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
         String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern(
                 "dd MMM, yyyy"));
 
         if (dbManager.getTableSize() > 0) {
-            List<DirectoryEntry> recentList = dbManager.queryByDateRange(yesterday, today);
+            final List<DirectoryEntry> recentList = dbManager.queryByDateRange(yesterday,
+                    today);
             myTableview.addAll(recentList);
         }
 
@@ -182,8 +175,34 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
 
     @FXML
-    public void handleEmailEventSetup() {
+    public void handleSendEmail() throws IOException {
 
+        final Path tmp = EmailFileController.getTmpFilePath();
+
+        EmailFileController.send(myTableview, tmp, "User Filtered Queries");
+
+        final String email = myUserEmailAddress;
+
+        new Thread(() -> {
+            if (start(email, tmp)) {
+                Platform.runLater(() -> {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Email sent Successfully");
+                    alert.setResizable(false);
+                    alert.show();
+                });
+
+            } else {
+                Platform.runLater(() -> {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Email had failed to send!");
+                    alert.setResizable(false);
+                    alert.show();
+                });
+            }
+        }).start();
     }
 
 
@@ -217,7 +236,6 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     }
 
 
-
     /**
      * Listener for the property changes
      *
@@ -247,17 +265,15 @@ public class FileWatcherSceneController extends SceneHandler implements Property
             Platform.runLater(() -> {
                 final List<String> extensions = getExtensionsFromDir(entry.getDirectory());
 
-                // Defensive null check
-                if (extensions != null && extensions.contains(entry.getFileExtension()) || Objects.requireNonNull(extensions).contains("All Extensions")) {
-                    dbManager.insertFileEvent(entry.getDate(), entry.getTime(), entry.getFileName(),
-                            entry.getDirectory(), entry.getModificationType());
-
+                if (FileExtensionHandler.canAddExtension(extensions, entry)) {
                     myTableview.add(entry);
                     System.out.println("Added file to table: " + entry.getFileName());
                 }
-
             });
 
+        } else if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {
+            System.out.println(theEvent.getNewValue().toString());
+            myUserEmailAddress = (String) theEvent.getNewValue();
         }
     }
 

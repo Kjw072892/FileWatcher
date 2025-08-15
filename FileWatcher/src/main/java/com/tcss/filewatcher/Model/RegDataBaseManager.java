@@ -14,7 +14,7 @@ public class RegDataBaseManager {
      */
     private SQLiteDataSource myDs;
 
-     /**
+    /**
      * The JDBC URL for the SQLite database file.
      */
     private static final String DB_URL = "jdbc:sqlite:filewatcher.db";
@@ -70,8 +70,8 @@ public class RegDataBaseManager {
     /**
      * Inserts new Registered user into the database.
      *
-     * @param theEmail the email address of the new user.
-     * @param thePassword the user's password.
+     * @param theEmail          the email address of the new user.
+     * @param thePassword       the user's password.
      * @param theEmailFrequency the Frequency of which they want to receive and email.
      */
     public final void insertNewUserData(final String theEmail, final String thePassword,
@@ -79,8 +79,8 @@ public class RegDataBaseManager {
         final String insertSQL = "INSERT INTO registration (email, password, email_freq) " +
                 "VALUES (?,?,?)";
 
-        try(final Connection conn = myDs.getConnection();
-            final PreparedStatement prepStmt = conn.prepareStatement(insertSQL)) {
+        try (final Connection conn = myDs.getConnection();
+             final PreparedStatement prepStmt = conn.prepareStatement(insertSQL)) {
 
             prepStmt.setString(1, theEmail);
             prepStmt.setString(2, thePassword);
@@ -102,14 +102,14 @@ public class RegDataBaseManager {
         final String query = "SELECT 1 FROM registration WHERE LOWER(email) = LOWER(?)";
 
         try (final Connection conn = myDs.getConnection();
-        PreparedStatement prepStmt = conn.prepareStatement(query)) {
+             PreparedStatement prepStmt = conn.prepareStatement(query)) {
             prepStmt.setString(1, theEmail);
 
-            try(final ResultSet rs = prepStmt.executeQuery()){
+            try (final ResultSet rs = prepStmt.executeQuery()) {
                 return rs.next();
             }
 
-        } catch(final SQLException theE) {
+        } catch (final SQLException theE) {
             System.out.println("Unable to query Database: " + theE);
         }
 
@@ -128,40 +128,40 @@ public class RegDataBaseManager {
                 "NOCASE";
 
         try (final Connection conn = myDs.getConnection();
-            final PreparedStatement prepStmt = conn.prepareStatement(query)) {
-            
+             final PreparedStatement prepStmt = conn.prepareStatement(query)) {
+
             prepStmt.setString(1, theEmail);
 
-        try (final ResultSet rs = prepStmt.executeQuery()) {
-            return rs.next() ? rs.getString("email_freq") : null;
-        }
+            try (final ResultSet rs = prepStmt.executeQuery()) {
+                return rs.next() ? rs.getString("email_freq") : null;
+            }
 
-        } catch(final SQLException theE) {
-            
+        } catch (final SQLException theE) {
+
             System.err.println("Unable to perform query: " + theE);
-            
+
             return null;
         }
     }
 
     /**
      * Checks the users password based on info saved under their email
-     * 
-     * @param theEmail the users email address.
+     *
+     * @param theEmail    the users email address.
      * @param thePassword the users' password.
      * @return true if the password matches what's in the database, false otherwise.
      */
     public final boolean checkPassword(final String theEmail, final String thePassword) {
-        
+
         final String query = "SELECT password FROM registration WHERE email = ? COLLATE " +
                 "NOCASE";
-        
+
         try (final Connection conn = myDs.getConnection();
-        final PreparedStatement prepStmt = conn.prepareStatement(query)) {
+             final PreparedStatement prepStmt = conn.prepareStatement(query)) {
             prepStmt.setString(1, theEmail);
-            
+
             try (final ResultSet rs = prepStmt.executeQuery()) {
-                if(!rs.next()) {
+                if (!rs.next()) {
                     return false;
                 }
 
@@ -169,48 +169,36 @@ public class RegDataBaseManager {
 
                 return stored != null && stored.equals(thePassword);
             }
-            
+
         } catch (final SQLException theE) {
             System.err.println("Unable to perform query: " + theE);
             return false;
         }
     }
 
-    public final String getUsersEmailAddress() {
-        final String query = "SELECT email FROM registration";
-        try (final Connection conn = myDs.getConnection();
-        final Statement stmt = conn.createStatement();
-        final ResultSet rs = stmt.executeQuery(query)) {
-            if(rs.next()){
-                return rs.getString("email");
-            }
-
-        } catch (final SQLException theEvent) {
-            System.err.println("There are no registered users!");
-
-        }
-
-        return null;
-    }
 
     /**
      * Checks if a user is already registered. Only allowed 1 admin user.
-     * 
+     *
      * @return true if a user is registered, false otherwise.
      */
-    public final boolean hasAUserAlreadyRegistered() {
-        final String userReg = "SELECT EXISTS(SELECT 1 FROM registration)";
+    public final boolean hasAUserAlreadyRegistered(final String theEmail) {
+        final String userEmail = "SELECT email FROM registration";
         try (final Connection conn = myDs.getConnection();
-        final Statement stmt = conn.createStatement();
-        final ResultSet rs = stmt.executeQuery(userReg)) {
+             final Statement stmt = conn.createStatement();
+             final ResultSet rs = stmt.executeQuery(userEmail)) {
 
-            return rs.next() && rs.getInt(1) == 1;
+            while(rs.next()) {
+                if (rs.getString("email").equals(theEmail)) {
+                    return true;
+                }
+            }
 
-        } catch(final SQLException theE) {
+        } catch (final SQLException theE) {
             System.err.println("Unable to perform query: " + theE);
-
-            return false;
         }
+
+        return false;
     }
 
 }

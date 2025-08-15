@@ -4,21 +4,28 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="243.0" prefWidth="489.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.EmailAndPassCheckController">
-   <children>
-      <PasswordField layoutX="146.0" layoutY="154.0" prefHeight="26.0" prefWidth="197.0" AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="146.0" />
-      <TextField layoutX="146.0" layoutY="97.0" prefHeight="26.0" prefWidth="197.0" AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="146.0" />
-      <Label layoutX="180.0" layoutY="27.0" text="Admin Login" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
-         <font>
-            <Font name="Farah Regular" size="23.0" />
-         </font>
-      </Label>
-      <Label layoutX="146.0" layoutY="80.0" text="Email:" />
-      <Label layoutX="146.0" layoutY="137.0" text="Password:" />
-      <Button layoutX="193.0" layoutY="201.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="116.0" text="Login" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0" />
-   </children>
+    <Label layoutX="180.0" layoutY="35.0" text="Admin   Login" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
+        <font>
+          <Font name="Farah Regular" size="23.0" />
+        </font>
+    </Label>
+    <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="429.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+        <Image url="@../../../icons/FileWatcherIcons.png" />
+    </ImageView>
+    <Label layoutX="146.0" layoutY="80.0" text="Email:" />
+    <TextField fx:id="myEmailTextBox" layoutX="146.0" layoutY="97.0" prefHeight="26.0" prefWidth="197.0" AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="146.0" />
+    <Label layoutX="146.0" layoutY="137.0" text="Password:" />
+    <PasswordField fx:id="myPasswordTextBox" onKeyTyped="#handleDefaultButton" layoutX="146.0" layoutY="154.0" prefHeight="26.0"
+                   prefWidth="197.0"
+                   AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="146.0" />
+   <Button fx:id="myLoginButton" layoutX="285.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleLogin"
+           prefHeight="29.0" prefWidth="116.0" style="-fx-background-radius: 120px;"
+           text="Login" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="100.0"  />
+    <Button id="myRegisterButton" layoutX="98.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleRegisterButton" prefHeight="29.0" prefWidth="116.0" style="-fx-background-radius: 120px;" text="Register" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="100.0" />
 </AnchorPane>

@@ -46,7 +46,7 @@ public class DataBaseManager {
 
     private void setDebugger(final boolean theDebuggerStatus) {
         if (!theDebuggerStatus) {
-            MY_LOGGER.log(Level.OFF, "");
+            MY_LOGGER.log(Level.OFF, "\n");
         }
     }
 

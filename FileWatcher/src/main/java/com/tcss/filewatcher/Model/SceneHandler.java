@@ -80,8 +80,6 @@ public abstract class SceneHandler {
             theStage.setOnCloseRequest(WindowEvent -> {
                 theStage.setIconified(false);
                 theStage.setOnCloseRequest(null);
-
-
                 if (theStage.getTitle().equals("File Watcher")) {
                     Platform.exit();
                 }

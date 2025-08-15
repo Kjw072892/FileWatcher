@@ -266,7 +266,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     private void setDebugger(@SuppressWarnings("SameParameterValue")
                              final boolean theDebuggerStatus) {
         if (!theDebuggerStatus) {
-            MY_LOGGER.log(Level.OFF,"");
+            MY_LOGGER.log(Level.OFF,"\n");
         }
     }
 

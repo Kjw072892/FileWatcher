@@ -167,7 +167,7 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      */
     private void isDebuggerOn(final boolean theDebuggerStatus) {
         if (!theDebuggerStatus || !myIsDebuggerOverride) {
-            MY_LOGGER.log(Level.OFF,"");
+            MY_LOGGER.log(Level.OFF,"\n");
         }
     }
 

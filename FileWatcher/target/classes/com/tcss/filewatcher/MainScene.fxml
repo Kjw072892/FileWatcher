@@ -181,7 +181,7 @@
             </Button>
 
 
-            <Button fx:id="myEmailIconButton" onAction="#handleEmailRegistrationScene" maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
+            <Button fx:id="myEmailIconButton"  maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
                     minWidth="25.0"
                     mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 

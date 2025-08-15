@@ -21,7 +21,7 @@ public abstract class SceneHandler {
     private static boolean myIsWatcherStarted = false;
 
     /**
-     * Indicates whether the file watcher is currently paused.
+     * Stores a local temp container of all the extensions and correlated directories.
      */
     private static final Hashtable<String, List<String>> myMonitoredDirectory = new Hashtable<>();
 
@@ -36,6 +36,7 @@ public abstract class SceneHandler {
 
     /**
      * Tells the scene that the watcher is active.
+     * Used for debugging.
      */
     public static void startWatcher() {
 
@@ -44,6 +45,7 @@ public abstract class SceneHandler {
 
     /**
      * Tells the scene that the watcher is inactive.
+     * Used for debugging.
      */
     public static void stopWatcher() {
 

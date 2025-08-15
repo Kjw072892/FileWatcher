@@ -1,0 +1,80 @@
+Index: ../.idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Encoding\">\r\n    <file url=\"file://$PROJECT_DIR$/FileWatcher/src/main/java\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/FileWatcher/src/main/resources\" charset=\"UTF-8\" />\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/../.idea/encodings.xml b/../.idea/encodings.xml
+--- a/../.idea/encodings.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ b/../.idea/encodings.xml	(date 1755108128383)
+@@ -3,5 +3,7 @@
+   <component name="Encoding">
+     <file url="file://$PROJECT_DIR$/FileWatcher/src/main/java" charset="UTF-8" />
+     <file url="file://$PROJECT_DIR$/FileWatcher/src/main/resources" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/src/main/java/com/tcss_360/filewatcher/resources" charset="UTF-8" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: ../.idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Central Repository\" />\r\n      <option name=\"url\" value=\"https://repo.maven.apache.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"central\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/../.idea/jarRepositories.xml b/../.idea/jarRepositories.xml
+--- a/../.idea/jarRepositories.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ b/../.idea/jarRepositories.xml	(date 1755108128406)
+@@ -3,11 +3,6 @@
+   <component name="RemoteRepositoriesConfiguration">
+     <remote-repository>
+       <option name="id" value="central" />
+-      <option name="name" value="Central Repository" />
+-      <option name="url" value="https://repo.maven.apache.org/maven2" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="central" />
+       <option name="name" value="central" />
+       <option name="url" value="https://repo1.maven.org/maven2/" />
+     </remote-repository>
+Index: ../.idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\r\n    <data-source source=\"LOCAL\" name=\"filewatcher.db\" uuid=\"d42dc504-7522-4f00-828c-6b7474e8af5f\">\r\n      <driver-ref>sqlite.xerial</driver-ref>\r\n      <synchronize>true</synchronize>\r\n      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>\r\n      <jdbc-url>jdbc:sqlite:filewatcher.db</jdbc-url>\r\n      <jdbc-additional-properties>\r\n        <property name=\"com.intellij.clouds.kubernetes.db.enabled\" value=\"false\" />\r\n      </jdbc-additional-properties>\r\n      <working-dir>$ProjectFileDir$</working-dir>\r\n    </data-source>\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/../.idea/dataSources.xml b/../.idea/dataSources.xml
+--- a/../.idea/dataSources.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ b/../.idea/dataSources.xml	(date 1755107677693)
+@@ -1,15 +1,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="filewatcher.db" uuid="d42dc504-7522-4f00-828c-6b7474e8af5f">
+-      <driver-ref>sqlite.xerial</driver-ref>
+-      <synchronize>true</synchronize>
+-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+-      <jdbc-url>jdbc:sqlite:filewatcher.db</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+-      </jdbc-additional-properties>
+-      <working-dir>$ProjectFileDir$</working-dir>
+-    </data-source>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ../.idea/dictionaries/project.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ProjectDictionaryState\">\r\n  <dictionary name=\"project\">\r\n    <words>\r\n      <w>hafurova</w>\r\n      <w>pstmt</w>\r\n    </words>\r\n  </dictionary>\r\n</component>
+===================================================================
+diff --git a/../.idea/dictionaries/project.xml b/../.idea/dictionaries/project.xml
+--- a/../.idea/dictionaries/project.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ b/../.idea/dictionaries/project.xml	(date 1755107677731)
+@@ -1,8 +1,0 @@
+-<component name="ProjectDictionaryState">
+-  <dictionary name="project">
+-    <words>
+-      <w>hafurova</w>
+-      <w>pstmt</w>
+-    </words>
+-  </dictionary>
+-</component>
+\ No newline at end of file

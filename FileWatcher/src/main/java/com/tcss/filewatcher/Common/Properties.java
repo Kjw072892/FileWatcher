@@ -74,7 +74,7 @@ public enum Properties {
     QUERY_DIRECTORY_EXTENSION,
 
     /**
-     * Passes the email of the admin.
+     * Passes the email of the admin. (CSV file)
      */
     USERS_EMAIL,
 
@@ -82,5 +82,10 @@ public enum Properties {
      * Sent an email
      */
     EMAIL_SENT,
+
+    /**
+     * Used to pass the filtered table to the email controller.
+     */
+    NEW_TABLE,
 
 }

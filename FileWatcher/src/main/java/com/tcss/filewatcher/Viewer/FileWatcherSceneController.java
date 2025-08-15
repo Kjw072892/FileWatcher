@@ -4,7 +4,6 @@ import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
-import com.tcss.filewatcher.Model.EmailClient;
 import static com.tcss.filewatcher.Model.EmailClient.start;
 import com.tcss.filewatcher.Model.FileExtensionHandler;
 import com.tcss.filewatcher.Model.SceneHandler;
@@ -104,7 +103,8 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     /**
      * Clears SQL database for debugging.
      */
-    private final boolean clearDataBase = false;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final boolean clearDataBase = true;
 
     /**
      * The users Email address.

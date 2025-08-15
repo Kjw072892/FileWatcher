@@ -107,6 +107,7 @@ public class EmailAndPassCheckController {
                         "/icons/FileWatcherIcons.png"))));
                 mainStage.setScene(scene);
                 mainStage.setResizable(false);
+                mainStage.setTitle("File Watcher");
                 mainStage.show();
                 Stage myStage = (Stage) myEmailTextBox.getScene().getWindow();
                 myStage.close();

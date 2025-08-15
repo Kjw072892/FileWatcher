@@ -5,43 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="635e5518-1449-486d-8352-e3ae6f8e76a5" name="Changes" comment="added a login scene and repurposed registration scene.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileExtensionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/credentials/google_o_auth.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/icons/registration_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailClientScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/UserRegSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/outbox/csvFile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/EmailAndPassCheck.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/EmailAndPassCheck.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/FileWatcherScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/FileWatcherScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/credentials/gmail_oauth.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/CSVExporter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/CSVExporter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFileController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/EmailClientScene.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/FileWatcherScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/FileWatcherScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Credentials/gmail_oauth.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/EmailClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/EmailClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailClientScene.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/SceneHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/SceneHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +28,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="Salima" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$/.." value="main" />
@@ -73,8 +57,12 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Kjw072892/FileWatcher.git",
-    "accountId": "190c2852-ffa4-4492-a865-bb0e1c0aa158"
+    "accountId": "a7eedbc8-f474-4bbd-ac86-00661a5b74b3"
   }
+}]]></component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
 }]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -87,32 +75,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.com.tcss.filewatcher.Viewer.Main.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Kassie",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/kassie/Library/CloudStorage/OneDrive-Personal/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.com.tcss.filewatcher.Viewer.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kassie/Library/CloudStorage/OneDrive-Personal/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/credentials" />
@@ -156,8 +144,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
       </set>
     </attachedChunks>
   </component>
@@ -171,6 +159,7 @@
       <workItem from="1755108112895" duration="1465000" />
       <workItem from="1755216671947" duration="12339000" />
       <workItem from="1755232749278" duration="21446000" />
+      <workItem from="1755283495941" duration="534000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />

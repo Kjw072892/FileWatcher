@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Service class responsible for exporting file watcher data to CSV format.
@@ -36,6 +39,8 @@ public class CSVExporter {
     public static void exportToCSV(final List<DirectoryEntry> theEntries,
                                 final Path thePath,
                             final String theQueryInfo) throws IOException {
+        final Logger logger = Logger.getLogger("Export to CSV Logger");
+
         if (theEntries == null) {
             throw new IllegalArgumentException("Entries list cannot be null");
         }
@@ -55,8 +60,8 @@ public class CSVExporter {
 
             // Write data rows
             writeDataRows(csvWriter, theEntries);
-            System.out.println("Successfully exported " + theEntries.size() + " entries to " + thePath.getFileName());
-
+            logger.log(Level.INFO, "Successfully exported " + theEntries.size()
+                    + " entries to " + thePath.getFileName());
         }
     }
 
@@ -74,11 +79,7 @@ public class CSVExporter {
         theCsvWriter.writeNext(new String[]{"File Watcher Query Results"});
         theCsvWriter.writeNext(new String[]{"Generated on: " + LocalDateTime.now().format(HEADER_DATE_FORMAT)});
         String queryDisplay;
-        if (theQueryInfo != null) {
-            queryDisplay = theQueryInfo;
-        } else {
-            queryDisplay = "All Records";
-        }
+        queryDisplay = Objects.requireNonNullElse(theQueryInfo, "All Records");
         theCsvWriter.writeNext(new String[]{"Query: " + queryDisplay});
         theCsvWriter.writeNext(new String[]{"Total Records: " + theRecordCount});
         theCsvWriter.writeNext(new String[]{""}); // Empty row for separation
@@ -237,7 +238,8 @@ public class CSVExporter {
      */
 
     public static String generateDefaultFileName(final String theQueryType) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy HHmmss"));
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                "yyyy HH:mm:ss"));
         return theQueryType + "_export_" + timestamp + ".csv";
     }
 }

@@ -4,43 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="635e5518-1449-486d-8352-e3ae6f8e76a5" name="Changes" comment="added a login scene and repurposed registration scene.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileExtensionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/credentials/google_o_auth.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/icons/registration_icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="635e5518-1449-486d-8352-e3ae6f8e76a5" name="Changes" comment="built the login screen, registration screen, and got the email api to work.">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/DataBaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileDirectoryDataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileDirectoryDataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileEventWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileEventWatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileExtensionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileExtensionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/AboutSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/AboutSceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailClientScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/UserRegSceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/UserRegSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/UserRegSceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/outbox/csvFile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/EmailAndPassCheck.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/EmailAndPassCheck.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/FileWatcherScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/FileWatcherScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/credentials/gmail_oauth.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/DataBaseManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/DataBaseManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileEventWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileEventWatcherTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Credentials/gmail_oauth.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/CSVExporter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/CSVExporter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFileController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/EmailClientScene.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/FileWatcherScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/FileWatcherScene.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/DataBaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/DataBaseManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/EmailClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/EmailClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailClientScene.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileDirectoryDataBase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileDirectoryDataBase.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher$FileEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher$FileEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileEventWatcher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileExtensionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/FileExtensionHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/AboutSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/AboutSceneController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/UserRegSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/UserRegSceneController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,6 +82,16 @@
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Kjw072892/FileWatcher.git",
     "accountId": "190c2852-ffa4-4492-a865-bb0e1c0aa158"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "Kjw072892",
+    "repository": "FileWatcher"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -96,7 +114,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Kassie",
+    "git-widget-placeholder": "#6 on Kassie",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/kassie/Library/CloudStorage/OneDrive-Personal/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials",
     "node.js.detected.package.eslint": "true",
@@ -170,7 +188,7 @@
       <updated>1755108111271</updated>
       <workItem from="1755108112895" duration="1465000" />
       <workItem from="1755216671947" duration="12339000" />
-      <workItem from="1755232749278" duration="21446000" />
+      <workItem from="1755232749278" duration="33234000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />
@@ -188,7 +206,23 @@
       <option name="project" value="LOCAL" />
       <updated>1755232669727</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="built the login screen, registration screen, and got the email api to work.">
+      <option name="closed" value="true" />
+      <created>1755257648878</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1755257648878</updated>
+    </task>
+    <task id="LOCAL-00004" summary="built the login screen, registration screen, and got the email api to work.">
+      <option name="closed" value="true" />
+      <created>1755257663369</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1755257663369</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,6 +231,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value=".idea commits" />
     <MESSAGE value="added a login scene and repurposed registration scene." />
-    <option name="LAST_COMMIT_MESSAGE" value="added a login scene and repurposed registration scene." />
+    <MESSAGE value="built the login screen, registration screen, and got the email api to work." />
+    <option name="LAST_COMMIT_MESSAGE" value="built the login screen, registration screen, and got the email api to work." />
   </component>
 </project>

@@ -118,12 +118,14 @@ public abstract class SceneHandler {
      */
     public static void removeMonitoredExtension(final String thePath,
                                                 final String theExtension) {
+
         final String path = Path.of(thePath).normalize().toString().toLowerCase();
 
         final List<String> extensionList = myMonitoredDirectory.get(path);
         if (extensionList != null) {
+
             extensionList.remove(theExtension);
-            // Optionally remove the directory if no extensions remain
+
             if (extensionList.isEmpty()) {
                 myMonitoredDirectory.remove(path);
             }

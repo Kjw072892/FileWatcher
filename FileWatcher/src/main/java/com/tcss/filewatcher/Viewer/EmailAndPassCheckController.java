@@ -1,11 +1,10 @@
 package com.tcss.filewatcher.Viewer;
 
-import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.RegDataBaseManager;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +17,10 @@ import javafx.stage.Stage;
 
 public class EmailAndPassCheckController {
 
-
+    /**
+     * Used to set the login button as a default button.
+     */
+    @FXML
     public Button myLoginButton;
     /**
      * The password text box.
@@ -33,14 +35,15 @@ public class EmailAndPassCheckController {
     @FXML
     private TextField myEmailTextBox;
 
+    /**
+     * Logger for debugging
+     */
+    private final Logger myLogger = Logger.getLogger("Email and Pass Check Logger");
 
     /**
-     * Fires a property change object.
+     * When the textbox has a character in it for the password field, the login default
+     * button is set to true.
      */
-    private final PropertyChangeSupport myChanges = new PropertyChangeSupport(this);
-
-
-
     @FXML
     private void handleDefaultButton() {
         myLoginButton.setDefaultButton(!myPasswordTextBox.getText().isEmpty());
@@ -68,7 +71,8 @@ public class EmailAndPassCheckController {
 
         } catch (final IOException theEvent) {
 
-            System.err.println("Unable to load program: " + theEvent.getMessage());
+            myLogger.log(Level.SEVERE, "Unable to load program: " + theEvent.getMessage()+
+                    "\n");
         }
     }
 
@@ -112,20 +116,8 @@ public class EmailAndPassCheckController {
                 myStage.close();
 
             } catch (final IOException theEvent) {
-                System.err.println("Something bad happened.");
+                myLogger.log(Level.SEVERE, theEvent.getMessage()+"\n");
             }
         }
     }
-
-
-    /**
-     * Adds a controller as a listener.
-     *
-     * @param theListener the controller that is listening for the email data.
-     */
-    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-        myChanges.addPropertyChangeListener(theListener);
-    }
-
-
 }

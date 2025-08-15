@@ -4,7 +4,6 @@ import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
-import com.tcss.filewatcher.Model.EmailClient;
 import static com.tcss.filewatcher.Model.EmailClient.start;
 import com.tcss.filewatcher.Model.FileExtensionHandler;
 import com.tcss.filewatcher.Model.SceneHandler;
@@ -16,6 +15,8 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,7 +95,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     /**
      * Instantiates database manager.
      */
-    private final DataBaseManager dbManager = new DataBaseManager();
+    private final DataBaseManager dbManager = new DataBaseManager(false);
 
     /**
      * This stage object.
@@ -102,14 +103,15 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     private Stage myStage;
 
     /**
-     * Clears SQL database for debugging.
-     */
-    private final boolean clearDataBase = false;
-
-    /**
      * The users Email address.
      */
     private String myUserEmailAddress;
+
+    /**
+     * Clears SQL database for debugging.
+     */
+    @SuppressWarnings("FieldCanBeLocal")
+    private final boolean clearDataBase = false;
 
 
     /**
@@ -214,7 +216,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      */
     protected void setMyMainSceneController(final MainSceneController theScene) {
         theScene.addPropertyChangeListener(this);
-
+        theScene.setFileWatcherScene(this);
     }
 
 
@@ -245,6 +247,8 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     @Override
     public void propertyChange(final PropertyChangeEvent theEvent) {
 
+        final Logger logger = Logger.getLogger("FileWatcher Scene Controller logger");
+
         if (theEvent.getPropertyName().equals(Properties.START.toString())) {
             myStartButton.setDisable(true);
             myStopButton.setDisable(false);
@@ -267,12 +271,11 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
                 if (FileExtensionHandler.canAddExtension(extensions, entry)) {
                     myTableview.add(entry);
-                    System.out.println("Added file to table: " + entry.getFileName());
+                    logger.log(Level.INFO, "Added file to table: " + entry.getFileName()+"\n");
                 }
             });
 
         } else if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {
-            System.out.println(theEvent.getNewValue().toString());
             myUserEmailAddress = (String) theEvent.getNewValue();
         }
     }

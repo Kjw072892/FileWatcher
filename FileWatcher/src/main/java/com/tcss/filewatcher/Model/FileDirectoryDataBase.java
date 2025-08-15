@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.sqlite.SQLiteDataSource;
 
 /**
@@ -33,13 +35,26 @@ public class FileDirectoryDataBase {
     private static final String DB_URL = "jdbc:sqlite:filewatcher.db";
 
     /**
+     * Logger object.
+     */
+    private static final Logger MY_LOGGER = Logger.getLogger("File Directory Database");
+
+    /**
      * Constructor that initializes the database and creates the table.
      */
-    public FileDirectoryDataBase() {
-
+    public FileDirectoryDataBase(final boolean theDebuggerStatus) {
         initialize();
         createTable();
+        setDebugger(theDebuggerStatus);
+    }
 
+    /**
+     * Sets the debugger on or off.
+     */
+    private void setDebugger(final boolean theDebuggerStatus) {
+        if (!theDebuggerStatus) {
+            MY_LOGGER.log(Level.OFF, "");
+        }
     }
 
     /**
@@ -49,12 +64,12 @@ public class FileDirectoryDataBase {
         try {
             myDataSource = new SQLiteDataSource();
             myDataSource.setUrl(DB_URL);
-            System.out.println("Database connection established successfully");
-        } catch (final Exception theException) {
 
-            System.out.println("invalid");
-            throw new RuntimeException("Failed to initialize database: ", theException);
+            MY_LOGGER.log(Level.INFO, "Database connection established successfully\n");
+        } catch (final Exception theEvent) {
 
+            MY_LOGGER.log(Level.SEVERE, "Failed to initialize database: " + theEvent+"\n");
+            throw new RuntimeException("Failed to initialize database: ", theEvent);
         }
     }
 
@@ -76,23 +91,30 @@ public class FileDirectoryDataBase {
              Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate(query);
-            System.out.println("Table 'filewatcher' created successfully or already exists.");
 
-        } catch (final SQLException theSQLException) {
-            System.out.println("Error creating table: " + theSQLException.getMessage());
-            throw new RuntimeException("Failed to create table: ", theSQLException);
+            MY_LOGGER.log(Level.INFO, "Table 'filewatcher' created successfully or already " +
+                    "exists.\n");
+
+        } catch (final SQLException theEvent) {
+            MY_LOGGER.log(Level.SEVERE, "Error creating table: " + theEvent.getMessage() +
+                    "\n");
+            throw new RuntimeException("Failed to create table: ", theEvent);
         }
     }
 
     /**
      * Validates a date string against the format "dd MMM, yyyy" (e.g., "01 Jan, 2025")
      */
-    private boolean isValidDate(String date) {
+    private boolean isValidDate(final String theDate) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
-            LocalDate.parse(date, formatter);
+
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
+            LocalDate.parse(theDate, formatter);
             return true;
-        } catch (DateTimeParseException e) {
+
+        } catch (final DateTimeParseException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE, "The date time is not formated correctly!\n");
             return false;
         }
     }
@@ -100,11 +122,14 @@ public class FileDirectoryDataBase {
     /**
      * Validates a time string against the format "HH:mm:ss"
      */
-    private boolean isValidTime(String time) {
+    private boolean isValidTime(final String theTime) {
         try {
-            LocalTime.parse(time);
+            LocalTime.parse(theTime);
             return true;
-        } catch (DateTimeParseException e) {
+
+        } catch (final DateTimeParseException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE, "The date time is not formated correctly!\n");
             return false;
         }
     }
@@ -120,15 +145,20 @@ public class FileDirectoryDataBase {
     public void insertDirectory(final String theDate, final String theTime,
                                 final String theFileExtension,
                                 final String theDirectory) {
-        if (!isValidDate(theDate)||
-                !isValidTime(theTime)) {
-            throw new IllegalArgumentException("Invalid date format. Expected format: dd " +
+        if (!isValidDate(theDate) || !isValidTime(theTime)) {
+
+            final String errorMessage = "Invalid date format. Expected format: dd " +
                     "MMM, yyyy" +
-                    " or Invalid time format. Expected format: HH:mm:ss");
+                    " or Invalid time format. Expected format: HH:mm:ss";
+
+            MY_LOGGER.log(Level.SEVERE, errorMessage + "\n");
+
+            throw new IllegalArgumentException(errorMessage);
         }
+
         final String insertSQL = "INSERT INTO watchList (date, time, file_extension, " +
-                "directory) " +
-                "VALUES (?, ?, ?, ?)";
+                "directory) VALUES (?, ?, ?, ?)";
+
         try (final Connection conn = myDataSource.getConnection();
              final PreparedStatement prepStmnt = conn.prepareStatement(insertSQL)) {
 
@@ -139,8 +169,10 @@ public class FileDirectoryDataBase {
 
             prepStmnt.executeUpdate();
 
-        } catch (final SQLException theSQLexception) {
-            System.out.println("Error inserting file event: " + theSQLexception.getMessage());
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error inserting file event: " + theEvent.getMessage() +"\n");
 
         }
     }
@@ -152,6 +184,7 @@ public class FileDirectoryDataBase {
      * @param theExtension the file extension associated with the directory
      */
     public void removeDirectory(final String theDirectory, final String theExtension) {
+
         final String removeDir = "DELETE FROM watchList WHERE directory = ? AND " +
                 "file_extension = ?";
 
@@ -163,8 +196,10 @@ public class FileDirectoryDataBase {
 
             pstmt.executeUpdate();
 
-        } catch (final SQLException theSQLException) {
-            System.out.println("Unable to remove the directory");
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE,
+                    "Unable to remove the directory: " + theEvent.getMessage() + "\n");
         }
     }
 
@@ -177,11 +212,13 @@ public class FileDirectoryDataBase {
              final Statement stmt = conn.createStatement()) {
 
             int rowsDeleted = stmt.executeUpdate(deleteSQL);
-            System.out.println("Deleted " + rowsDeleted + " rows from database");
 
-        } catch (final SQLException theSQLexception) {
+            MY_LOGGER.log(Level.INFO,"Deleted " + rowsDeleted + " rows from database\n");
 
-            System.out.println("Error clearing database: " + theSQLexception.getMessage());
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE, "Error clearing database: " + theEvent.getMessage()+
+                    "\n");
         }
     }
 
@@ -198,8 +235,9 @@ public class FileDirectoryDataBase {
             } else {
                 return 0;
             }
-        } catch (final SQLException theSQLException) {
-            System.out.println("Error counting items: " + theSQLException.getMessage());
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE, "Error counting items: " + theEvent.getMessage()+"\n");
             return -1;
         }
     }
@@ -230,8 +268,9 @@ public class FileDirectoryDataBase {
                 sqlEntries.add(entry);
             }
 
-        } catch (final SQLException theSQLexception) {
-            System.out.println("Error retrieving entries: " + theSQLexception.getMessage());
+        } catch (final SQLException theEvent) {
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error retrieving entries: " + theEvent.getMessage()+"\n");
         }
 
         return sqlEntries;

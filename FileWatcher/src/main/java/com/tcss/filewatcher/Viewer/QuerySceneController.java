@@ -29,18 +29,6 @@ import javafx.stage.Stage;
 public class QuerySceneController implements PropertyChangeListener {
 
     /**
-     * The email Button.
-     */
-    @FXML
-    private Button myEmailButton;
-
-
-    /**
-     * Resets the table.
-     */
-    @FXML
-    private Button myResetTableButton;
-    /**
      * The table of which houses the historical records.
      */
     @FXML
@@ -108,7 +96,7 @@ public class QuerySceneController implements PropertyChangeListener {
             FXCollections.observableArrayList();
 
     /**
-     * A teritary copy of the table
+     * A tertiary copy of the table
      */
     private final ObservableList<DirectoryEntry> mySubCopy =
             FXCollections.observableArrayList();
@@ -121,7 +109,7 @@ public class QuerySceneController implements PropertyChangeListener {
     /**
      * The database object reference.
      */
-    private final DataBaseManager myDataBaseManager = new DataBaseManager();
+    private final DataBaseManager myDataBaseManager = new DataBaseManager(false);
 
 
     /**
@@ -358,7 +346,6 @@ public class QuerySceneController implements PropertyChangeListener {
 
 
                 for (final DirectoryEntry entries : tempList) {
-                    System.out.println(entries.getFileExtension());
                     if (entries.getFileExtension().equals(extension)) {
                         entryList.add(entries);
                     } else if (extension.equals("All Extensions")) {

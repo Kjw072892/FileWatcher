@@ -8,8 +8,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Handles the registration scene.
+ *
+ * @author Kassie Whitney
+ * @version 08.15.25
+ */
 public class UserRegSceneController {
-
 
     /**
      * The textbox where the user inputs a password.
@@ -41,16 +46,13 @@ public class UserRegSceneController {
     @FXML
     private TextField myEmailTextBox;
 
-    /**
-     * The stage of this scene.
-     */
-    private Stage myStage;
 
     /**
      * Adds new administrator as a registered admin.
      */
     @FXML
     private void handleMyRegisterButton() {
+
         final String email = myEmailTextBox.getText();
         final String password = myPasswordTextBox.getText();
         final String verifyPass = myVerifyPassword.getText();
@@ -77,19 +79,19 @@ public class UserRegSceneController {
                 alert.setResizable(false);
                 alert.showAndWait();
 
-
             } else {
                 final RegDataBaseManager newUser = new RegDataBaseManager();
                 if (newUser.hasAUserAlreadyRegistered(email)) {
 
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    final Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setContentText("This email has already been registered");
                     alert.setResizable(false);
                     alert.showAndWait();
 
                 } else {
+
                     newUser.insertNewUserData(email, verifyPass, selection);
-                    Stage myStage = (Stage) myEmailTextBox.getScene().getWindow();
+                    final Stage myStage = (Stage) myEmailTextBox.getScene().getWindow();
                     myStage.close();
                 }
 
@@ -117,14 +119,4 @@ public class UserRegSceneController {
             mySendEveryNewEventCheckBox.setSelected(false);
         }
     }
-
-    /**
-     * Sets the stage for stage manipulation.
-     *
-     * @param theStage the userRegSceneController stage.
-     */
-    public void setStage(final Stage theStage) {
-        myStage = theStage;
-    }
-
 }

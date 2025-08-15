@@ -1,0 +1,4 @@
+--patch-module
+com.tcss.filewatcher=_
+--add-reads
+com.tcss.filewatcher=ALL-UNNAMED

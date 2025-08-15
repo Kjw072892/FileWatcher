@@ -11,25 +11,33 @@ import java.io.IOException;
 
 /**
  * The main method that initializes the main scene
+ *
  * @author Kassie Whitney
  * @version 7.16.25
  */
 public class Main extends Application {
     @Override
     public void start(final Stage theStage) throws IOException {
-      FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/tcss/filewatcher/MainScene.fxml"));
 
-        final Scene scene = new Scene(fxmlLoader.load());
+        try {
+            final FXMLLoader loginScreen =
+                    new FXMLLoader(MainSceneController
+                            .class.getResource("/com/tcss/filewatcher/EmailAndPassCheck" +
+                            ".fxml"));
+            final Scene loginScene = new Scene(loginScreen.load());
 
-        final MainSceneController mainSceneController = fxmlLoader.getController();
-        mainSceneController.setStage(theStage);
+            theStage.setScene(loginScene);
+            theStage.setTitle("Admin Login");
+            theStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/record_icon.png"))));
+            theStage.setResizable(false);
+            theStage.show();
 
-        theStage.setTitle("File Watcher");
-        theStage.setResizable(false);
-        theStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                "/icons/FileWatcherIcons.png"))));
-        theStage.setScene(scene);
-        theStage.show();
+
+        } catch (final IOException theEvent) {
+
+            System.err.println("Unable to load program: " + theEvent.getMessage());
+        }
 
     }
 

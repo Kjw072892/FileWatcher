@@ -1,0 +1,54 @@
+Index: ../.idea/modules.xml
+===================================================================
+diff --git a/../.idea/modules.xml b/../.idea/modules.xml
+deleted file mode 100644
+--- a/../.idea/modules.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ /dev/null	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/FileWatcher.iml" filepath="$PROJECT_DIR$/FileWatcher.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: ../.idea/checkstyle-idea.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CheckStyle-IDEA\" serialisationVersion=\"2\">\r\n    <checkstyleVersion>10.26.0</checkstyleVersion>\r\n    <scanScope>JavaOnly</scanScope>\r\n    <copyLibs>true</copyLibs>\r\n    <option name=\"thirdPartyClasspath\" />\r\n    <option name=\"activeLocationIds\" />\r\n    <option name=\"locations\">\r\n      <list>\r\n        <ConfigurationLocation id=\"bundled-sun-checks\" type=\"BUNDLED\" scope=\"All\" description=\"Sun Checks\">(bundled)</ConfigurationLocation>\r\n        <ConfigurationLocation id=\"bundled-google-checks\" type=\"BUNDLED\" scope=\"All\" description=\"Google Checks\">(bundled)</ConfigurationLocation>\r\n      </list>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/checkstyle-idea.xml b/../.idea/checkstyle-idea.xml
+--- a/../.idea/checkstyle-idea.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ b/../.idea/checkstyle-idea.xml	(date 1755107677701)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CheckStyle-IDEA" serialisationVersion="2">
+-    <checkstyleVersion>10.26.0</checkstyleVersion>
++    <checkstyleVersion>10.26.1</checkstyleVersion>
+     <scanScope>JavaOnly</scanScope>
+     <copyLibs>true</copyLibs>
+     <option name="thirdPartyClasspath" />
+Index: ../.idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"VcsDirectoryMappings\">\r\n    <mapping directory=\"\" vcs=\"Git\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/vcs.xml b/../.idea/vcs.xml
+--- a/../.idea/vcs.xml	(revision 3d04e336378ceffbabf0b75a407b7df357697c7e)
++++ b/../.idea/vcs.xml	(date 1755107677709)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+-    <mapping directory="" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file

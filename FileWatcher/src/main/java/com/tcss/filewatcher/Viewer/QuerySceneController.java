@@ -29,6 +29,13 @@ import javafx.stage.Stage;
 public class QuerySceneController implements PropertyChangeListener {
 
     /**
+     * The email Button.
+     */
+    @FXML
+    private Button myEmailButton;
+
+
+    /**
      * Resets the table.
      */
     @FXML

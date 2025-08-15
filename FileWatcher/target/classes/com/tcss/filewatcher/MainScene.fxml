@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: fdfdfd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.MainSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: fdfdfd;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.MainSceneController">
 
     <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="600.0">
 
@@ -28,13 +28,11 @@
         </Menu>
 
         <Menu text="File System _Watcher">
-            <MenuItem fx:id="myFileWatcherViewerMenuItem" id="openLiveEventsMenuItem" disable="true"
-                      mnemonicParsing="false"
-                       onAction="#handleFileWatcherButton" text="Open Live Events" />
+            <MenuItem id="openLiveEventsMenuItem" fx:id="myFileWatcherViewerMenuItem" disable="true" mnemonicParsing="false" onAction="#handleFileWatcherButton" text="Open Live Events" />
         </Menu>
 
         <Menu text="_Database">
-            <MenuItem fx:id="myQueryMenuItem" onAction="#handleQueryIconButton" disable="true" mnemonicParsing="false" text="Query" />
+            <MenuItem fx:id="myQueryMenuItem" disable="true" mnemonicParsing="false" onAction="#handleQueryIconButton" text="Query" />
 
         </Menu>
 
@@ -121,22 +119,18 @@
 
     <Button fx:id="myDeleteDirectoryBTN" disable="true" layoutX="405.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleDeleteButton" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Delete" AnchorPane.rightAnchor="50.0" />
 
-    <TextField fx:id="myDirectoryToQueryTB"  layoutX="242.0" layoutY="263.0" prefHeight="25.0"
-               prefWidth="307.0"
-               AnchorPane.rightAnchor="50.0" />
+    <TextField fx:id="myDirectoryToQueryTB" layoutX="242.0" layoutY="263.0" prefHeight="25.0" prefWidth="307.0" AnchorPane.rightAnchor="50.0" />
 
     <Label layoutX="246.0" layoutY="246.0" text="Directory to query" />
 
     <Label layoutX="56.0" layoutY="246.0" text="Query by extension" AnchorPane.leftAnchor="55.0" />
 
-    <Button fx:id="myQueryButton" onAction="#handleQueryButton" layoutX="245.0" layoutY="297.0" mnemonicParsing="false"
-            prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Query" />
+    <Button fx:id="myQueryButton" layoutX="245.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleQueryButton" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Query" />
 
-    <Button fx:id="myClearButton" onAction="#handleClearButton" disable="true" layoutX="483.0" layoutY="297.0" mnemonicParsing="false"
-            prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Clear" AnchorPane.rightAnchor="50.0" />
+    <Button fx:id="myClearButton" disable="true" layoutX="483.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleClearButton" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Clear" AnchorPane.rightAnchor="50.0" />
 
     <Label layoutX="14.0" layoutY="375.0" text="File System Watch List:" />
-    <ToolBar layoutX="14.0" layoutY="33.0" prefHeight="36.0" prefWidth="231.0" style="-fx-background-color: fdfdfd;">
+    <ToolBar layoutX="14.0" layoutY="33.0" prefHeight="36.0" prefWidth="178.0" style="-fx-background-color: fdfdfd;">
         <HBox prefHeight="0.0" prefWidth="115.0" spacing="20.0">
             <Button fx:id="myStartIconBtn" accessibleHelp="Press this button to start the file wathcer." accessibleText="Start file watcher" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleStartFileWatcher" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
@@ -181,22 +175,6 @@
             </Button>
 
 
-            <Button fx:id="myEmailIconButton" onAction="#handleEmailRegistrationScene" maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
-                    minWidth="25.0"
-                    mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
-
-                <tooltip>
-                    <Tooltip text="Open Email Preferences" />
-                </tooltip>
-
-                <graphic>
-                    <ImageView fitHeight="19.0" fitWidth="20.0">
-                        <Image url="@../../../icons/email_Icon.png" />
-                    </ImageView>
-                </graphic>
-            </Button>
-
-
             <Button id="queryIconButton" maxHeight="25.0" maxWidth="104.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleQueryIconButton" prefHeight="25.0" prefWidth="104.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
@@ -214,8 +192,7 @@
     <!--
            Query ComboBox
        -->
-    <ComboBox fx:id="myQueryByExtensionComBox" onAction="#handleQueryComboBox" layoutX="49.0" layoutY="263.0" prefHeight="25.0"
-              prefWidth="161.0">
+    <ComboBox fx:id="myQueryByExtensionComBox" layoutX="49.0" layoutY="263.0" onAction="#handleQueryComboBox" prefHeight="25.0" prefWidth="161.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="All Extensions" />

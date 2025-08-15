@@ -24,6 +24,7 @@ module com.tcss.filewatcher {
     requires com.google.api.client.extensions.java6.auth;
     requires com.google.api.client.auth;
     requires com.opencsv;
+    requires jdk.httpserver;
 
     opens com.tcss.filewatcher to javafx.fxml;
     exports com.tcss.filewatcher.Viewer;
@@ -32,4 +33,6 @@ module com.tcss.filewatcher {
     opens com.tcss.filewatcher.Common to javafx.fxml;
     exports com.tcss.filewatcher.Model;
     opens com.tcss.filewatcher.Model to javafx.fxml;
+    exports com.tcss.filewatcher.Controller;
+    opens com.tcss.filewatcher.Controller to javafx.fxml;
 }

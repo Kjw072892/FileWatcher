@@ -1,7 +1,9 @@
 package com.tcss.filewatcher.Viewer;
 
 import com.tcss.filewatcher.Common.Properties;
+import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DirectoryEntry;
+import com.tcss.filewatcher.Model.EmailClient;
 import com.tcss.filewatcher.Model.FileDirectoryDataBase;
 import com.tcss.filewatcher.Model.FileEventWatcher;
 import com.tcss.filewatcher.Model.RegDataBaseManager;
@@ -39,68 +41,68 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
      * The table that showcases all the directories being currently monitored.
      */
     @FXML
-    public TableView<DirectoryEntry> myDirectoriesToMonitorTable;
+    private TableView<DirectoryEntry> myDirectoriesToMonitorTable;
 
     /**
      * Stores the date inside the date column.
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myDate;
+    private TableColumn<DirectoryEntry, String> myDate;
 
     /**
      * Stores the current time in the time column.
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myTime;
+    private TableColumn<DirectoryEntry, String> myTime;
 
     /**
      * Stores the directory in the directory column.
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myDirectory;
+    private TableColumn<DirectoryEntry, String> myDirectory;
 
     /**
      * Stores the extensions in the file extension column.
      */
     @FXML
-    public TableColumn<DirectoryEntry, String> myFileExtension;
+    private TableColumn<DirectoryEntry, String> myFileExtension;
 
     /**
      * The textbox where the user inputs the directory they want to monitor.
      */
     @FXML
-    public TextField myDirectoryToMonitorTB;
+    private TextField myDirectoryToMonitorTB;
 
     /**
      * The query menu item button.
      */
     @FXML
-    public MenuItem myQueryMenuItem;
+    private MenuItem myQueryMenuItem;
 
 
     /**
      * The query button.
      */
     @FXML
-    public Button myQueryButton;
+    private Button myQueryButton;
 
     /**
      * Clears the textboxes and sets the combobox to default.
      */
     @FXML
-    public Button myClearButton;
+    private Button myClearButton;
 
     /**
      * Opens the filewatcher viewer (live) if started.
      */
     @FXML
-    public MenuItem myFileWatcherViewerMenuItem;
+    private MenuItem myFileWatcherViewerMenuItem;
 
     /**
      * Opens the email registration
      */
     @FXML
-    public Button myEmailIconButton;
+    private Button myEmailIconButton;
 
     /**
      * The combobox that gives the user a number of extensions to choose from.
@@ -202,6 +204,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     private FileEventWatcher myFileWatcher;
 
     /**
+     * The users email address.
+     */
+    private String myUsersEmailAddress;
+
+    /**
      * Only used for debugging.
      */
     boolean clearSQLData = false;
@@ -263,6 +270,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         myStartIconBtn.setDisable(true);
         myFileWatcherViewerIconBtn.setDisable(false);
 
+        EmailFileController.start(EmailFileController.getTmpFilePath());
+
         if (myFileWatcher == null) {
             myFileWatcher = new FileEventWatcher();
         }
@@ -285,10 +294,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                     "/com/tcss/filewatcher/FileWatcherScene.fxml"));
 
             final Scene fileWatcherScene = new Scene(fxmlLoader.load());
-            FileWatcherSceneController fileWatcherSceneController = fxmlLoader.getController();
+            final FileWatcherSceneController fileWatcherSceneController =
+                    fxmlLoader.getController();
+
             fileWatcherSceneController.setMyMainSceneController(this);
 
-            //Connects the two controllers to the fileWatcher class.
             myFileWatcher.connectToControllers(this, fileWatcherSceneController);
 
             startWatcher();
@@ -307,6 +317,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             fileWatcherStage.setResizable(false);
 
             myChanges.firePropertyChange(Properties.START.toString(), null, Properties.START);
+            myChanges.firePropertyChange(Properties.USERS_EMAIL.toString(), null, myUsersEmailAddress);
 
 
         } catch (final IOException ioe) {
@@ -359,16 +370,17 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     private void handleQueryButton() {
 
         if (myDirectoryToQueryTB.getText().isEmpty() && myQueryByExtensionComBox.getValue() == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            final Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Empty Query");
             alert.setHeaderText("Unable To Query!");
             alert.setContentText("""
                     There is nothing to query against!
                     Please try again!
                     """);
-            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.setResizable(false);
             alert.showAndWait();
             return;
         }
@@ -403,37 +415,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
     }
 
-
-    @FXML
-    private void handleEmailRegistrationScene() {
-
-        final RegDataBaseManager regDataBaseManager = new RegDataBaseManager();
-
-        if(!regDataBaseManager.hasAUserAlreadyRegistered()) {
-            try {
-                final FXMLLoader emailClientFxmlLoader =
-                        new FXMLLoader(MainSceneController.class.getResource("/com/tcss" +
-                                "/filewatcher/EmailClientScene.fxml"));
-                final Scene emailClientScene = new Scene(emailClientFxmlLoader.load());
-
-                final Stage emailRegStage = new Stage();
-
-                emailRegStage.setScene(emailClientScene);
-
-                emailRegStage.setTitle("Email Registration");
-
-                emailRegStage.getIcons().add(new Image(Objects.requireNonNull(
-                        getClass().getResourceAsStream("/icons/email_Icon.png"))));
-
-                emailRegStage.show();
-                emailRegStage.setResizable(false);
-
-            } catch (final IOException theIOE) {
-                MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!");
-            }
-        }
-
-    }
 
     /**
      * Opens the about File Watcher scene.
@@ -551,7 +532,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
 
         if (listOfUsedExten.contains(extension) || (dirCheck && extCheck)) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Duplicate directories");
             alert.setHeaderText("Unable to add directory");
             alert.setContentText("You are trying to add a directory that has already been " +
@@ -559,11 +540,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.setResizable(false);
             alert.showAndWait();
             return;
 
         } else if (dirCheck && isAllExtOn) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            final Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Action");
             alert.setHeaderText("Unable to add directory");
             alert.setContentText(""" 
@@ -573,11 +555,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.setResizable(false);
             alert.showAndWait();
             return;
         }
 
-        DirectoryEntry entry = new DirectoryEntry(date, time, extension, directory);
+        final DirectoryEntry entry = new DirectoryEntry(date, time, extension, directory);
 
         myTableView.add(entry);
 
@@ -623,12 +606,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     private void handleTableView() {
 
         myDirectoriesToMonitorTable.setOnMouseClicked(theEvent -> {
-                    DirectoryEntry selectedItem =
+                    final DirectoryEntry selectedItem =
                             myDirectoriesToMonitorTable.getSelectionModel().getSelectedItem();
 
                     if (selectedItem != null) {
-                        String selectedDirectory = selectedItem.getDirectory();
-                        String selectedExtension = selectedItem.getFileExtension();
+                        final String selectedDirectory = selectedItem.getDirectory();
+                        final String selectedExtension = selectedItem.getFileExtension();
 
                         myDeleteDirectoryBTN.setDisable(false);
                         myQueryButton.setDisable(false);
@@ -661,7 +644,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
      */
     @FXML
     private void handleDeleteButton() {
-        DirectoryEntry entry =
+        final DirectoryEntry entry =
                 myDirectoriesToMonitorTable.getSelectionModel().getSelectedItem();
 
         if (entry == null) {
@@ -703,15 +686,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
 
     /**
-     * Adds the filewatcher live scene to the mains property change listener.
-     *
-     * @param theScene the filewatcher live scene.
-     */
-    protected void setFileWatcherSceneController(final FileWatcherSceneController theScene) {
-        theScene.addPropertyChangeListener(this);
-    }
-
-    /**
      * Adds the queryScene to the mains property change listener.
      *
      * @param theScene the query scene.
@@ -721,11 +695,30 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     }
 
     /**
+     * Adds the email client as a listener.
+     *
+     * @param theEmailClient the emailClient object.
+     */
+    public void setEmailClientListener(final EmailClient theEmailClient) {
+        theEmailClient.addPropertyChangeListener(this);
+    }
+
+    /**
      * Adds a listener to the listener list.
+     *
      * @param theListener the scene that's listening for changes.
      */
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myChanges.addPropertyChangeListener(theListener);
+    }
+
+    /**
+     * Sets the users email from the login screen.
+     *
+     * @param theEmail the users email.
+     */
+    public void setUserEmailAddress(final String theEmail) {
+        myUsersEmailAddress = theEmail;
     }
 
     /**
@@ -750,7 +743,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         } else if (theEvent.getPropertyName().equals(Properties.NEW_ENTRY.toString())) {
             myDeleteDirectoryBTN.setDisable(false);
-
         }
     }
 }

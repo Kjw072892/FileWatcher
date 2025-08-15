@@ -9,9 +9,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="638.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.QuerySceneController">
+<AnchorPane prefHeight="638.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tcss.filewatcher.Viewer.QuerySceneController">
     <TableView fx:id="myQuerySceneTable" layoutX="2.0" layoutY="216.0" prefHeight="507.0" prefWidth="713.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
         <columns>
             <TableColumn fx:id="myDateColumn" prefWidth="99.3333101272583" text="Date" />
@@ -33,8 +36,7 @@
             <Insets right="10.0" />
         </padding>
     </Label>
-    <ComboBox fx:id="myModificationComboBox" layoutX="538.0" layoutY="41.0" onAction="#handleModifyComboBox"
-              prefHeight="25.0" prefWidth="196.0" AnchorPane.rightAnchor="10.0">
+    <ComboBox fx:id="myModificationComboBox" layoutX="538.0" layoutY="41.0" onAction="#handleModifyComboBox" prefHeight="25.0" prefWidth="196.0" AnchorPane.rightAnchor="10.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="ALL_TYPES" />
@@ -47,7 +49,15 @@
     </ComboBox>
 
     <Label layoutX="578.0" layoutY="24.0" text="MODIFICATION TYPE:" AnchorPane.rightAnchor="55" />
-   <Button fx:id="myResetTableButton"  onAction="#handleResetButton" layoutX="278.0" layoutY="84.0" mnemonicParsing="false"
-           prefHeight="25.0"
-           prefWidth="196.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Reset" />
+   <Button fx:id="myResetTableButton" layoutX="176.0" layoutY="84.0" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="26.0" prefWidth="149.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1); -fx-background-radius: 95;" text="Reset" />
+   <Button fx:id="myEmailButton" layoutX="433.0" layoutY="84.0" maxHeight="58.0" maxWidth="149.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" snapToPixel="false" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+      <tooltip>
+         <Tooltip text="Open Email Preferences" />
+      </tooltip>
+      <graphic>
+          <ImageView fitHeight="26.0" fitWidth="22.0">
+              <Image url="@../../../icons/email_Icon.png"/>
+          </ImageView>
+      </graphic>
+   </Button>
 </AnchorPane>

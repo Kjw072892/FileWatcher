@@ -8,6 +8,15 @@
       <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" afterDir="false" />
+    <list default="true" id="635e5518-1449-486d-8352-e3ae6f8e76a5" name="Changes" comment="added a login scene and repurposed registration scene.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Credentials/gmail_oauth.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/SceneHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/SceneHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +32,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/.." source="Salima" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$/.." value="main" />
@@ -51,6 +73,10 @@
     "owner": "Kjw072892",
     "repository": "FileWatcher"
   }
+}]]></component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
 }]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -86,9 +112,9 @@
     "settings.editor.selected.configurable": "vcs.Git",
     "vue.rearranger.settings.migration": "true"
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
     ]
   }
 }]]></component>
@@ -135,8 +161,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
       </set>
     </attachedChunks>
   </component>
@@ -150,6 +176,8 @@
       <workItem from="1755108112895" duration="1465000" />
       <workItem from="1755216671947" duration="12339000" />
       <workItem from="1755232749278" duration="34899000" />
+      <workItem from="1755232749278" duration="21446000" />
+      <workItem from="1755283495941" duration="534000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />

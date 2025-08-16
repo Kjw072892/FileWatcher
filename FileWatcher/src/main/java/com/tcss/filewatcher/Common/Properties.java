@@ -79,13 +79,18 @@ public enum Properties {
     USERS_EMAIL,
 
     /**
-     * Sent an email
+     * Used to denote that the user succesfully logged in.
      */
-    EMAIL_SENT,
+    LOGGED_IN,
 
     /**
-     * Used to pass the filtered table to the email controller.
+     * Denotes in the process of stoping services.
      */
-    NEW_TABLE,
+    STOPPING,
+
+    /**
+     * Stopped services
+     */
+    STOPPED,
 
 }

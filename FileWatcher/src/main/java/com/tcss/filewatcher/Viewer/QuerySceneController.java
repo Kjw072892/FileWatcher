@@ -1,19 +1,27 @@
 package com.tcss.filewatcher.Viewer;
 
+import com.google.api.client.util.DateTime;
 import com.tcss.filewatcher.Common.Properties;
+import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
+import static com.tcss.filewatcher.Model.EmailClient.start;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -111,6 +119,11 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     private final DataBaseManager myDataBaseManager = new DataBaseManager(false);
 
+    /**
+     * The users email address
+     */
+    private String myUserEmailAddress;
+
 
     /**
      * Sets this scenes stage for window manipulation.
@@ -130,6 +143,10 @@ public class QuerySceneController implements PropertyChangeListener {
         myModificationType.setCellValueFactory(theCellData -> theCellData.getValue().modificationTypeProperty());
         myFileNameColumn.setCellValueFactory(theCellData -> theCellData.getValue().fileNameProperty());
         myQuerySceneTable.setItems(myTableView);
+
+        myFromDatePicker.setValue(LocalDate.now().minusYears(1));
+        myToDatePicker.setValue(LocalDate.now());
+
 
     }
 
@@ -221,6 +238,51 @@ public class QuerySceneController implements PropertyChangeListener {
         myTableView.setAll(myMasterCopy);
         myQuerySceneTable.setItems(myTableView);
 
+    }
+
+    @FXML
+    private void handleSendEmail() throws IOException {
+        final Path tempFile = EmailFileController.getTmpFilePath();
+
+        final String filterParam =
+                //Date from:
+                "Date From: " + (myFromDatePicker != null ?
+                myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                        "yyyy")) : LocalDate.now().format(DateTimeFormatter.ofPattern("dd " +
+                "MMM, yyyy"))) + "\n" +
+
+                //Date to
+                "Date To: " + (myToDatePicker != null ?
+                myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                        "yyyy")) : LocalDate.now().format(DateTimeFormatter.ofPattern("dd " +
+                "MMM, yyyy"))) + "\n" +
+
+                        //Modification typ
+                "Modification type: " + myModificationComboBox.getValue();
+
+        EmailFileController.send(myTableView, tempFile, filterParam);
+
+        final String email = myUserEmailAddress;
+
+        new Thread(() -> {
+            if (start(email, tempFile)) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setResizable(false);
+                    alert.setContentText("Email sent Successfully");
+                    alert.show();
+                });
+
+            } else {
+                Platform.runLater(() -> {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Email had failed to send!");
+                    alert.setResizable(false);
+                    alert.show();
+                });
+            }
+        }).start();
     }
 
 
@@ -361,6 +423,12 @@ public class QuerySceneController implements PropertyChangeListener {
                 mySubCopy.setAll(myMasterCopy);
                 break;
             }
+
+            case Properties.USERS_EMAIL: {
+                myUserEmailAddress = (String) theEvent.getNewValue();
+
+            }
+
             default: {
             }
         }

@@ -80,8 +80,8 @@ public class CSVExporter {
         theCsvWriter.writeNext(new String[]{"Generated on: " + LocalDateTime.now().format(HEADER_DATE_FORMAT)});
         String queryDisplay;
         queryDisplay = Objects.requireNonNullElse(theQueryInfo, "All Records");
-        theCsvWriter.writeNext(new String[]{"Query: " + queryDisplay});
-        theCsvWriter.writeNext(new String[]{"Total Records: " + theRecordCount});
+        theCsvWriter.writeNext(new String[]{"\nQuery: \n" + queryDisplay});
+        theCsvWriter.writeNext(new String[]{"\nTotal Records: \n" + theRecordCount});
         theCsvWriter.writeNext(new String[]{""}); // Empty row for separation
     }
 
@@ -168,46 +168,6 @@ public class CSVExporter {
 
     }
 
-    /**
-     * Creates query information string for different types of queries.
-     *
-     * @param theQueryType  The type of query performed
-     * @param theParameters Additional parameters used in the query
-     * @return Formatted query information string
-     */
-    public static String createQueryInfo(final String theQueryType, final String... theParameters) {
-        StringBuilder queryInfo = new StringBuilder(theQueryType);
-
-        switch (theQueryType.toLowerCase()) {
-            case "extension":
-                if (theParameters.length > 0) {
-                    queryInfo.append(" - Extension: ").append(theParameters[0]);
-                }
-                break;
-            case "event_type":
-                if (theParameters.length > 0) {
-                    queryInfo.append(" - Event Type: ").append(theParameters[0]);
-                }
-                break;
-            case "directory":
-                if (theParameters.length > 0) {
-                    queryInfo.append(" - Directory: ").append(theParameters[0]);
-                }
-                break;
-            case "date_range":
-                if (theParameters.length >= 2) {
-                    queryInfo.append(" - From: ").append(theParameters[0])
-                            .append(" To: ").append(theParameters[1]);
-                }
-                break;
-            case "all":
-            default:
-                queryInfo = new StringBuilder("All Records");
-                break;
-        }
-
-        return queryInfo.toString();
-    }
 
     /**
      * Validates the file name to ensure it has a .csv extension.

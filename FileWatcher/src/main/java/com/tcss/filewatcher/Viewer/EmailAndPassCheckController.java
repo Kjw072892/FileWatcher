@@ -1,6 +1,11 @@
 package com.tcss.filewatcher.Viewer;
 
+import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.RegDataBaseManager;
+import com.tcss.filewatcher.Model.SceneHandler;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -41,6 +46,11 @@ public class EmailAndPassCheckController {
     private final Logger myLogger = Logger.getLogger("Email and Pass Check Logger");
 
     /**
+     * Property Change support object
+     */
+    private final PropertyChangeSupport MY_CHANGES = new PropertyChangeSupport(this);
+
+    /**
      * When the textbox has a character in it for the password field, the login default
      * button is set to true.
      */
@@ -71,7 +81,7 @@ public class EmailAndPassCheckController {
 
         } catch (final IOException theEvent) {
 
-            myLogger.log(Level.SEVERE, "Unable to load program: " + theEvent.getMessage()+
+            myLogger.log(Level.SEVERE, "Unable to load program: " + theEvent.getMessage() +
                     "\n");
         }
     }
@@ -94,31 +104,46 @@ public class EmailAndPassCheckController {
             alert.showAndWait();
         } else {
 
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(EmailAndPassCheckController.class.getResource("/com/tcss" +
-                        "/filewatcher/MainScene.fxml"));
+            if (!SceneHandler.watcherRunningProperty()) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(EmailAndPassCheckController.class.getResource("/com/tcss" +
+                            "/filewatcher/MainScene.fxml"));
 
-                final Scene scene = new Scene(fxmlLoader.load());
-                final Stage mainStage = new Stage();
+                    final Scene scene = new Scene(fxmlLoader.load());
+                    final Stage mainStage = new Stage();
 
-                final MainSceneController mainSceneController = fxmlLoader.getController();
+                    final MainSceneController mainSceneController = fxmlLoader.getController();
 
-                mainSceneController.setUserEmailAddress(email);
+                    mainSceneController.setUserEmailAddress(email);
 
-                mainSceneController.setStage(mainStage);
+                    mainSceneController.setStage(mainStage);
 
-                mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                        "/icons/FileWatcherIcons.png"))));
-                mainStage.setScene(scene);
-                mainStage.setTitle("File Watcher");
-                mainStage.setResizable(false);
-                mainStage.show();
-                Stage myStage = (Stage) myEmailTextBox.getScene().getWindow();
-                myStage.close();
+                    mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+                            "/icons/FileWatcherIcons.png"))));
+                    mainStage.setScene(scene);
+                    mainStage.setTitle("File Watcher");
+                    mainStage.setResizable(false);
+                    mainStage.show();
 
-            } catch (final IOException theEvent) {
-                myLogger.log(Level.SEVERE, theEvent.getMessage()+"\n");
+                } catch (final IOException theEvent) {
+                    myLogger.log(Level.SEVERE, theEvent.getMessage() + "\n");
+                }
+
+            } else {
+                MY_CHANGES.firePropertyChange(Properties.LOGGED_IN.toString(),
+                        null, true);
             }
+
+            final Stage myStage = (Stage) myEmailTextBox.getScene().getWindow();
+            myStage.close();
         }
     }
+
+    /**
+     * Adds the the controller as a listener
+     */
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        MY_CHANGES.addPropertyChangeListener(theListener);
+    }
+
 }

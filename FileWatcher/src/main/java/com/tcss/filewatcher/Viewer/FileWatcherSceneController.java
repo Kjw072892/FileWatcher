@@ -107,11 +107,13 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      */
     private String myUserEmailAddress;
 
+
     /**
      * Clears SQL database for debugging.
      */
     @SuppressWarnings("FieldCanBeLocal")
     private final boolean clearDataBase = false;
+
 
 
     /**
@@ -156,13 +158,12 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         myStopButton.setDisable(false);
         myStopButton.setDisable(true);
         myChanges.firePropertyChange(Properties.START.toString(), false, true);
+        startWatcher();
     }
 
     @FXML
     public void handleStopButton() {
-        myStopButton.setDisable(true);
-        myStartButton.setDisable(false);
-        myChanges.firePropertyChange(Properties.STOP.toString(), false, true);
+        myChanges.firePropertyChange(Properties.STOPPING.toString(), null, true);
     }
 
     @FXML
@@ -181,7 +182,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
         final Path tmp = EmailFileController.getTmpFilePath();
 
-        EmailFileController.send(myTableview, tmp, "User Filtered Queries");
+        EmailFileController.send(myTableview, tmp, "Entries within 24 hours");
 
         final String email = myUserEmailAddress;
 
@@ -255,7 +256,8 @@ public class FileWatcherSceneController extends SceneHandler implements Property
             startWatcher();
             handleExitOnActive(myStage);
 
-        } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())) {
+        } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())
+                || theEvent.getPropertyName().equals(Properties.STOPPED.toString())) {
 
             myStartButton.setDisable(false);
             myStopButton.setDisable(true);

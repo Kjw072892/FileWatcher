@@ -78,7 +78,6 @@ public abstract class SceneHandler {
             });
         } else {
             theStage.setOnCloseRequest(WindowEvent -> {
-                theStage.setIconified(false);
                 theStage.setOnCloseRequest(null);
                 if (theStage.getTitle().equals("File Watcher")) {
                     Platform.exit();

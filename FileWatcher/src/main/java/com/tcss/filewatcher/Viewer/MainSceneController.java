@@ -295,7 +295,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         myStartIconBtn.setDisable(true);
         myFileWatcherViewerIconBtn.setDisable(false);
 
-        EmailFileController.start(EmailFileController.getTmpFilePath());
+        EmailFileController.start5Pm(myUsersEmailAddress,
+                EmailFileController.getTmpFilePath());
 
         if (myFileWatcher == null) {
             myFileWatcher = new FileEventWatcher(false);
@@ -329,6 +330,13 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             fileWatcherSceneController.setStage(fileWatcherStage);
             fileWatcherStage.setScene(fileWatcherScene);
             fileWatcherStage.setTitle("File Watcher (live)");
+
+//            fileWatcherSceneController.watchStage(fileWatcherStage);
+            fileWatcherStage.setOnCloseRequest(theEvent -> {
+                theEvent.consume();
+                fileWatcherStage.setIconified(true);
+                myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
+            });
 
             fileWatcherStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/watcher.png"))));
@@ -441,6 +449,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     }
 
 
+
+
     /**
      * Opens the about File Watcher scene.
      */
@@ -512,6 +522,10 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     private void handleFileWatcherButton() {
         fileWatcherStage.setIconified(false);
         fileWatcherStage.toFront();
+    }
+
+    private void handleFileWatcherIconButton() {
+        myFileWatcherViewerIconBtn.setDisable(isWatchServiceOn);
     }
 
     /**
@@ -803,6 +817,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                 stopWatcher();
                 EmailFrequencyManager.shutdown();
             }
+        } else if (theEvent.getPropertyName().equals(Properties.CLOSED.toString())) {
+            handleFileWatcherIconButton();
         }
     }
 }

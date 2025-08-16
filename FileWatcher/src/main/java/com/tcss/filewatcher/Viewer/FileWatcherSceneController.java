@@ -208,7 +208,6 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         }).start();
     }
 
-
     /**
      * Connects the main scene to the filewatcher scene.
      * <P>Ensures bidirectional communication.
@@ -229,6 +228,16 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     protected void setStage(final Stage theStage) {
 
         myStage = theStage;
+    }
+
+    /**
+     * Notifies main when this stage closes.
+     * @param theStage The fireWatcherSceneController stage.
+     */
+    public void watchStage(final Stage theStage) {
+        theStage.setOnHidden(theEvent -> {
+            myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
+        });
     }
 
     /**

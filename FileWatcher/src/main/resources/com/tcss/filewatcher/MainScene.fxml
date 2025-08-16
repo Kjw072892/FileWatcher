@@ -161,7 +161,10 @@
             </Button>
 
 
-            <Button fx:id="myFileWatcherViewerIconBtn" disable="true" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleFileWatcherButton" prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+            <Button fx:id="myFileWatcherViewerIconBtn" disable="true" maxHeight="25.0" maxWidth="25.0" minHeight="25.0"
+                    minWidth="25.0" mnemonicParsing="false" onAction="#handleFileWatcherButton" 
+                    prefHeight="25.0" prefWidth="25.0" style="-fx-background-radius: 95;
+                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
 
                 <tooltip>
                     <Tooltip text="View File Watcher (live)" />

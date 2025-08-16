@@ -29,12 +29,6 @@ public class UserRegSceneController {
     private PasswordField myVerifyPassword;
 
     /**
-     * The checkbox for emailing every new event.
-     */
-    @FXML
-    private CheckBox mySendEveryNewEventCheckBox;
-
-    /**
      * The checkbox for emailing everything at 5pm.
      */
     @FXML
@@ -59,7 +53,7 @@ public class UserRegSceneController {
         final boolean isSend5pmSelected = mySend5pmCheckBox.isSelected();
 
         final String selection = isSend5pmSelected ? mySend5pmCheckBox.getText() :
-                mySendEveryNewEventCheckBox.getText();
+                "None";
 
         if (password != null && !password.isEmpty()) {
 
@@ -98,25 +92,5 @@ public class UserRegSceneController {
             }
         }
 
-    }
-
-    /**
-     * Handles the checkbox for send an email for every new event.
-     */
-    @FXML
-    private void handleMySendEveryNewEventCheckBox() {
-        if (mySendEveryNewEventCheckBox.isSelected()) {
-            mySend5pmCheckBox.setSelected(false);
-        }
-    }
-
-    /**
-     * Handles the checkbox for sending all events occurring today at 5pm every day.
-     */
-    @FXML
-    private void handleMySend5pmCheckBox() {
-        if (mySend5pmCheckBox.isSelected()) {
-            mySendEveryNewEventCheckBox.setSelected(false);
-        }
     }
 }

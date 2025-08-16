@@ -231,10 +231,10 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     @FXML
     private void handleResetButton() {
-        myModificationComboBox.setValue(null);
+        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
         mySubCopy.setAll(myMasterCopy);
-        myFromDatePicker.setValue(null);
-        myToDatePicker.setValue(null);
+        myFromDatePicker.setValue(LocalDate.now().minusYears(1));
+        myToDatePicker.setValue(LocalDate.now());
         myTableView.setAll(myMasterCopy);
         myQuerySceneTable.setItems(myTableView);
 

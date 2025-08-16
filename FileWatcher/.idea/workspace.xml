@@ -4,28 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="fixed warnings and minor updat on ui">
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/SceneHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/CSVExporter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/CSVExporter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFrequencyManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFrequencyManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/SceneHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/SceneHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/QueryScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/QuerySceneController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +90,7 @@
     "Application.com.tcss.filewatcher.Viewer.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#7 on Kassie",
+    "git-widget-placeholder": "Kassie",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -180,7 +163,7 @@
       <workItem from="1755232749278" duration="34899000" />
       <workItem from="1755232749278" duration="21446000" />
       <workItem from="1755283495941" duration="534000" />
-      <workItem from="1755296351885" duration="12573000" />
+      <workItem from="1755296351885" duration="14116000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />
@@ -238,7 +221,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755295886759</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!">
+      <option name="closed" value="true" />
+      <created>1755311208175</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1755311208175</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,6 +241,7 @@
     <MESSAGE value="built the login screen, registration screen, and got the email api to work." />
     <MESSAGE value="- RePlaced all the console output to a more robust logger. &#10;- Updated some ui nodes.&#10;- Removed some unused variables and methods.&#10;- Added boolean debugger feature to more intuitively control output flow of logs.&#10;- Updated email client." />
     <MESSAGE value="fixed warnings and minor updat on ui" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed warnings and minor updat on ui" />
+    <MESSAGE value="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!" />
   </component>
 </project>

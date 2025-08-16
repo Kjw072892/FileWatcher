@@ -162,7 +162,7 @@ public class EmailClient {
         }
 
         try (InputStream in = CREDENTIALS_FILE_PATH) {
-            Objects.requireNonNull(in, "credentials file not found at /credentials/google_o_auth.json");
+            Objects.requireNonNull(in, "credentials file not found at /credentials/gmail_oauth.json");
 
             final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                     GoogleNetHttpTransport.newTrustedTransport(),

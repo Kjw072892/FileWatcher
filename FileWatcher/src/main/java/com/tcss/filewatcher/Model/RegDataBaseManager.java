@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.sqlite.SQLiteDataSource;
 
 public class RegDataBaseManager {
@@ -18,6 +20,11 @@ public class RegDataBaseManager {
      * The JDBC URL for the SQLite database file.
      */
     private static final String DB_URL = "jdbc:sqlite:filewatcher.db";
+
+    /**
+     * Logger for debugging purpose.
+     */
+    private static final Logger MY_LOGGER = Logger.getLogger("Registration Database Manager");
 
     /**
      * Constructs a new RegDataBaseManager, initializing the database and creating the table
@@ -36,10 +43,12 @@ public class RegDataBaseManager {
         try {
             myDs = new SQLiteDataSource();
             myDs.setUrl(DB_URL);
-            System.out.println("Database connection established successfully");
-        } catch (Exception e) {
-            System.out.println("invalid");
-            throw new RuntimeException("Failed to initialize database: ", e);
+            MY_LOGGER.log(Level.INFO, "Database connection established successfully!\n");
+        } catch (final Exception theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE,
+                    "The database was unable to initialize: " + theEvent.getMessage() + "\n");
+            throw new RuntimeException("Failed to initialize database: ", theEvent);
         }
     }
 
@@ -58,11 +67,13 @@ public class RegDataBaseManager {
 
 
         try (final Connection conn = myDs.getConnection();
-             Statement stmt = conn.createStatement()) {
+             final Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(query);
-            System.out.println("Table 'registration' initialized.");
+            MY_LOGGER.log(Level.INFO, "Table 'registration' initialized.\n");
+
         } catch (SQLException theE) {
-            System.out.println("Error creating table: " + theE.getMessage());
+
+            MY_LOGGER.log(Level.SEVERE, "Error creating table: " + theE.getMessage() + "\n");
             throw new RuntimeException("Failed to create table: ", theE);
         }
     }
@@ -88,7 +99,8 @@ public class RegDataBaseManager {
             prepStmt.executeUpdate();
 
         } catch (final SQLException theE) {
-            System.out.println("Error inserting users information: " + theE.getMessage());
+            MY_LOGGER.log(Level.SEVERE, "Error inserting users information: "
+                    + theE.getMessage() + "\n");
         }
     }
 
@@ -110,7 +122,8 @@ public class RegDataBaseManager {
             }
 
         } catch (final SQLException theE) {
-            System.out.println("Unable to query Database: " + theE);
+            MY_LOGGER.log(Level.SEVERE, "Unable to query Database: "
+                    + theE.getMessage() + "\n");
         }
 
         return false;
@@ -137,8 +150,8 @@ public class RegDataBaseManager {
             }
 
         } catch (final SQLException theE) {
-
-            System.err.println("Unable to perform query: " + theE);
+            MY_LOGGER.log(Level.SEVERE, "Unable to perform query: " + theE.getMessage()
+                    + "\n");
 
             return null;
         }
@@ -171,7 +184,8 @@ public class RegDataBaseManager {
             }
 
         } catch (final SQLException theE) {
-            System.err.println("Unable to perform query: " + theE);
+
+
             return false;
         }
     }
@@ -188,14 +202,16 @@ public class RegDataBaseManager {
              final Statement stmt = conn.createStatement();
              final ResultSet rs = stmt.executeQuery(userEmail)) {
 
-            while(rs.next()) {
+            while (rs.next()) {
                 if (rs.getString("email").equals(theEmail)) {
                     return true;
                 }
             }
 
         } catch (final SQLException theE) {
-            System.err.println("Unable to perform query: " + theE);
+
+            MY_LOGGER.log(Level.SEVERE, "Unable to perform query: " + theE.getMessage()
+                    + "\n");
         }
 
         return false;

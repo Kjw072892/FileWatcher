@@ -3,7 +3,6 @@ package com.tcss.filewatcher.Model;
 import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Viewer.FileWatcherSceneController;
 import com.tcss.filewatcher.Viewer.MainSceneController;
-
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,11 +35,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Watches a directory for file creation, modification, and deletion events.
@@ -124,15 +125,27 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     private Properties myProperties;
 
     /**
+     * Logger used for debugging.
+     */
+    private static final Logger MY_LOGGER = Logger.getLogger("File Event Watcher");
+
+    /**
+     * Overrides constructor debugger constructor.
+     */
+    @SuppressWarnings("FieldCanBeLocal")
+    private final boolean myIsDebuggerOverride = true;
+
+    /**
      * Default constructor initializes the watcher with no paths or extensions.
      */
-    public FileEventWatcher() {
+    public FileEventWatcher(final boolean theDebuggerStatus) {
         myWatchedExtensions = new HashSet<>();
         myCurrentEvents = new ArrayList<>();
         myIsWatching = false;
         myHasUnsavedEvents = false;
         initializeTransientFields();
         addPropertyChangeListener(this);
+        isDebuggerOn(theDebuggerStatus);
 
     }
 
@@ -142,11 +155,20 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      * @param theFilePath the absolute path of the directory to watch
      */
     public FileEventWatcher(final String theFilePath) {
-        this();
+        this(false);
         if (theFilePath == null || theFilePath.trim().isEmpty()) {
             throw new IllegalArgumentException("File path cannot be null or empty");
         }
         setWatchPath(theFilePath);
+    }
+
+    /**
+     * Sets the debugger
+     */
+    private void isDebuggerOn(final boolean theDebuggerStatus) {
+        if (!theDebuggerStatus || !myIsDebuggerOverride) {
+            MY_LOGGER.log(Level.OFF,"\n");
+        }
     }
 
     /**
@@ -178,7 +200,7 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             myWatchKeys = new HashMap<>();
         }
         if (myDBManager == null) {
-            myDBManager = new DataBaseManager();
+            myDBManager = new DataBaseManager(false);
         }
         if (myShouldStop == null) {
             myShouldStop = new AtomicBoolean(false);
@@ -200,11 +222,17 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                  walkAndRegisterDirectories(path);
             }
 
-        } catch (final ClosedWatchServiceException theCwse) {
-            System.err.println("WatchService closed while adding: " + path);
+        } catch (final ClosedWatchServiceException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE, "WatchService closed while adding: " + path + "\n");
+            MY_LOGGER.log(Level.SEVERE, theEvent.getMessage() + "\n");
+
         }
         catch (final IOException theIOE) {
-            System.err.println("Failed to register directory: " + path + " - " + theIOE.getMessage());
+
+            MY_LOGGER.log(Level.SEVERE, "Failed to register directory: " + path + "\n");
+            MY_LOGGER.log(Level.SEVERE, theIOE.getMessage() + "\n");
+
             myWatchedPaths.remove(path);
         }
 
@@ -264,10 +292,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
         // THESE ARE JUST DEBUG STATEMENTS TO SEE IF THE FILE PATH IS BEING WATCHED, IF THAT FILE EXISTS, AND CHECKS IF
         // THE PATH IS A DIRECTORY (NOT A FILE)
-        System.out.println("Trying to watch: " + theFilePath);
-        System.out.println("Exists: " + new File(theFilePath).exists());
-        System.out.println("Is directory: " + new File(theFilePath).isDirectory());
 
+        final String message = "Trying to watch: " + theFilePath +
+                "\nExists: " + new File(theFilePath).exists() +
+                "\nIs directory: " + new File(theFilePath).isDirectory();
+
+        MY_LOGGER.log(Level.INFO, message + "\n");
 
         final String oldPath = myAbsolutePath;
         myAbsolutePath = theFilePath;
@@ -348,7 +378,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
 
         initializeWatchService();
-        final boolean oldWatching = myIsWatching;
         myIsWatching = true;
         myShouldStop.set(false);
 
@@ -393,8 +422,9 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                 myWatchService.close();
                 myChanges.firePropertyChange(Properties.STOPPED_WATCHING.toString(), null,
                         false);
-            } catch (final IOException e) {
-                System.out.println("Error closing watch services: " + e.getMessage());
+            } catch (final IOException theEvent) {
+                MY_LOGGER.log(Level.SEVERE,
+                        "Error closing watch services: " + theEvent.getMessage() +"\n");
                 myWatchService = null;
             }
         }
@@ -449,12 +479,10 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             keyToRemove.cancel();
             myWatchKeys.remove(keyToRemove);
 
-
-            System.out.println("Directory has been successfully removed!");
+            MY_LOGGER.log(Level.INFO,"Directory has been successfully removed!\n");
 
         } else {
-
-            System.out.println("The directory could not be removed!");
+            MY_LOGGER.log(Level.INFO,"The directory could not be removed!\n");
         }
 
     }
@@ -468,7 +496,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     private void walkAndRegisterDirectories(final Path theStart) throws IOException {
         Files.walkFileTree(theStart, new SimpleFileVisitor<>() {
             @Override
-            public FileVisitResult preVisitDirectory(final Path theDir, final BasicFileAttributes theAttrs) throws IOException {
+            public @NotNull FileVisitResult preVisitDirectory(final @NotNull Path theDir,
+                                                              final @NotNull BasicFileAttributes theAttrs) throws IOException {
                 registerDirectory(theDir);
                 return FileVisitResult.CONTINUE;
             }
@@ -487,7 +516,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             while ((key = myWatchService.take()) != null && !myShouldStop.get()) {
                 final Path dir = myWatchKeys.get(key);
                 if (dir == null) {
-                    System.out.println("WatchKey not recognized!!");
+
+                    MY_LOGGER.log(Level.WARNING,"WatchKey not recognized!!\n" );
                     continue;
                 }
                 for (final WatchEvent<?> event : key.pollEvents()) {
@@ -509,7 +539,9 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             // normal during stop
         } catch (final InterruptedException theE) {
             Thread.currentThread().interrupt();
-            System.out.println("Watch service interrupted: " + theE.getMessage());
+
+            MY_LOGGER.log(Level.SEVERE, "Watch service interrupted: " + theE.getMessage() +
+                            "\n");
         }
     }
 
@@ -538,7 +570,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                     walkAndRegisterDirectories(child);
                 }
             } catch (final IOException theE) {
-                System.out.println("Error registering new directory: " + theE.getMessage());
+                MY_LOGGER.log(Level.SEVERE,
+                        "Error registering new directory: " + theE.getMessage() +"\n" );
 
             }
         }
@@ -548,12 +581,12 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         }
 
         // Create file event
-        final String eventType = getEventTypeString(kind, theDir);
+        final String eventType = getEventTypeString(kind);
         final String currentDate =
                 java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, " +
                         "yyyy"));
         final String currentTime =
-                java.time.LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss"));
+                java.time.LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         final FileEvent fileEvent = new FileEvent(
                 filename.toString(),
@@ -566,9 +599,10 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         addFileEvent(fileEvent);
 
         // print out event
-        System.out.format("%s: %s\n", theEvent.kind().name(), child);
+        final String message = String.format("%s: %s\n", theEvent.kind().name(), child);
+        MY_LOGGER.log(Level.INFO, message);
 
-        DirectoryEntry entry = new DirectoryEntry(currentDate, currentTime,
+        final DirectoryEntry entry = new DirectoryEntry(currentDate, currentTime,
                 filename.toString(), theDir.toString(), theEvent.kind().name());
 
         myChanges.firePropertyChange(Properties.NEW_FILE_EVENT.toString(), null, entry);
@@ -597,10 +631,9 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      * Returns a string representation of the event type based on the kind of event.
      *
      * @param theKind the kind of watch event (e.g., ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY)
-     * @param theDir  the directory where the event occurred
      * @return a string representing the event type
      */
-    private String getEventTypeString(final WatchEvent.Kind<?> theKind, final Path theDir) {
+    private String getEventTypeString(final WatchEvent.Kind<?> theKind) {
         if (theKind == ENTRY_CREATE) {
 
             return "CREATED";
@@ -630,7 +663,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      * Clears the list of current file events and resets the unsaved events flag.
      */
     public synchronized void clearCurrentEvents() {
-        final int oldSize = myCurrentEvents.size();
         myCurrentEvents.clear();
         setHasUnsavedEvents(false);
     }
@@ -673,15 +705,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         myChanges.addPropertyChangeListener(thePropertyName, theListener);
     }
 
-    /**
-     * Removes a property change listener for a specific property name.
-     *
-     * @param thePropertyName the name of the property to stop listening for changes
-     * @param theListener     the listener to remove
-     */
-    public void removePropertyChangeListener(final String thePropertyName, final PropertyChangeListener theListener) {
-        myChanges.removePropertyChangeListener(thePropertyName, theListener);
-    }
 
     /**
      * Serializes this FileEventWatcher object to an ObjectOutputStream.
@@ -773,7 +796,7 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                     myWatchedPaths.remove(thePath);
                 } else {
 
-                    System.out.println("Error: The directory path is null!");
+                    MY_LOGGER.log(Level.WARNING, "Error: The directory path is null!\n");
                 }
             }
             case REMOVED_EXTENSION -> removeWatchedExtension(theEvent.getNewValue().toString());
@@ -783,8 +806,10 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                     startBackgroundWatching();
 
                 } catch (final IOException theException) {
-                    System.out.println("The thread could not be initialized for background " +
-                            "processes!");
+
+                    MY_LOGGER.log(Level.SEVERE, "The thread could not be initialized for background " +
+                            "processes!\n");
+                    MY_LOGGER.log(Level.SEVERE, theException.getMessage() +"\n");
                     throw new RuntimeException(theException);
                 }
             }
@@ -795,7 +820,11 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
 
     /**
      * Represents a file event with details about the file, its absolute path,
+     *
+     * @author Salima Hafurova
+     * @version 8.11.25
      */
+    @SuppressWarnings("ClassCanBeRecord")
     public static class FileEvent implements Serializable {
 
         /**

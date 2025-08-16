@@ -15,6 +15,8 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -93,7 +95,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     /**
      * Instantiates database manager.
      */
-    private final DataBaseManager dbManager = new DataBaseManager();
+    private final DataBaseManager dbManager = new DataBaseManager(false);
 
     /**
      * This stage object.
@@ -101,15 +103,17 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     private Stage myStage;
 
     /**
-     * Clears SQL database for debugging.
-     */
-    @SuppressWarnings("FieldCanBeLocal")
-    private final boolean clearDataBase = true;
-
-    /**
      * The users Email address.
      */
     private String myUserEmailAddress;
+
+
+    /**
+     * Clears SQL database for debugging.
+     */
+    @SuppressWarnings("FieldCanBeLocal")
+    private final boolean clearDataBase = false;
+
 
 
     /**
@@ -154,13 +158,12 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         myStopButton.setDisable(false);
         myStopButton.setDisable(true);
         myChanges.firePropertyChange(Properties.START.toString(), false, true);
+        startWatcher();
     }
 
     @FXML
     public void handleStopButton() {
-        myStopButton.setDisable(true);
-        myStartButton.setDisable(false);
-        myChanges.firePropertyChange(Properties.STOP.toString(), false, true);
+        myChanges.firePropertyChange(Properties.STOPPING.toString(), null, true);
     }
 
     @FXML
@@ -179,7 +182,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
         final Path tmp = EmailFileController.getTmpFilePath();
 
-        EmailFileController.send(myTableview, tmp, "User Filtered Queries");
+        EmailFileController.send(myTableview, tmp, "Entries within 24 hours");
 
         final String email = myUserEmailAddress;
 
@@ -214,7 +217,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      */
     protected void setMyMainSceneController(final MainSceneController theScene) {
         theScene.addPropertyChangeListener(this);
-
+        theScene.setFileWatcherScene(this);
     }
 
 
@@ -245,13 +248,16 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     @Override
     public void propertyChange(final PropertyChangeEvent theEvent) {
 
+        final Logger logger = Logger.getLogger("FileWatcher Scene Controller logger");
+
         if (theEvent.getPropertyName().equals(Properties.START.toString())) {
             myStartButton.setDisable(true);
             myStopButton.setDisable(false);
             startWatcher();
             handleExitOnActive(myStage);
 
-        } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())) {
+        } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())
+                || theEvent.getPropertyName().equals(Properties.STOPPED.toString())) {
 
             myStartButton.setDisable(false);
             myStopButton.setDisable(true);
@@ -267,12 +273,11 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
                 if (FileExtensionHandler.canAddExtension(extensions, entry)) {
                     myTableview.add(entry);
-                    System.out.println("Added file to table: " + entry.getFileName());
+                    logger.log(Level.INFO, "Added file to table: " + entry.getFileName()+"\n");
                 }
             });
 
         } else if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {
-            System.out.println(theEvent.getNewValue().toString());
             myUserEmailAddress = (String) theEvent.getNewValue();
         }
     }

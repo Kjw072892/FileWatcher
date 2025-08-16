@@ -11,18 +11,12 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
-import com.tcss.filewatcher.Common.Properties;
-import com.tcss.filewatcher.Controller.EmailFileController;
-import com.tcss.filewatcher.Viewer.MainSceneController;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +31,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -46,7 +42,7 @@ import javafx.scene.control.Alert;
  * @author Google, Kassie Whitney
  * @version 2.5.1
  */
-public class EmailClient implements PropertyChangeListener {
+public class EmailClient {
 
     /**
      * The name of the email client.
@@ -78,20 +74,23 @@ public class EmailClient implements PropertyChangeListener {
             Paths.get(System.getProperty("user.home"), ".filewatcher_tokens").toFile();
 
     /**
-     * The email address of the administrative user.
-     */
-    private static String MY_ADMIN_EMAIL_ADDRESS;
-
-    /**
-     * The property change support object.
-     */
-    private final PropertyChangeSupport myChanges = new PropertyChangeSupport(this);
-
-    /**
      * Google oauth authentication service.
      */
     private static volatile Gmail SERVICE;
 
+
+    /**
+     * Logger object
+     */
+    private static final Logger MY_LOGGER = Logger.getLogger("Email Client Logger");
+
+
+    /**
+     * Gets the Gmail service.
+     * @return the Gmail service
+     * @throws GeneralSecurityException thrown if oauth fails.
+     * @throws IOException thrown if the path to the json file doesn't exist.
+     */
     private static Gmail getService() throws GeneralSecurityException, IOException {
         if (SERVICE == null) {
             synchronized (EmailClient.class) {
@@ -113,7 +112,7 @@ public class EmailClient implements PropertyChangeListener {
     public static boolean start(final String theToAddress, final Path theCsvPath) {
         if (theToAddress == null || theToAddress.isBlank()) {
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                final Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Receiver Address Invalid");
                 alert.setContentText("""
                             The receiver's email address was not properly configured!
@@ -125,27 +124,27 @@ public class EmailClient implements PropertyChangeListener {
         }
 
         try {
-            Gmail service = getService();
+            final Gmail service = getService();
 
             if (!Files.exists(theCsvPath)) {
                 throw new FileNotFoundException("CSV not found: " + theCsvPath);
             }
 
-            File csvFile = theCsvPath.toFile();
-            MimeMessage email = createEmail(theToAddress, csvFile);
+            final File csvFile = theCsvPath.toFile();
+            final MimeMessage email = createEmail(theToAddress, csvFile);
             Message sent = sendMessage(service, email);
 
-            System.out.println("Sent message ID: " + sent.getId());
+            MY_LOGGER.log(Level.INFO,"Sent message ID: " + sent.getId()+"\n");
             return true;
 
-        } catch (Exception ex) {
+        } catch (final Exception theEvent) {
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                final Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Unable to send email");
-                alert.setContentText("An error occurred while sending the email: " + ex.getMessage());
+                alert.setContentText("An error occurred while sending the email: " + theEvent.getMessage());
                 alert.showAndWait();
             });
-            ex.printStackTrace();
+            MY_LOGGER.log(Level.SEVERE, theEvent.getMessage()+"\n");
             return false;
         }
     }
@@ -165,7 +164,7 @@ public class EmailClient implements PropertyChangeListener {
         try (InputStream in = CREDENTIALS_FILE_PATH) {
             Objects.requireNonNull(in, "credentials file not found at /credentials/google_o_auth.json");
 
-            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+            final GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                     GoogleNetHttpTransport.newTrustedTransport(),
                     MY_JSON_FACTORY,
                     GoogleClientSecrets.load(MY_JSON_FACTORY, new InputStreamReader(in)),
@@ -175,9 +174,10 @@ public class EmailClient implements PropertyChangeListener {
                     .setAccessType("offline")
                     .build();
 
-            String tokenKey = "user";
+            final String tokenKey = "user";
 
-            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(-1).build();
+            final LocalServerReceiver receiver =
+                    new LocalServerReceiver.Builder().setPort(-1).build();
 
             return new AuthorizationCodeInstalledApp(flow, receiver).authorize(tokenKey);
         }
@@ -256,32 +256,4 @@ public class EmailClient implements PropertyChangeListener {
                                        final MimeMessage theEmail) throws MessagingException, IOException {
         return theService.users().messages().send("me", createMessageWithEmail(theEmail)).execute();
     }
-
-
-    /**
-     * Adds the email client scene as a listener.
-     *
-     * @param theEmailClientScene the emailClientScene object.
-     */
-    public void addPropertyChangeListener(final MainSceneController theEmailClientScene) {
-        theEmailClientScene.addPropertyChangeListener(this);
-        theEmailClientScene.setEmailClientListener(this);
-    }
-
-
-    /**
-     * Listens for property changes.
-     *
-     * @param theEvent A PropertyChangeEvent object describing the event source
-     *                 and the property that has changed.
-     */
-    @Override
-    public void propertyChange(final PropertyChangeEvent theEvent) {
-        if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {
-            final String toAddress = (String) theEvent.getNewValue();
-
-        }
-    }
-
-
 }

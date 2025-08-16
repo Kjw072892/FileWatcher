@@ -25,6 +25,8 @@ module com.tcss.filewatcher {
     requires com.google.api.client.auth;
     requires com.opencsv;
     requires jdk.httpserver;
+    requires commons.collections;
+    requires org.jetbrains.annotations;
 
     opens com.tcss.filewatcher to javafx.fxml;
     exports com.tcss.filewatcher.Viewer;

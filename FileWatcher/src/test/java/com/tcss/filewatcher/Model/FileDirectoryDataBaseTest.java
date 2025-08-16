@@ -36,7 +36,7 @@ class FileDirectoryDataBaseTest {
 
     @BeforeEach
     void setUp() {
-        myDataBase = new FileDirectoryDataBase();
+        myDataBase = new FileDirectoryDataBase(false);
         // Clear any existing data
         myDataBase.clearDatabase();
     }
@@ -73,9 +73,9 @@ class FileDirectoryDataBaseTest {
 
     @Test
     void testInsertDirectoryWithEmptyStrings() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            myDataBase.insertDirectory("", "", "", "");
-        }, "Empty strings should throw exception");
+        assertThrows(IllegalArgumentException.class, () ->
+                myDataBase.insertDirectory("", "", "", ""),
+                "Empty strings should throw exception");
     }
 
     // Remove directory tests
@@ -132,16 +132,16 @@ class FileDirectoryDataBaseTest {
 
     @Test
     void testInsertDirectoryWithInvalidTimeFormat() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            myDataBase.insertDirectory(TEST_DATE, "invalid-time", TEST_FILE_EXTENSION, TEST_DIRECTORY);
-        }, "Invalid time format should throw exception");
+        assertThrows(IllegalArgumentException.class, () -> myDataBase.insertDirectory(TEST_DATE,
+                "invalid-time", TEST_FILE_EXTENSION, TEST_DIRECTORY),
+                "Invalid time format should throw exception");
     }
 
     @Test
     void testInsertDirectoryWithInvalidDateFormat() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            myDataBase.insertDirectory("invalid-date", TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY);
-        }, "Invalid date format should throw exception");
+        assertThrows(IllegalArgumentException.class, () -> myDataBase.insertDirectory("invalid-date",
+                TEST_TIME, TEST_FILE_EXTENSION, TEST_DIRECTORY),
+                "Invalid date format should throw exception");
     }
 
     // Get all entries tests
@@ -234,7 +234,7 @@ class FileDirectoryDataBaseTest {
         assertEquals(1, myDataBase.getTableSize(), "Should have 1 entry after insert");
 
         // Create new database instance (should connect to same database file)
-        FileDirectoryDataBase newDatabase = new FileDirectoryDataBase();
+        FileDirectoryDataBase newDatabase = new FileDirectoryDataBase(false);
         assertEquals(1, newDatabase.getTableSize(), "New database instance should see existing data");
 
         List<DirectoryEntry> entries = newDatabase.getAllEntries();

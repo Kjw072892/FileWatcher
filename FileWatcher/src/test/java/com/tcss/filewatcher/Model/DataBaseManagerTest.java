@@ -37,7 +37,7 @@ class DataBaseManagerTest {
     @BeforeEach
     void setUp() {
         // Create a fresh database manager for each test
-        myDBManager = new DataBaseManager();
+        myDBManager = new DataBaseManager(false);
         // Clear any existing data
         myDBManager.clearDatabase();
     }
@@ -252,9 +252,9 @@ class DataBaseManagerTest {
     }
     @Test
     void testInsertNullValues() {
-        assertDoesNotThrow(() -> {
-            myDBManager.insertFileEvent(null, null, null, null, null);
-        }, "Should handle null values gracefully");
+        assertDoesNotThrow(() -> myDBManager.insertFileEvent(null,
+                null, null, null, null),
+                "Should handle null values gracefully");
     }
 
     @Test
@@ -276,7 +276,7 @@ class DataBaseManagerTest {
         myDBManager.insertFileEvent(TEST_DATE, TEST_TIME, TEST_ABSOLUTE_PATH, TEST_FILE_NAME, TEST_EVENT_TYPE);
 
         // Create new instance
-        DataBaseManager newManager = new DataBaseManager();
+        DataBaseManager newManager = new DataBaseManager(false);
         List<DirectoryEntry> results = newManager.getAllEntries();
         assertEquals(1, results.size(), "Data should persist across instances");
     }

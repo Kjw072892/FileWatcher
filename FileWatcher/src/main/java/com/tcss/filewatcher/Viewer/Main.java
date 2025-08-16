@@ -1,12 +1,13 @@
 package com.tcss.filewatcher.Viewer;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 /**
@@ -35,8 +36,9 @@ public class Main extends Application {
 
 
         } catch (final IOException theEvent) {
-
-            System.err.println("Unable to load program: " + theEvent.getMessage());
+            final Logger logger = Logger.getLogger("Main class");
+            logger.log(Level.SEVERE, "Unable to load program: "
+                    + theEvent.getMessage() +"\n");
         }
 
     }

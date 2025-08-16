@@ -36,7 +36,7 @@
             <Insets right="10.0" />
         </padding>
     </Label>
-    <ComboBox fx:id="myModificationComboBox" layoutX="538.0" layoutY="41.0" onAction="#handleModifyComboBox" prefHeight="25.0" prefWidth="196.0" AnchorPane.rightAnchor="10.0">
+    <ComboBox fx:id="myModificationComboBox" layoutX="538.0" layoutY="41.0" onAction="#handleModifyComboBox" prefHeight="25.0" prefWidth="196.0" promptText="ALL_TYPES" AnchorPane.rightAnchor="10.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="ALL_TYPES" />
@@ -49,14 +49,18 @@
     </ComboBox>
 
     <Label layoutX="578.0" layoutY="24.0" text="MODIFICATION TYPE:" AnchorPane.rightAnchor="55" />
-   <Button fx:id="myResetTableButton" layoutX="176.0" layoutY="84.0" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="26.0" prefWidth="149.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1); -fx-background-radius: 95;" text="Reset" />
-   <Button fx:id="myEmailButton" layoutX="433.0" layoutY="84.0" maxHeight="58.0" maxWidth="149.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" snapToPixel="false" style="-fx-background-radius: 95;                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);">
+   <Button id="myResetTableButton" layoutX="169.0" layoutY="84.0" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="26.0" prefWidth="149.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);            -fx-background-radius: 95;" text="Reset" AnchorPane.bottomAnchor="530.0" AnchorPane.leftAnchor="160.0" >
+        <tooltip>
+         <Tooltip text="Reset Filter"/>
+      </tooltip>
+   </Button>
+   <Button id="myEmailButton" layoutX="442.0" layoutY="84.0" maxHeight="58.0" maxWidth="149.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#handleSendEmail" prefHeight="26.0" prefWidth="149.0" snapToPixel="false" style="-fx-background-radius: 95;     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" AnchorPane.bottomAnchor="530.0" AnchorPane.rightAnchor="160.0">
       <tooltip>
-         <Tooltip text="Open Email Preferences" />
+         <Tooltip text="Email Current Table" />
       </tooltip>
       <graphic>
           <ImageView fitHeight="26.0" fitWidth="22.0">
-              <Image url="@../../../icons/email_Icon.png"/>
+              <Image url="@../../../icons/email_Icon.png" />
           </ImageView>
       </graphic>
    </Button>

@@ -1,12 +1,9 @@
 package com.tcss.filewatcher.Viewer;
 
-import javafx.stage.Stage;
-
+/**
+ * Controller for the about scene.
+ * The about scene has no functionality, this class isn't used.
+ */
 public class AboutSceneController {
 
-    private Stage myStage;
-
-    protected void setStage(final Stage theStage) {
-        myStage = theStage;
-    }
 }

@@ -3,6 +3,8 @@ package com.tcss.filewatcher.Model;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.sqlite.SQLiteDataSource;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -29,11 +31,23 @@ public class DataBaseManager {
     private static final String DB_URL = "jdbc:sqlite:filewatcher.db";
 
     /**
+     * The logger object.
+     */
+    private static final Logger MY_LOGGER = Logger.getLogger("Database Manager");
+
+    /**
      * Constructs a new DataBaseManager, initializing the database and creating the table if needed.
      */
-    public DataBaseManager() {
+    public DataBaseManager(final boolean theDebugger) {
         initializeDatabase();
         createTable();
+        setDebugger(theDebugger);
+    }
+
+    private void setDebugger(final boolean theDebuggerStatus) {
+        if (!theDebuggerStatus) {
+            MY_LOGGER.log(Level.OFF, "\n");
+        }
     }
 
     /**
@@ -44,10 +58,10 @@ public class DataBaseManager {
         try {
             myDs = new SQLiteDataSource();
             myDs.setUrl(DB_URL);
-            System.out.println("Database connection established successfully");
-        } catch (Exception e) {
-            System.out.println("invalid");
-            throw new RuntimeException("Failed to initialize database: ", e);
+            MY_LOGGER.log(Level.INFO, "Database connection established successfully\n");
+        } catch (final Exception theException) {
+            MY_LOGGER.log(Level.SEVERE, theException.getMessage()+"\n");
+            throw new RuntimeException("Failed to initialize database: ", theException);
         }
     }
 
@@ -70,9 +84,10 @@ public class DataBaseManager {
         try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(query);
-            System.out.println("Table 'filewatcher' initialized.");
+            MY_LOGGER.log(Level.INFO,"Table 'filewatcher' initialized.\n");
         } catch (SQLException theE) {
-            System.out.println("Error creating table: " + theE.getMessage());
+
+            MY_LOGGER.log(Level.SEVERE, "Error creating table: " + theE.getMessage()+"\n");
             throw new RuntimeException("Failed to create table: ", theE);
         }
     }
@@ -103,8 +118,10 @@ public class DataBaseManager {
             pstmt.setObject(5, theEventType);
             pstmt.executeUpdate();
 
-        } catch (SQLException theE) {
-            System.out.println("Error inserting file event: " + theE.getMessage());
+        } catch (final SQLException theE) {
+
+            MY_LOGGER.log(Level.SEVERE, "Error inserting file event: " + theE.getMessage()+
+                    "\n");
         }
     }
 
@@ -116,8 +133,9 @@ public class DataBaseManager {
         try (Connection conn = myDs.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(deleteSQL);
-        } catch (SQLException e) {
-            System.out.println("Error clearing database: " + e.getMessage());
+        } catch (final SQLException theEvent) {
+            MY_LOGGER.log(Level.SEVERE, "Error clearing database: " + theEvent.getMessage()+
+                    "\n");
         }
     }
 
@@ -138,8 +156,8 @@ public class DataBaseManager {
                 return 0;
             }
 
-        } catch (final SQLException theSQLException) {
-            System.out.println("Error counting items: " + theSQLException.getMessage());
+        } catch (final SQLException theEvent) {
+            MY_LOGGER.log(Level.SEVERE, "Error counting items: " + theEvent.getMessage()+"\n");
             return -1;
         }
     }
@@ -158,14 +176,16 @@ public class DataBaseManager {
                 + "ORDER by event_date, event_time";
         try (Connection conn = myDs.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            // Make sure file name start with dot for searching
+
             String searchPattern;
             searchPattern = "%" + theExtension;
             pstmt.setString(1, searchPattern);
             final ResultSet resultSet = pstmt.executeQuery();
             addToResultList(results, resultSet);
-        } catch (SQLException e) {
-            System.out.println("Error querying by extension: " + e.getMessage());
+
+        } catch (final SQLException theEvent) {
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error querying by extension: " + theEvent.getMessage()+"\n");
         }
         return results;
     }
@@ -179,7 +199,8 @@ public class DataBaseManager {
             final String directory = resultSet.getString("absolute_path");
             final String eventType = resultSet.getString("event_type");
 
-            DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory, eventType);
+            final DirectoryEntry entry = new DirectoryEntry(date, time, fileName, directory,
+                    eventType);
 
             results.add(entry);
         }
@@ -203,8 +224,10 @@ public class DataBaseManager {
             pstmt.setString(1, theEventType.toUpperCase());
             ResultSet rs = pstmt.executeQuery();
             addToResultList(results, rs);
-        } catch (SQLException e) {
-            System.out.println("Error querying by event type: " + e.getMessage());
+
+        } catch (final SQLException theEvent) {
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error querying by event type: " + theEvent.getMessage()+"\n");
         }
         return results;
     }
@@ -221,15 +244,18 @@ public class DataBaseManager {
         final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
                 "event_type FROM filewatcher WHERE absolute_path "
                 + "LIKE ? ORDER BY event_date, event_time";
-        try (Connection conn = myDs.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (final Connection conn = myDs.getConnection();
+             final PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, theDirectoryPath + "%");
             ResultSet rs = pstmt.executeQuery();
             addToResultList(results, rs);
 
-        } catch (SQLException theE) {
-            System.out.println("Error querying by directory: " + theE.getMessage());
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error querying by directory: "+ theEvent.getMessage()+"\n");
         }
+
         return results;
     }
 
@@ -247,16 +273,19 @@ public class DataBaseManager {
         final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
                 "event_type " +
                 "FROM filewatcher WHERE event_date BETWEEN ? AND ? ORDER BY event_date, event_time";
-        try (Connection conn = myDs.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (final Connection conn = myDs.getConnection();
+             final PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, theStartDate);
             pstmt.setString(2, theEndDate);
             ResultSet rs = pstmt.executeQuery();
             addToResultList(results, rs);
 
-        } catch (SQLException theE) {
-            System.out.println("Error querying by date range: " + theE.getMessage());
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error querying by date range: " + theEvent.getMessage()+"\n");
         }
+
         return results;
     }
 
@@ -278,8 +307,10 @@ public class DataBaseManager {
              ResultSet rs = stmt.executeQuery(query)) {
             addToResultList(sqlEntries, rs);
 
-        } catch (final SQLException theSQLexception) {
-            System.out.println("Error retrieving entries: " + theSQLexception.getMessage());
+        } catch (final SQLException theEvent) {
+
+            MY_LOGGER.log(Level.SEVERE,
+                    "Error retrieving entries: " + theEvent.getMessage()+"\n");
         }
         return sqlEntries;
     }

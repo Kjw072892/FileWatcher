@@ -63,7 +63,7 @@ class FileEventWatcherTest {
 
     @BeforeEach
     void setUp() {
-        myWatcher = new FileEventWatcher();
+        myWatcher = new FileEventWatcher(false);
         myListener = new TestPropertyChangeListener();
         myWatcher.addPropertyChangeListener(myListener);
     }
@@ -80,7 +80,7 @@ class FileEventWatcherTest {
 
     @Test
     void testDefaultConstructor() {
-        FileEventWatcher watcher = new FileEventWatcher();
+        FileEventWatcher watcher = new FileEventWatcher(false);
         assertAll("Default constructor test",
                 () -> assertNotNull(watcher, "Watcher should be created"),
                 () -> assertNull(watcher.getAbsolutePath(), "Initial path should be null"),
@@ -367,8 +367,8 @@ class FileEventWatcherTest {
         assertAll("FileEvent equals test",
                 () -> assertEquals(event1, event2, "Identical events should be equal"),
                 () -> assertNotEquals(event1, event3, "Different events should not be equal"),
-                () -> assertNotEquals(event1, null, "Event should not equal null"),
-                () -> assertNotEquals(event1, "not an event", "Event should not equal other types"),
+                () -> assertNotEquals(null, event1, "Event should not equal null"),
+                () -> assertNotEquals("not an event", event1, "Event should not equal other types"),
                 () -> assertEquals(event1.hashCode(), event2.hashCode(), "Equal events should have same hash")
         );
     }

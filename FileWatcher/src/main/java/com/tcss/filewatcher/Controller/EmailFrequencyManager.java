@@ -37,7 +37,7 @@ public class EmailFrequencyManager {
     /**
      * Ensures that the scheduled executor service is properly shutdown.
      */
-    public void shutdown() {
+    public static void shutdown() {
         exec.shutdownNow(); }
 }
 

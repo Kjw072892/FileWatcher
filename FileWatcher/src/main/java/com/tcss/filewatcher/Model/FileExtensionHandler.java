@@ -1,7 +1,6 @@
 package com.tcss.filewatcher.Model;
 
 import java.util.List;
-import java.util.Objects;
 
 public class FileExtensionHandler {
     private FileExtensionHandler() {
@@ -22,14 +21,14 @@ public class FileExtensionHandler {
         }
 
         if (theExtensions.contains("All Extensions")) {
-            new DataBaseManager().insertFileEvent(theEntry.getDate(), theEntry.getTime(),
+            new DataBaseManager(false).insertFileEvent(theEntry.getDate(), theEntry.getTime(),
                     name, theEntry.getDirectory(), theEntry.getModificationType());
             return true;
         }
 
         final String ext = theEntry.getFileExtension();
         if (ext != null && theExtensions.contains(ext)) {
-            new DataBaseManager().insertFileEvent(theEntry.getDate(), theEntry.getTime(),
+            new DataBaseManager(false).insertFileEvent(theEntry.getDate(), theEntry.getTime(),
                     name, theEntry.getDirectory(), theEntry.getModificationType());
             return true;
         }

@@ -1,6 +1,7 @@
 package com.tcss.filewatcher.Viewer;
 
 import com.tcss.filewatcher.Common.Properties;
+import com.tcss.filewatcher.Model.FileEventWatcher;
 import com.tcss.filewatcher.Model.RegDataBaseManager;
 import com.tcss.filewatcher.Model.SceneHandler;
 import java.beans.PropertyChangeEvent;
@@ -104,7 +105,9 @@ public class EmailAndPassCheckController {
             alert.showAndWait();
         } else {
 
-            if (!SceneHandler.watcherRunningProperty()) {
+            System.out.println(FileEventWatcher.fileWatcherStatus());
+
+            if (!FileEventWatcher.fileWatcherStatus()) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(EmailAndPassCheckController.class.getResource("/com/tcss" +
                             "/filewatcher/MainScene.fxml"));

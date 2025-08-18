@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Added unit tests for the new model .java classes, altered some java classes to have exception handling for example in some cases where an email might by null or empty.">
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +18,6 @@
       <list>
         <option value="FxmlFile" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -50,21 +48,10 @@
     &quot;assignee&quot;: &quot;Kjw072892&quot;
   }
 }</component>
-  <component name="GitHubPullRequestState">{
-  &quot;prStates&quot;: [
-    {
-      &quot;id&quot;: {
-        &quot;id&quot;: &quot;PR_kwDOPcTH6M6j7Tfg&quot;,
-        &quot;number&quot;: 8
-      },
-      &quot;lastSeen&quot;: 1755327742672
-    }
-  ]
-}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Kjw072892/FileWatcher.git&quot;,
-    &quot;accountId&quot;: &quot;a7eedbc8-f474-4bbd-ac86-00661a5b74b3&quot;
+    &quot;accountId&quot;: &quot;190c2852-ffa4-4492-a865-bb0e1c0aa158&quot;
   },
   &quot;recentNewPullRequestHead&quot;: {
     &quot;server&quot;: {
@@ -95,172 +82,72 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.com.tcss.filewatcher.Viewer.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataBaseManagerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DirectoryEntryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testApplicationNameConstant.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testConcurrentEmailSending.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testCsvFileValidation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testEmailAddressValidation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testJsonFactoryConstant.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testResourceHandling.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithBlankEmail.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithDirectoryInsteadOfFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithEmptyCsvFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithLargeCsvFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithNonExistentCsvFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithNullEmail.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithSpacesOnlyEmail.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testStartWithValidInputs.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EmailClientTest.testTokensDirectoryCreation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileDirectoryDataBaseTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileEventWatcherTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileEventWatcherTest.testAddWatchPathNonExistent.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileExtensionHandlerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FileExtensionHandlerTest.testDatabaseIntegration.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.testConcurrentAccess.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.testDatabasePersistence.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.testGetEmailFrequencyCaseInsensitive.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegistered.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegisteredWithEmptyEmail.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RegDataBaseManagerTest.testIsExistingUserWithEmptyEmail.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SceneHandlerTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#8 on Salima&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/kassie/Library/CloudStorage/OneDrive-Personal/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.com.tcss.filewatcher.Viewer.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/kassie/Library/CloudStorage/OneDrive-Personal/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/credentials" />
       <recent name="$PROJECT_DIR$/src/main/resources/icons" />
     </key>
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="com.tcss.filewatcher.Model" />
-    </key>
   </component>
-  <component name="RunManager" selected="JUnit.RegDataBaseManagerTest.testConcurrentAccess">
-    <configuration name="RegDataBaseManagerTest.testConcurrentAccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.com.tcss.filewatcher.Viewer.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.tcss_360.filewatcher.Viewer.Main" />
       <module name="FileWatcher" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
+          <option name="PATTERN" value="com.tcss_360.filewatcher.Viewer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.RegDataBaseManagerTest" />
-      <option name="METHOD_NAME" value="testConcurrentAccess" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RegDataBaseManagerTest.testGetEmailFrequencyCaseInsensitive" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="com.tcss.filewatcher.Viewer.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Viewer.Main" />
       <module name="FileWatcher" />
+      <option name="VM_PARAMETERS" value="--enable-native-access=org.xerial.sqlitejdbc --enable-native-access=javafx.graphics,org.xerial.sqlitejdbc" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
+          <option name="PATTERN" value="com.tcss.filewatcher.Viewer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.RegDataBaseManagerTest" />
-      <option name="METHOD_NAME" value="testGetEmailFrequencyCaseInsensitive" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RegDataBaseManagerTest.testHasAUserAlreadyRegistered" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FileWatcher" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.RegDataBaseManagerTest" />
-      <option name="METHOD_NAME" value="testHasAUserAlreadyRegistered" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RegDataBaseManagerTest.testHasAUserAlreadyRegisteredWithEmptyEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FileWatcher" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.RegDataBaseManagerTest" />
-      <option name="METHOD_NAME" value="testHasAUserAlreadyRegisteredWithEmptyEmail" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RegDataBaseManagerTest.testIsExistingUserWithEmptyEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FileWatcher" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.RegDataBaseManagerTest" />
-      <option name="METHOD_NAME" value="testIsExistingUserWithEmptyEmail" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.RegDataBaseManagerTest.testConcurrentAccess" />
-      <item itemvalue="JUnit.RegDataBaseManagerTest.testGetEmailFrequencyCaseInsensitive" />
-      <item itemvalue="JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegistered" />
-      <item itemvalue="JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegisteredWithEmptyEmail" />
-      <item itemvalue="JUnit.RegDataBaseManagerTest.testIsExistingUserWithEmptyEmail" />
+      <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
+      <item itemvalue="Application.Main" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegistered" />
-        <item itemvalue="JUnit.RegDataBaseManagerTest.testGetEmailFrequencyCaseInsensitive" />
-        <item itemvalue="JUnit.RegDataBaseManagerTest.testIsExistingUserWithEmptyEmail" />
-        <item itemvalue="JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegisteredWithEmptyEmail" />
-        <item itemvalue="JUnit.RegDataBaseManagerTest.testConcurrentAccess" />
+        <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
       </set>
     </attachedChunks>
   </component>
@@ -277,8 +164,6 @@
       <workItem from="1755232749278" duration="21446000" />
       <workItem from="1755283495941" duration="534000" />
       <workItem from="1755296351885" duration="14116000" />
-      <workItem from="1755320947509" duration="11310000" />
-      <workItem from="1755465559420" duration="661000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />
@@ -344,13 +229,13 @@
       <option name="project" value="LOCAL" />
       <updated>1755311208175</updated>
     </task>
-    <task id="LOCAL-00009" summary="Added unit tests for the new model .java classes, altered some java classes to have exception handling for example in some cases where an email might by null or empty.">
+    <task id="LOCAL-00009" summary="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!">
       <option name="closed" value="true" />
-      <created>1755327698400</created>
+      <created>1755314781014</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1755327698400</updated>
+      <updated>1755314781014</updated>
     </task>
     <option name="localTasksCounter" value="10" />
     <servers />
@@ -365,7 +250,6 @@
     <MESSAGE value="- RePlaced all the console output to a more robust logger. &#10;- Updated some ui nodes.&#10;- Removed some unused variables and methods.&#10;- Added boolean debugger feature to more intuitively control output flow of logs.&#10;- Updated email client." />
     <MESSAGE value="fixed warnings and minor updat on ui" />
     <MESSAGE value="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!" />
-    <MESSAGE value="Added unit tests for the new model .java classes, altered some java classes to have exception handling for example in some cases where an email might by null or empty." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added unit tests for the new model .java classes, altered some java classes to have exception handling for example in some cases where an email might by null or empty." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed a bug where an dir with an extension not already added to the watch list, couldnt be added to the watch list because because another directory is watching all extensions.&#10;&#10;Updated UI for query.&#10;&#10;Fixed the hangtime bug where the program wouldnt close out completly upon closing the program.&#10;&#10;Completed the email feautre for the query, updated the query message thats shown on the csv.&#10;&#10;Added a feature where the program requires the admin to login to shut down the program. &#10;&#10;Fixed some checkstyle warnings.&#10;&#10;The software has finished its development stage. yay!!!" />
   </component>
 </project>

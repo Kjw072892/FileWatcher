@@ -194,6 +194,8 @@ public class FileWatcherSceneController extends SceneHandler implements Property
                     alert.setContentText("Email sent Successfully");
                     alert.setResizable(false);
                     alert.show();
+                    Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
+
                 });
 
             } else {

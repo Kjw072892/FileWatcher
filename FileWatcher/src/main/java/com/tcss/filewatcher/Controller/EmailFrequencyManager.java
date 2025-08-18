@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Automatically starts a runnable task at 5pm every day.
@@ -28,17 +30,13 @@ public final class EmailFrequencyManager {
 
     /**
      * Checks if the schedular is active or terminated.
-     * starts a new daemon if the schedular was terminated or shutdown.
+     * starts a new daemon if the schedule was terminated or shutdown.
      */
     private static void ensureScheduler() {
         if (scheduler == null || scheduler.isShutdown() || scheduler.isTerminated()) {
 
-            scheduler = Executors.newSingleThreadScheduledExecutor(theRunnable -> {
-
-                final Thread thread = new Thread(theRunnable, "EmailScheduler");
-                thread.setDaemon(true);
-                return thread;
-            });
+            scheduler = Executors.newSingleThreadScheduledExecutor(theRunnable ->
+                    new Thread(theRunnable, "EmailScheduler"));
         }
     }
 
@@ -82,9 +80,11 @@ public final class EmailFrequencyManager {
     private static long computeDelayUntilNext5amMillis() {
 
         ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime next = now.withHour(5).withMinute(0).withSecond(0).withNano(0);
+        ZonedDateTime next = now.withHour(17).withMinute(0).withSecond(0).withNano(0);
         if (!next.isAfter(now)) next = next.plusDays(1);
 
+        Logger.getAnonymousLogger().log(Level.INFO, Duration.between(now,
+                next).toMillis() + "\n");
         return Duration.between(now, next).toMillis();
     }
 }

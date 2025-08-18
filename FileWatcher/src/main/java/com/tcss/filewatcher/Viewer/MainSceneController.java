@@ -295,8 +295,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         myStartIconBtn.setDisable(true);
         myFileWatcherViewerIconBtn.setDisable(false);
 
-        EmailFileController.start5Pm(myUsersEmailAddress,
-                EmailFileController.getTmpFilePath());
 
         if (myFileWatcher == null) {
             myFileWatcher = new FileEventWatcher(false);
@@ -331,26 +329,28 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             fileWatcherStage.setScene(fileWatcherScene);
             fileWatcherStage.setTitle("File Watcher (live)");
 
-//            fileWatcherSceneController.watchStage(fileWatcherStage);
-            fileWatcherStage.setOnCloseRequest(theEvent -> {
-                theEvent.consume();
-                fileWatcherStage.setIconified(true);
-                myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
-            });
+            fileWatcherSceneController.watchStage(fileWatcherStage);
 
             fileWatcherStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/watcher.png"))));
             fileWatcherStage.setX(myStage.getX() + myStage.getWidth());
             fileWatcherStage.setY(myStage.getY());
 
-            startWatcher();
-
             fileWatcherStage.show();
             fileWatcherStage.setResizable(false);
 
+            fileWatcherStage.setOnCloseRequest(theEvent -> {
+                theEvent.consume();
+                fileWatcherStage.setIconified(true);
+                myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
+            });
+
+
+            EmailFileController.start5Pm(myUsersEmailAddress,
+                    EmailFileController.getTmpFilePath());
+
             myChanges.firePropertyChange(Properties.START.toString(), null, Properties.START);
             myChanges.firePropertyChange(Properties.USERS_EMAIL.toString(), null, myUsersEmailAddress);
-
 
         } catch (final IOException ioe) {
 
@@ -447,8 +447,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
 
     }
-
-
 
 
     /**
@@ -591,14 +589,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         final boolean dirCheck =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getDirectory().equals(finalDirectory));
 
-        final boolean extCheck =
-                myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals(extension));
-
         if (dirCheck) {
             listOfUsedExten = getExtensionsFromDir(finalDirectory);
         }
 
-        if (listOfUsedExten.contains(extension) || (dirCheck && extCheck)) {
+        if (listOfUsedExten.contains(extension) || listOfUsedExten.contains("All Extensions")) {
 
             final Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Duplicate directories");
@@ -610,6 +605,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                     .getResourceAsStream("/icons/FileWatcherIcons.png"))));
             alert.setResizable(false);
             alert.showAndWait();
+
             return;
 
         }
@@ -787,7 +783,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             myFileWatcherViewerMenuItem.setDisable(false);
             startWatcher();
 
-        }  else if (theEvent.getPropertyName().equals(Properties.STOPPING.toString())) {
+        } else if (theEvent.getPropertyName().equals(Properties.STOPPING.toString())) {
             handleStopFileWatcher();
 
         } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())) {

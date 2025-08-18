@@ -11,12 +11,16 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -130,6 +134,12 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     private Stage myStage;
 
+    /**
+     * The formatter for comparing the dates.
+     */
+    private static final DateTimeFormatter ENTRY_FMT =
+            DateTimeFormatter.ofPattern("dd MMM, uuuu", java.util.Locale.ENGLISH);
+
 
     /**
      * Initializes the query scene.
@@ -172,11 +182,9 @@ public class QuerySceneController implements PropertyChangeListener {
             }
         }
 
-
         myTableView.clear();
         myTableView.setAll(entryList);
         myQuerySceneTable.setItems(myTableView);
-
     }
 
     /**
@@ -186,17 +194,41 @@ public class QuerySceneController implements PropertyChangeListener {
     private void handleFromDatePicker() {
 
         String fromDate;
-        String defaultToDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                "yyyy"));
+        String toDate;
+
+        final boolean isDayGreater =
+                myFromDatePicker.getValue().getDayOfMonth() >= myToDatePicker.getValue().getDayOfMonth();
+
+        final boolean isMonthGreater =
+                myFromDatePicker.getValue().getMonthValue() >= myToDatePicker.getValue().getMonthValue();
+        final boolean isYearGreater =
+                myFromDatePicker.getValue().getYear() >= myToDatePicker.getValue().getYear();
+
         try {
-            fromDate =
-                    myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                            "yyyy"));
-        } catch (final RuntimeException theRunTimeException) {
-            fromDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
+            toDate = myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                    "uuuu"));
+
+        } catch (final DateTimeException theEvent) {
+            toDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd, MMM, uuuu"));
+            myToDatePicker.setValue(LocalDate.now());
         }
 
-        addEntriesHelper(fromDate, defaultToDate);
+        try {
+            if (isDayGreater && isMonthGreater && isYearGreater) {
+                fromDate = toDate;
+                myFromDatePicker.setValue(myToDatePicker.getValue());
+            } else {
+                fromDate = myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                        "uuuu"));
+            }
+
+        } catch (final RuntimeException theRunTimeException) {
+            fromDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, uuuu"));
+            myFromDatePicker.setValue(LocalDate.now());
+
+        }
+
+        addEntriesHelper(fromDate, toDate);
     }
 
     /**
@@ -206,85 +238,65 @@ public class QuerySceneController implements PropertyChangeListener {
     private void handleToDatePicker() {
 
         String toDate;
-        String fromDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM," +
-                " " +
-                "yyyy"));
-        try {
-            toDate =
-                    myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                            "yyyy"));
+        String fromDate;
 
-            if (myFromDatePicker.getValue() != null) {
-                fromDate = myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern(
-                        "dd MMM, yyyy"));
+        final boolean isToMonthLess = myToDatePicker.getValue().getMonthValue()
+                <= myFromDatePicker.getValue().getMonthValue();
+
+        final boolean isToDayLess = myToDatePicker.getValue().getDayOfMonth()
+                <= myFromDatePicker.getValue().getDayOfMonth();
+
+        final boolean isToYearLess = myToDatePicker.getValue().getYear()
+                <= myFromDatePicker.getValue().getYear();
+
+        final boolean isToMonthGreaterNow =
+                myToDatePicker.getValue().getMonthValue() >= LocalDate.now().getMonthValue();
+
+        final boolean isToDayGreaterNow =
+                myToDatePicker.getValue().getDayOfMonth() >= LocalDate.now().getDayOfMonth();
+
+        final boolean isToYearGreaterNow =
+                myToDatePicker.getValue().getYear() >= LocalDate.now().getYear();
+
+
+        // Checking if the From is Null
+        if (myFromDatePicker.getValue() != null) {
+
+            fromDate = myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern(
+                    "dd MMM, uuuu"));
+        } else {
+
+            myFromDatePicker.setValue(LocalDate.now());
+            fromDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, uuuu"));
+        }
+
+
+        try {
+
+            if (isToMonthLess && isToDayLess && isToYearLess) {
+                myToDatePicker.setValue(myFromDatePicker.getValue());
+                toDate = myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd " +
+                        "MMM, uuuu"));
+
+            } else if (isToMonthGreaterNow && isToDayGreaterNow && isToYearGreaterNow) {
+                myToDatePicker.setValue(LocalDate.now());
+                toDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, uuuu"));
             }
-        } catch (final RuntimeException theRunTimeException) {
-            toDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
+
+            else {
+
+                toDate = myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd " +
+                        "MMM, uuuu"));
+            }
+
+        } catch (final DateTimeException theEvent) {
+
+            toDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, uuuu"));
+            myToDatePicker.setValue(LocalDate.now());
         }
 
         addEntriesHelper(fromDate, toDate);
-
     }
-
-    /**
-     * Resets the table to its original state.
-     */
-    @FXML
-    private void handleResetButton() {
-        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
-        mySubCopy.setAll(myMasterCopy);
-        myFromDatePicker.setValue(LocalDate.now().minusYears(1));
-        myToDatePicker.setValue(LocalDate.now());
-        myTableView.setAll(myMasterCopy);
-        myQuerySceneTable.setItems(myTableView);
-
-    }
-
-    @FXML
-    private void handleSendEmail() throws IOException {
-        final Path tempFile = EmailFileController.getTmpFilePath();
-
-        final String filterParam =
-                //Date from:
-                "Date From: " + (myFromDatePicker != null ?
-                myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                        "yyyy")) : LocalDate.now().format(DateTimeFormatter.ofPattern("dd " +
-                "MMM, yyyy"))) + "\n" +
-
-                //Date to
-                "Date To: " + (myToDatePicker != null ?
-                myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                        "yyyy")) : LocalDate.now().format(DateTimeFormatter.ofPattern("dd " +
-                "MMM, yyyy"))) + "\n" +
-
-                        //Modification typ
-                "Modification type: " + myModificationComboBox.getValue();
-
-        EmailFileController.send(myTableView, tempFile, filterParam);
-
-        final String email = myUserEmailAddress;
-
-        new Thread(() -> {
-            if (start(email, tempFile)) {
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setResizable(false);
-                    alert.setContentText("Email sent Successfully");
-                    alert.show();
-                });
-
-            } else {
-                Platform.runLater(() -> {
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Email had failed to send!");
-                    alert.setResizable(false);
-                    alert.show();
-                });
-            }
-        }).start();
-    }
-
 
     /**
      * Helper method to add filter entries to table view.
@@ -308,30 +320,87 @@ public class QuerySceneController implements PropertyChangeListener {
      * @param theToDate    the date from the "to" date picker.
      * @param theEntryList the entry list of which gets modified.
      */
+
     private void addEntriesHelper(final String theFromDate, final String theToDate,
                                   final List<DirectoryEntry> theEntryList) {
-        final String[] splitFrom = theFromDate.split(" ");
-        final String[] splitTo = theToDate.split(" ");
-        final int fromDay = Integer.parseInt(splitFrom[0]);
-        final int toDay = Integer.parseInt(splitTo[0]);
-        myTableView.clear();
+        final LocalDate from = LocalDate.parse(theFromDate, ENTRY_FMT);
+        final LocalDate to = LocalDate.parse(theToDate, ENTRY_FMT);
+
         myTableView.setAll(myMasterCopy);
-        if (!myTableView.isEmpty()) {
-            for (final DirectoryEntry theEntry : myTableView) {
+        theEntryList.clear();
 
-                final String[] splitDate = theEntry.getDate().split(" ");
-                final int day = Integer.parseInt(splitDate[0]);
+        for (final DirectoryEntry entry : myMasterCopy) {
+            final LocalDate date = LocalDate.parse(entry.getDate(), ENTRY_FMT);
 
-                if (day >= fromDay && day <= toDay) {
-                    theEntryList.add(theEntry);
-                }
+            if (!date.isBefore(from) && !date.isAfter(to)) {
+                theEntryList.add(entry);
             }
         }
+        myTableView.setAll(theEntryList);
+    }
 
-        myTableView.clear();
-        myTableView.addAll(theEntryList);
+    /**
+     * Resets the table to its original state.
+     */
+    @FXML
+    private void handleResetButton() {
+        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
+        mySubCopy.setAll(myMasterCopy);
+        myFromDatePicker.setValue(LocalDate.now().minusYears(1));
+        myToDatePicker.setValue(LocalDate.now());
+        myTableView.setAll(myMasterCopy);
+        myQuerySceneTable.setItems(myTableView);
 
     }
+
+    @FXML
+    private void handleSendEmail() throws IOException {
+        final Path tempFile = EmailFileController.getTmpFilePath();
+
+        final String filterParam =
+                //Date from:
+                "Date From: " + (myFromDatePicker != null ?
+                        myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                                "uuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern(
+                                        "dd MMM, uuuu"))) + "\n" +
+
+                        //Date to
+                        "Date To: " + (myToDatePicker != null ?
+                        myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
+                                "uuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern(
+                                        "dd MMM, uuuu"))) + "\n" +
+
+                        //Modification typ
+                        "Modification type: " + myModificationComboBox.getValue();
+
+        EmailFileController.send(myTableView, tempFile, filterParam);
+
+        final String email = myUserEmailAddress;
+
+        new Thread(() -> {
+            if (start(email, tempFile)) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setResizable(false);
+                    alert.setContentText("Email sent Successfully");
+                    alert.show();
+                    Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
+                });
+
+            } else {
+                Platform.runLater(() -> {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Email had failed to send!");
+                    alert.setResizable(false);
+                    alert.show();
+                });
+            }
+        }).start();
+    }
+
+
+
 
 
     /**

@@ -23,3 +23,5 @@ out/
 src/main/resources/credentials/
 **/credentials/
 **/gmail_oauth.json
+
+resources/credentials/

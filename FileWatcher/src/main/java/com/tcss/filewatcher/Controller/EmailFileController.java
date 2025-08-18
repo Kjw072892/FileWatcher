@@ -2,10 +2,12 @@ package com.tcss.filewatcher.Controller;
 
 import com.tcss.filewatcher.Model.DataBaseManager;
 import com.tcss.filewatcher.Model.DirectoryEntry;
+import com.tcss.filewatcher.Model.EmailClient;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ public class EmailFileController {
      * Logger Object for debugging
      */
     private static final Logger MY_LOGGER = Logger.getLogger("Email File Controller");
+    private static final AtomicBoolean started = new AtomicBoolean(false);
 
     /**
      * Prevents instantiation of the utility class.
@@ -47,19 +50,23 @@ public class EmailFileController {
     /**
      * Starts the email automation where it emails all the events to the registered address.
      */
-    public static void start(final Path theTmpPath) {
+    public static void start5Pm(final String theEmailAddress, final Path tmpFilePath) {
+        if (!started.compareAndSet(false, true)) {
+            return;
+        }
+
         EmailFrequencyManager.startDailyAt5(() -> {
-            final DataBaseManager dataBaseManager = new DataBaseManager(false);
-            final List<DirectoryEntry> dirList = dataBaseManager.getAllEntries();
-            try {
-                send((ObservableList<DirectoryEntry>) dirList, theTmpPath, "All " +
-                        "Entries");
-            } catch (final IOException theEvent) {
-                MY_LOGGER.log(Level.SEVERE,
-                        "Unable to start email automation: " + theEvent.getMessage() +"\n" );
-            }
+            EmailClient.start(theEmailAddress, tmpFilePath);
         });
+
     }
+
+
+    public static void stop() {
+        started.set(false);
+        EmailFrequencyManager.shutdown();
+    }
+
 
     /**
      * Adds the csv file as a temporary file based on the users OS temp folder location.
@@ -81,7 +88,7 @@ public class EmailFileController {
             tmp.toFile().deleteOnExit();
 
         } catch (final IOException theIO) {
-            MY_LOGGER.log(Level.SEVERE,"Unable to generate path: " + theIO.getMessage() +"\n" );
+            MY_LOGGER.log(Level.SEVERE, "Unable to generate path: " + theIO.getMessage() + "\n");
         }
 
         return tmp;

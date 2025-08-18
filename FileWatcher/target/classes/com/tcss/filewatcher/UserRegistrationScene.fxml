@@ -33,23 +33,18 @@
         </font>
     </Label>
 
-    <Button layoutX="192.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleMyRegisterButton" prefHeight="25.0" prefWidth="263.0" style="-fx-background-radius: 25Px;" text="Register" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
+    <Button layoutX="180.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleMyRegisterButton" prefHeight="25.0" prefWidth="263.0" style="-fx-background-radius: 25Px;" text="Register" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
         <font>
             <Font name="Franklin Gothic Medium Cond" size="16.0" />
         </font>
     </Button>
-   <VBox layoutX="40.0" layoutY="197.0" prefHeight="110.0" prefWidth="280.0" spacing="15.0">
-      <children>
-      
-          <TextField fx:id="myEmailTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Email:" />
-      
-         <PasswordField fx:id="myPasswordTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Password:" />
-         <PasswordField fx:id="myVerifyPassword" prefHeight="25.0" prefWidth="237.0" promptText="Verify Password:" />
-      </children>
-   </VBox>
+    <VBox layoutX="171.0" layoutY="190.0" prefHeight="110.0" prefWidth="280.0" spacing="15.0">
+        <TextField fx:id="myEmailTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Email:"/>
 
-    <CheckBox fx:id="mySend5pmCheckBox" layoutX="390.0" layoutY="218.0" mnemonicParsing="false" onAction="#handleMySend5pmCheckBox" selected="true" text="Send Email 5pm Everyday" AnchorPane.leftAnchor="390.0" />
+        <PasswordField fx:id="myPasswordTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Password:"/>
+        <PasswordField fx:id="myVerifyPassword" prefHeight="25.0" prefWidth="237.0" promptText="Verify Password:"/>
+    </VBox>
 
-    <CheckBox fx:id="mySendEveryNewEventCheckBox" layoutX="390.0" layoutY="263.0" mnemonicParsing="false" onAction="#handleMySendEveryNewEventCheckBox" text="Send Email After Every New Event" AnchorPane.leftAnchor="390.0" />
+    <CheckBox fx:id="mySend5pmCheckBox" layoutX="228.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleMySend5pmCheckBox" selected="true" text="Send Email 5pm Everyday" AnchorPane.leftAnchor="228.0" />
 
 </AnchorPane>

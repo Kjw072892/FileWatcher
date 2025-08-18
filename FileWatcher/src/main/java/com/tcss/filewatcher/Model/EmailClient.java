@@ -64,7 +64,7 @@ public class EmailClient {
      * The path of the oauth.json file for o_auth credential checking.
      */
     private static final InputStream CREDENTIALS_FILE_PATH =
-            EmailClient.class.getResourceAsStream("/credentials/google_o_auth.json");
+            EmailClient.class.getResourceAsStream("/credentials/gmail_oauth.json");
 
     /**
      * The directory path for the oauth2.0 token.

@@ -93,4 +93,9 @@ public enum Properties {
      */
     STOPPED,
 
+    /**
+     * the stage closed
+     */
+    CLOSED,
+
 }

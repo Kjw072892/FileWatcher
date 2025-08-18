@@ -39,10 +39,10 @@
         </font>
     </Button>
     <VBox layoutX="171.0" layoutY="190.0" prefHeight="110.0" prefWidth="280.0" spacing="15.0">
-        <TextField fx:id="myEmailTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Email:"/>
+        <TextField fx:id="myEmailTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Email:" />
 
-        <PasswordField fx:id="myPasswordTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Password:"/>
-        <PasswordField fx:id="myVerifyPassword" prefHeight="25.0" prefWidth="237.0" promptText="Verify Password:"/>
+        <PasswordField fx:id="myPasswordTextBox" prefHeight="25.0" prefWidth="237.0" promptText="Password:" />
+        <PasswordField fx:id="myVerifyPassword" prefHeight="25.0" prefWidth="237.0" promptText="Verify Password:" />
     </VBox>
 
     <CheckBox fx:id="mySend5pmCheckBox" layoutX="228.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleMySend5pmCheckBox" selected="true" text="Send Email 5pm Everyday" AnchorPane.leftAnchor="228.0" />

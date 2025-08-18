@@ -43,6 +43,8 @@ import javafx.stage.Stage;
  * @version 8.15.25
  */
 public class MainSceneController extends SceneHandler implements PropertyChangeListener {
+
+
     /**
      * The table that showcases all the directories being currently monitored.
      */
@@ -85,6 +87,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     private MenuItem myQueryMenuItem;
 
+
+    /**
+     * The add button
+     */
+    @FXML
+    private Button myAddButton;
 
     /**
      * The query button.
@@ -312,6 +320,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             }
         }
 
+        EmailFileController.start5Pm(myUsersEmailAddress,
+                EmailFileController.getTmpFilePath());
+
         try {
 
             final FXMLLoader fxmlLoader = new FXMLLoader(MainSceneController.class.getResource(
@@ -346,9 +357,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             });
 
 
-            EmailFileController.start5Pm(myUsersEmailAddress,
-                    EmailFileController.getTmpFilePath());
-
             myChanges.firePropertyChange(Properties.START.toString(), null, Properties.START);
             myChanges.firePropertyChange(Properties.USERS_EMAIL.toString(), null, myUsersEmailAddress);
 
@@ -358,6 +366,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
+    /**
+     * Opens the query scene
+     */
     @FXML
     private void openQueryScene() {
         try {
@@ -385,6 +396,15 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         } catch (final IOException theIOE) {
             MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!\n");
         }
+    }
+
+
+    /**
+     * Disables or enables the add button
+     */
+    @FXML
+    private void handleAddButton() {
+        myAddButton.setDisable(myDirectoryToMonitorTB.getText().isEmpty());
     }
 
     /**
@@ -522,6 +542,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         fileWatcherStage.toFront();
     }
 
+    /**
+     * Disables the file watcher button.
+     */
     private void handleFileWatcherIconButton() {
         myFileWatcherViewerIconBtn.setDisable(isWatchServiceOn);
     }
@@ -576,6 +599,15 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         if (directory.isBlank() || !Files.isDirectory(Path.of(directory))) {
             MY_LOGGER.warning("Invalid or nonexistent directory: '" + directory + "'\n");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid directory");
+            alert.setHeaderText("Invalid directory!");
+            alert.setContentText("The directory must not be blank!");
+            alert.setResizable(false);
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.showAndWait();
             return;
         }
 
@@ -664,6 +696,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                         final String selectedExtension = selectedItem.getFileExtension();
 
                         myDeleteDirectoryBTN.setDisable(false);
+                        myAddButton.setDisable(false);
                         myQueryButton.setDisable(false);
                         myClearButton.setDisable(false);
 
@@ -734,6 +767,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
+    /**
+     * Sets the file watcher scene
+     *
+     * @param theScene the filewatcher scene object.
+     */
     protected void setFileWatcherScene(final FileWatcherSceneController theScene) {
         theScene.addPropertyChangeListener(this);
     }

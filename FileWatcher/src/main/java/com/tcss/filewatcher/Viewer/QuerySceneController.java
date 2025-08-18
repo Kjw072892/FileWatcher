@@ -1,6 +1,5 @@
 package com.tcss.filewatcher.Viewer;
 
-import com.google.api.client.util.DateTime;
 import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Controller.EmailFileController;
 import com.tcss.filewatcher.Model.DataBaseManager;
@@ -14,10 +13,7 @@ import java.nio.file.Path;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -192,7 +188,7 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     @FXML
     private void handleFromDatePicker() {
-
+        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
         String fromDate;
         String toDate;
 
@@ -229,6 +225,7 @@ public class QuerySceneController implements PropertyChangeListener {
         }
 
         addEntriesHelper(fromDate, toDate);
+
     }
 
     /**
@@ -237,6 +234,8 @@ public class QuerySceneController implements PropertyChangeListener {
     @FXML
     private void handleToDatePicker() {
 
+
+        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
         String toDate;
         String fromDate;
 
@@ -281,9 +280,7 @@ public class QuerySceneController implements PropertyChangeListener {
             } else if (isToMonthGreaterNow && isToDayGreaterNow && isToYearGreaterNow) {
                 myToDatePicker.setValue(LocalDate.now());
                 toDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, uuuu"));
-            }
-
-            else {
+            } else {
 
                 toDate = myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd " +
                         "MMM, uuuu"));
@@ -296,6 +293,7 @@ public class QuerySceneController implements PropertyChangeListener {
         }
 
         addEntriesHelper(fromDate, toDate);
+
     }
 
     /**
@@ -336,6 +334,7 @@ public class QuerySceneController implements PropertyChangeListener {
                 theEntryList.add(entry);
             }
         }
+
         myTableView.setAll(theEntryList);
     }
 
@@ -362,16 +361,18 @@ public class QuerySceneController implements PropertyChangeListener {
                 "Date From: " + (myFromDatePicker != null ?
                         myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
                                 "uuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern(
-                                        "dd MMM, uuuu"))) + "\n" +
+                        "dd MMM, uuuu"))) + "\n" +
 
                         //Date to
                         "Date To: " + (myToDatePicker != null ?
                         myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
                                 "uuuu")) : LocalDate.now().format(DateTimeFormatter.ofPattern(
-                                        "dd MMM, uuuu"))) + "\n" +
+                        "dd MMM, uuuu"))) + "\n" +
 
                         //Modification typ
-                        "Modification type: " + myModificationComboBox.getValue();
+                        "Modification type: " + (myModificationComboBox.getValue() == null ?
+                        myModificationComboBox.getPromptText() :
+                        myModificationComboBox.getValue());
 
         EmailFileController.send(myTableView, tempFile, filterParam);
 
@@ -398,9 +399,6 @@ public class QuerySceneController implements PropertyChangeListener {
             }
         }).start();
     }
-
-
-
 
 
     /**

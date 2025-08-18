@@ -136,16 +136,6 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         myFileWatcherTable.setItems(myTableview);
 
 
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
-        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern(
-                "dd MMM, yyyy"));
-
-        if (dbManager.getTableSize() > 0) {
-            final List<DirectoryEntry> recentList = dbManager.queryByDateRange(yesterday,
-                    today);
-            myTableview.addAll(recentList);
-        }
-
         //Only used for debugging
         if (clearDataBase) {
             dbManager.clearDatabase();

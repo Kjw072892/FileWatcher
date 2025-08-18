@@ -32,7 +32,8 @@
         </Menu>
 
         <Menu text="_Database">
-            <MenuItem fx:id="myQueryMenuItem" disable="true" mnemonicParsing="false" onAction="#handleQueryIconButton" text="Query" />
+            <MenuItem fx:id="myQueryMenuItem" disable="true" mnemonicParsing="false"
+                      onAction="#handleQueryIconButton" text="View History" />
 
         </Menu>
 
@@ -111,11 +112,14 @@
     </ComboBox>
 
     <Label layoutX="56.0" layoutY="147.0" text="Monitor by extension" AnchorPane.leftAnchor="55.0" />
-    <TextField fx:id="myDirectoryToMonitorTB" layoutX="242.0" layoutY="163.0" prefHeight="25.0" prefWidth="307.0" AnchorPane.rightAnchor="50.0" />
+    <TextField fx:id="myDirectoryToMonitorTB" onKeyTyped="#handleAddButton" layoutX="242.0" layoutY="163.0" prefHeight="25.0"
+               prefWidth="307.0"
+               AnchorPane.rightAnchor="50.0" />
 
     <Label layoutX="246.0" layoutY="147.0" text="Directory to monitor" />
 
-    <Button id="addButton" layoutX="246.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleAddDirectoryButton" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Add" />
+    <Button fx:id="myAddButton" disable="true" layoutX="246.0" layoutY="197.0" mnemonicParsing="false"
+            onAction="#handleAddDirectoryButton" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Add" />
 
     <Button fx:id="myDeleteDirectoryBTN" disable="true" layoutX="405.0" layoutY="197.0" mnemonicParsing="false" onAction="#handleDeleteButton" prefHeight="25.0" prefWidth="144.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);" text="Delete" AnchorPane.rightAnchor="50.0" />
 

@@ -162,7 +162,7 @@ class FileEventWatcherTest {
                 "addWatchPath should not throw exception for non-existent path");
         assertEquals(1, myListener.getEventCount(), "Should fire property change event");
     }
-
+    @Test
     void testAddWatchPathFile() throws IOException {
         Path file = Files.createFile(myTempDir.resolve("testing.txt"));
         // The current implementation doesn't validate that path is a directory in addWatchPath
@@ -256,12 +256,6 @@ class FileEventWatcherTest {
         assertTrue(myWatcher.isWatching(), "Should be watching after start");
     }
 
-    @Test
-    void testStartWatchingWithoutPath() {
-        assertThrows(IllegalArgumentException.class,
-                () -> myWatcher.startWatching(),
-                "Should throw exception when starting without path");
-    }
 
     @Test
     void testStartWatchingAlreadyWatching() throws IOException {

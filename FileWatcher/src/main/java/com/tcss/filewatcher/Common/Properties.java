@@ -98,4 +98,9 @@ public enum Properties {
      */
     CLOSED,
 
+    /**
+     * The table reset button was pressed
+     */
+    RESET_TABLE,
+
 }

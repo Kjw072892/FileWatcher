@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -25,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class FileWatcherSceneController extends SceneHandler implements PropertyChangeListener {
@@ -115,7 +117,6 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     private final boolean clearDataBase = false;
 
 
-
     /**
      * Initializes the scene.
      */
@@ -158,7 +159,20 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
     @FXML
     public void handleResetButton() {
-        myTableview.clear();
+        if (!watcherRunningProperty()) {
+            myTableview.clear();
+
+        } else {
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Unable To Clear");
+            alert.setHeaderText("Unable to clear the table");
+            alert.setContentText("You must stop FileWatcher before clearing the table");
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/watcher.png"))));
+            alert.setResizable(false);
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -170,34 +184,46 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     @FXML
     public void handleSendEmail() throws IOException {
 
-        final Path tmp = EmailFileController.getTmpFilePath();
+        if (!myTableview.isEmpty()) {
+            final Path tmp = EmailFileController.getTmpFilePath();
 
-        EmailFileController.send(myTableview, tmp, "Live Entries");
+            EmailFileController.send(myTableview, tmp, "Live Entries");
 
-        final String email = myUserEmailAddress;
+            final String email = myUserEmailAddress;
 
-        new Thread(() -> {
-            if (start(email, tmp)) {
-                Platform.runLater(() -> {
+            new Thread(() -> {
+                if (start(email, tmp)) {
+                    Platform.runLater(() -> {
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Email sent Successfully");
-                    alert.setResizable(false);
-                    alert.show();
-                    Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("Email sent Successfully");
+                        alert.setResizable(false);
+                        alert.show();
+                        Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
 
-                });
+                    });
 
-            } else {
-                Platform.runLater(() -> {
+                } else {
+                    Platform.runLater(() -> {
 
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Email had failed to send!");
-                    alert.setResizable(false);
-                    alert.show();
-                });
-            }
-        }).start();
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("Email had failed to send!");
+                        alert.setResizable(false);
+                        alert.show();
+                    });
+                }
+            }).start();
+        } else {
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Email not sent");
+            alert.setHeaderText("The email was not sent");
+            alert.setContentText("You must have at least one item in the table");
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/watcher.png"))));
+            alert.setResizable(false);
+            alert.showAndWait();
+        }
     }
 
     /**
@@ -224,6 +250,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
     /**
      * Notifies main when this stage closes.
+     *
      * @param theStage The fireWatcherSceneController stage.
      */
     public void watchStage(final Stage theStage) {
@@ -274,7 +301,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
                 if (FileExtensionHandler.canAddExtension(extensions, entry)) {
                     myTableview.add(entry);
-                    logger.log(Level.INFO, "Added file to table: " + entry.getFileName()+"\n");
+                    logger.log(Level.INFO, "Added file to table: " + entry.getFileName() + "\n");
                 }
             });
 

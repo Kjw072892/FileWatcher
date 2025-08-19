@@ -503,7 +503,14 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
      */
     @FXML
     private void handleStopFileWatcher() {
+        startLoginScreen();
 
+    }
+
+    /**
+     * Opens the login screen scene.
+     */
+    private void startLoginScreen() {
         try {
             final FXMLLoader loginScreen = new FXMLLoader(MainSceneController
                     .class.getResource("/com/tcss/filewatcher/EmailAndPassCheck" +
@@ -554,11 +561,14 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     private void handleOnClose() {
 
-        if (fileWatcherStatus()) {
-            if (myStage != null) myStage.setIconified(true);
-            return;
-        }
+        if (watcherRunningProperty()) {
 
+            if (myStage != null) {
+                myStage.setIconified(true);
+            }
+            return;
+
+        }
         stopWatcher();
 
         if (myFileWatcher != null) {
@@ -571,6 +581,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         fileWatcherStage.close();
 
         Platform.exit();
+
     }
 
     /**
@@ -852,6 +863,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             }
         } else if (theEvent.getPropertyName().equals(Properties.CLOSED.toString())) {
             handleFileWatcherIconButton();
+
+        } else if (theEvent.getPropertyName().equals(Properties.RESET_TABLE.toString())) {
+
         }
     }
 }

@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Fixed the bug where the query table initializes the full history rather than 1 years worth" />
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/DataBaseManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/DataBaseManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/DirectoryEntryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/DirectoryEntryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileEventWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/SceneHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +47,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="Kassie" />
+        <entry key="$PROJECT_DIR$/.." value="Salima" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -93,7 +106,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Kassi/OneDrive/Computer/Documents/GitHub/FileWatcher/FileWatcher",
+    "last_opened_file_path": "C:/Users/Kassi/OneDrive/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -103,6 +116,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Kassi\OneDrive\Computer\Documents\GitHub\FileWatcher\FileWatcher\src\main\resources\credentials" />
       <recent name="$PROJECT_DIR$/src/main/resources/credentials" />
       <recent name="$PROJECT_DIR$/src/main/resources/icons" />
     </key>
@@ -146,6 +160,8 @@
       <list>
         <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -171,6 +187,7 @@
       <workItem from="1755283495941" duration="534000" />
       <workItem from="1755296351885" duration="14116000" />
       <workItem from="1755534144286" duration="28361000" />
+      <workItem from="1755571753309" duration="2795000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />

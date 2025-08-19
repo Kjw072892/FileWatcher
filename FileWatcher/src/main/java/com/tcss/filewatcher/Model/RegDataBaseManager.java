@@ -111,6 +111,11 @@ public class RegDataBaseManager {
      * @return returns true if an email exists, false otherwise.
      */
     public final boolean isExistingUser(final String theEmail) {
+        // Handle null or empty email
+        if (theEmail == null || theEmail.trim().isEmpty()) {
+            return false;
+        }
+
         final String query = "SELECT 1 FROM registration WHERE LOWER(email) = LOWER(?)";
 
         try (final Connection conn = myDs.getConnection();
@@ -197,6 +202,10 @@ public class RegDataBaseManager {
      * @return true if a user is registered, false otherwise.
      */
     public final boolean hasAUserAlreadyRegistered(final String theEmail) {
+        // Handle null or empty email
+        if (theEmail == null || theEmail.trim().isEmpty()) {
+            return false;
+        }
         final String userEmail = "SELECT email FROM registration";
         try (final Connection conn = myDs.getConnection();
              final Statement stmt = conn.createStatement();

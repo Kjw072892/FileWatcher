@@ -4,33 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml">
-      <change afterPath="$PROJECT_DIR$/target/classes/credentials/gmail_oauth.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/UserRegSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/UserRegSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/credentials/gmail_oauth.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/credentials/gmail_oauth.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Credentials/google_o_auth.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Common/Properties.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFileController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFrequencyManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Controller/EmailFrequencyManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/MainScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/EmailClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Model/EmailClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/UserRegistrationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/UserRegistrationScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/EmailAndPassCheckController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/FileWatcherSceneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/MainSceneController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/UserRegSceneController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/tcss/filewatcher/Viewer/UserRegSceneController.class" afterDir="false" />
-    </list>
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher into Salima&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml&#10;#&#9;FileWatcher/filewatcher.db&#10;#&#9;FileWatcher/target/classes/com/tcss/filewatcher/Model/RegDataBaseManager.class&#10;#&#9;FileWatcher/target/test-classes/com/tcss/filewatcher/Model/FileEventWatcherTest$TestPropertyChangeListener.class&#10;#&#9;FileWatcher/target/test-classes/com/tcss/filewatcher/Model/FileEventWatcherTest.class&#10;Just bringing in the new changes from main" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +85,7 @@
     "Application.com.tcss.filewatcher.Viewer.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#8 on Merging Salima",
+    "git-widget-placeholder": "#8 on Salima",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/kassie/Library/CloudStorage/OneDrive-Personal/Computer/Documents/GitHub/FileWatcher/FileWatcher/src/main/resources/credentials",
     "node.js.detected.package.eslint": "true",

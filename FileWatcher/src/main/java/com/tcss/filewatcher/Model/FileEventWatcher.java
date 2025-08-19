@@ -363,10 +363,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
         if (myIsWatching) {
             return;
         }
-       if (myWatchedPaths.isEmpty()) {
-           throw new IllegalArgumentException("Watch path must be set before starting");
-       }
-        for (Path thePath : myWatchedPaths) {
+
+        for (final Path thePath : myWatchedPaths) {
             if (!Files.exists(thePath)) {
                 throw new IllegalArgumentException("Watch path must be set and exist before " +
                         "starting");
@@ -393,8 +391,8 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
 
         // Start the background thread for processing events
         if (myExecutorService == null || myExecutorService.isShutdown()) {
-            myExecutorService = Executors.newSingleThreadExecutor(r -> {
-                final Thread thread = new Thread(r, "FileWatcher-Thread");
+            myExecutorService = Executors.newSingleThreadExecutor(theRunnable -> {
+                final Thread thread = new Thread(theRunnable, "FileWatcher-Thread");
                 thread.setDaemon(true); // make it a daemon thread so it doesn't prevent app shutdown
                 return thread;
             });

@@ -136,16 +136,6 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         myFileWatcherTable.setItems(myTableview);
 
 
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
-        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern(
-                "dd MMM, yyyy"));
-
-        if (dbManager.getTableSize() > 0) {
-            final List<DirectoryEntry> recentList = dbManager.queryByDateRange(yesterday,
-                    today);
-            myTableview.addAll(recentList);
-        }
-
         //Only used for debugging
         if (clearDataBase) {
             dbManager.clearDatabase();
@@ -182,7 +172,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
         final Path tmp = EmailFileController.getTmpFilePath();
 
-        EmailFileController.send(myTableview, tmp, "Entries within 24 hours");
+        EmailFileController.send(myTableview, tmp, "Live Entries");
 
         final String email = myUserEmailAddress;
 
@@ -194,6 +184,8 @@ public class FileWatcherSceneController extends SceneHandler implements Property
                     alert.setContentText("Email sent Successfully");
                     alert.setResizable(false);
                     alert.show();
+                    Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
+
                 });
 
             } else {

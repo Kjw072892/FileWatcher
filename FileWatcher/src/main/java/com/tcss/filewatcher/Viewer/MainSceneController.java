@@ -43,6 +43,8 @@ import javafx.stage.Stage;
  * @version 8.15.25
  */
 public class MainSceneController extends SceneHandler implements PropertyChangeListener {
+
+
     /**
      * The table that showcases all the directories being currently monitored.
      */
@@ -85,6 +87,12 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     private MenuItem myQueryMenuItem;
 
+
+    /**
+     * The add button
+     */
+    @FXML
+    private Button myAddButton;
 
     /**
      * The query button.
@@ -295,8 +303,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         myStartIconBtn.setDisable(true);
         myFileWatcherViewerIconBtn.setDisable(false);
 
-        EmailFileController.start5Pm(myUsersEmailAddress,
-                EmailFileController.getTmpFilePath());
 
         if (myFileWatcher == null) {
             myFileWatcher = new FileEventWatcher(false);
@@ -313,6 +319,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                 myFileWatcher.addWatchedExtension(normalized);
             }
         }
+
+        EmailFileController.start5Pm(myUsersEmailAddress,
+                EmailFileController.getTmpFilePath());
 
         try {
 
@@ -331,26 +340,25 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             fileWatcherStage.setScene(fileWatcherScene);
             fileWatcherStage.setTitle("File Watcher (live)");
 
-//            fileWatcherSceneController.watchStage(fileWatcherStage);
-            fileWatcherStage.setOnCloseRequest(theEvent -> {
-                theEvent.consume();
-                fileWatcherStage.setIconified(true);
-                myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
-            });
+            fileWatcherSceneController.watchStage(fileWatcherStage);
 
             fileWatcherStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/watcher.png"))));
             fileWatcherStage.setX(myStage.getX() + myStage.getWidth());
             fileWatcherStage.setY(myStage.getY());
 
-            startWatcher();
-
             fileWatcherStage.show();
             fileWatcherStage.setResizable(false);
 
+            fileWatcherStage.setOnCloseRequest(theEvent -> {
+                theEvent.consume();
+                fileWatcherStage.setIconified(true);
+                myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
+            });
+
+
             myChanges.firePropertyChange(Properties.START.toString(), null, Properties.START);
             myChanges.firePropertyChange(Properties.USERS_EMAIL.toString(), null, myUsersEmailAddress);
-
 
         } catch (final IOException ioe) {
 
@@ -358,6 +366,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
+    /**
+     * Opens the query scene
+     */
     @FXML
     private void openQueryScene() {
         try {
@@ -387,13 +398,21 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
+
+    /**
+     * Disables or enables the add button
+     */
+    @FXML
+    private void handleAddButton() {
+        myAddButton.setDisable(myDirectoryToMonitorTB.getText().isEmpty());
+    }
+
     /**
      * Opens the historical Query scene.
      */
     @FXML
     private void handleQueryIconButton() {
         openQueryScene();
-        myChanges.firePropertyChange(Properties.QUERY_ALL.toString(), null, null);
     }
 
     /**
@@ -447,8 +466,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
 
     }
-
-
 
 
     /**
@@ -524,6 +541,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         fileWatcherStage.toFront();
     }
 
+    /**
+     * Disables the file watcher button.
+     */
     private void handleFileWatcherIconButton() {
         myFileWatcherViewerIconBtn.setDisable(isWatchServiceOn);
     }
@@ -578,6 +598,15 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
         if (directory.isBlank() || !Files.isDirectory(Path.of(directory))) {
             MY_LOGGER.warning("Invalid or nonexistent directory: '" + directory + "'\n");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid directory");
+            alert.setHeaderText("Invalid directory!");
+            alert.setContentText("The directory must not be blank!");
+            alert.setResizable(false);
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/FileWatcherIcons.png"))));
+            alert.showAndWait();
             return;
         }
 
@@ -591,14 +620,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         final boolean dirCheck =
                 myTableView.stream().anyMatch(theEvent -> theEvent.getDirectory().equals(finalDirectory));
 
-        final boolean extCheck =
-                myTableView.stream().anyMatch(theEvent -> theEvent.getFileExtension().equals(extension));
-
         if (dirCheck) {
             listOfUsedExten = getExtensionsFromDir(finalDirectory);
         }
 
-        if (listOfUsedExten.contains(extension) || (dirCheck && extCheck)) {
+        if (listOfUsedExten.contains(extension) || listOfUsedExten.contains("All Extensions")) {
 
             final Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Duplicate directories");
@@ -610,6 +636,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                     .getResourceAsStream("/icons/FileWatcherIcons.png"))));
             alert.setResizable(false);
             alert.showAndWait();
+
             return;
 
         }
@@ -668,6 +695,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
                         final String selectedExtension = selectedItem.getFileExtension();
 
                         myDeleteDirectoryBTN.setDisable(false);
+                        myAddButton.setDisable(false);
                         myQueryButton.setDisable(false);
                         myClearButton.setDisable(false);
 
@@ -738,6 +766,11 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
+    /**
+     * Sets the file watcher scene
+     *
+     * @param theScene the filewatcher scene object.
+     */
     protected void setFileWatcherScene(final FileWatcherSceneController theScene) {
         theScene.addPropertyChangeListener(this);
     }
@@ -787,7 +820,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             myFileWatcherViewerMenuItem.setDisable(false);
             startWatcher();
 
-        }  else if (theEvent.getPropertyName().equals(Properties.STOPPING.toString())) {
+        } else if (theEvent.getPropertyName().equals(Properties.STOPPING.toString())) {
             handleStopFileWatcher();
 
         } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())) {

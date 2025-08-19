@@ -262,30 +262,28 @@ public class DataBaseManager {
     /**
      * Queries file events within a date range.
      *
-     * @param theStartDate the start date (inclusive) in "yyyy-MM-dd HH:mm:ss" format
-     * @param theEndDate   the end date (inclusive) in "yyyy-MM-dd HH:mm:ss" format
+     * @param theStartDate the start date
+     * @param theEndDate   the end date
      * @return a list of string arrays, each containing [fileName, absolutePath, eventType, eventTime]
      * @throws IllegalArgumentException if either date is null
      */
     public final List<DirectoryEntry> queryByDateRange(final String theStartDate,
                                                        final String theEndDate) {
         final List<DirectoryEntry> results = new ArrayList<>();
-        final String query = "SELECT event_date, event_time, file_name, absolute_path, " +
-                "event_type " +
-                "FROM filewatcher WHERE event_date BETWEEN ? AND ? ORDER BY event_date, event_time";
+        final String query =
+                "SELECT event_date, event_time, file_name, absolute_path, event_type " +
+                "FROM filewatcher " +
+                "WHERE event_date BETWEEN ? AND ? " +
+                "ORDER BY event_date, event_time";
         try (final Connection conn = myDs.getConnection();
              final PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, theStartDate);
             pstmt.setString(2, theEndDate);
-            ResultSet rs = pstmt.executeQuery();
+            final ResultSet rs = pstmt.executeQuery();
             addToResultList(results, rs);
-
         } catch (final SQLException theEvent) {
-
-            MY_LOGGER.log(Level.SEVERE,
-                    "Error querying by date range: " + theEvent.getMessage()+"\n");
+            MY_LOGGER.log(Level.SEVERE, "Error querying by date range: " + theEvent.getMessage()+"\n");
         }
-
         return results;
     }
 

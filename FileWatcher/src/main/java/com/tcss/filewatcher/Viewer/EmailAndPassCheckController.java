@@ -3,8 +3,6 @@ package com.tcss.filewatcher.Viewer;
 import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Model.FileEventWatcher;
 import com.tcss.filewatcher.Model.RegDataBaseManager;
-import com.tcss.filewatcher.Model.SceneHandler;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -103,9 +101,9 @@ public class EmailAndPassCheckController {
                     ".");
             alert.setResizable(false);
             alert.showAndWait();
-        } else {
 
-            System.out.println(FileEventWatcher.fileWatcherStatus());
+            myPasswordTextBox.selectAll();
+        } else {
 
             if (!FileEventWatcher.fileWatcherStatus()) {
                 try {
@@ -143,7 +141,7 @@ public class EmailAndPassCheckController {
     }
 
     /**
-     * Adds the the controller as a listener
+     * Adds the controller as a listener
      */
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         MY_CHANGES.addPropertyChangeListener(theListener);

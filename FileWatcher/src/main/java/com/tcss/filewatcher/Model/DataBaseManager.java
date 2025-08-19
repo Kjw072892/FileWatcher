@@ -1,15 +1,15 @@
 package com.tcss.filewatcher.Model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.sqlite.SQLiteDataSource;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.sqlite.SQLiteDataSource;
 
 /**
  * This class manages the SQLite database for the File Watcher application.

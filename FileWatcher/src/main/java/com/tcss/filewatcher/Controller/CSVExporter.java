@@ -2,7 +2,6 @@ package com.tcss.filewatcher.Controller;
 
 import com.opencsv.CSVWriter;
 import com.tcss.filewatcher.Model.DirectoryEntry;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -166,40 +165,5 @@ public class CSVExporter {
             theCsvWriter.writeNext(row);
         }
 
-    }
-
-
-    /**
-     * Validates the file name to ensure it has a .csv extension.
-     *
-     * @param theFileName The file name to validate
-     * @return true if the file name is valid, false otherwise
-     */
-
-    public static boolean isValidFileName(final String theFileName) {
-        if (theFileName == null || theFileName.trim().isEmpty()) {
-            return false;
-        }
-        // Check for invalid characters in file names
-        String invalidChars = "<>:\"|?*";
-        for (char c : invalidChars.toCharArray()) {
-            if (theFileName.contains(String.valueOf(c))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Generates a default file name based on query type and current timestamp.
-     *
-     * @param theQueryType The type of query performed
-     * @return Default file name for the CSV export
-     */
-
-    public static String generateDefaultFileName(final String theQueryType) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                "yyyy HH:mm:ss"));
-        return theQueryType + "_export_" + timestamp + ".csv";
     }
 }

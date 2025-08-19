@@ -12,8 +12,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -254,9 +252,8 @@ public class FileWatcherSceneController extends SceneHandler implements Property
      * @param theStage The fireWatcherSceneController stage.
      */
     public void watchStage(final Stage theStage) {
-        theStage.setOnHidden(theEvent -> {
-            myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true);
-        });
+        theStage.setOnHidden(theEvent ->
+                myChanges.firePropertyChange(Properties.CLOSED.toString(), null, true));
     }
 
     /**

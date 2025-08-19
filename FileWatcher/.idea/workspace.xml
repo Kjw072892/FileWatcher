@@ -4,19 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml">
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="updated .gitignore to ignore workspace.xml">
+      <change afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/EmailClientTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileExtensionHandlerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/RegDataBaseManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/DataBaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileDirectoryDataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileDirectoryDataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileEventWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileEventWatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/DataBaseManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/DataBaseManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/DirectoryEntryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/DirectoryEntryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/FileEventWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/tcss/filewatcher/Model/SceneHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,6 +109,25 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "Application.Main.executor": "Run",
     "Application.com.tcss.filewatcher.Viewer.Main.executor": "Run",
+    "JUnit.All in FileWatcher.executor": "Coverage",
+    "JUnit.DataBaseManagerTest.executor": "Run",
+    "JUnit.DirectoryEntryTest.executor": "Run",
+    "JUnit.EmailClientTest.executor": "Run",
+    "JUnit.EmailClientTest.testStartWithDirectoryInsteadOfFile.executor": "Run",
+    "JUnit.EmailClientTest.testStartWithLargeCsvFile.executor": "Run",
+    "JUnit.EmailClientTest.testStartWithSpacesOnlyEmail.executor": "Run",
+    "JUnit.FileDirectoryDataBaseTest.executor": "Run",
+    "JUnit.FileEventWatcherTest.executor": "Run",
+    "JUnit.FileExtensionHandlerTest.executor": "Run",
+    "JUnit.RegDataBaseManagerTest.executor": "Run",
+    "JUnit.RegDataBaseManagerTest.testGetEmailFrequency.executor": "Run",
+    "JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegisteredMultipleUsers.executor": "Run",
+    "JUnit.RegDataBaseManagerTest.testHasAUserAlreadyRegisteredWithEmptyEmail.executor": "Debug",
+    "JUnit.RegDataBaseManagerTest.testInsertUserWithEmptyValues.executor": "Run",
+    "JUnit.RegDataBaseManagerTest.testInsertUserWithNullValues.executor": "Run",
+    "JUnit.RegDataBaseManagerTest.testIsExistingUserWithEmptyEmail.executor": "Run",
+    "JUnit.SceneHandlerTest.executor": "Run",
+    "JUnit.test in FileWatcher.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -111,6 +139,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -121,47 +153,90 @@
       <recent name="$PROJECT_DIR$/src/main/resources/icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Kassi\OneDrive\Computer\Documents\GitHub\FileWatcher\FileWatcher\src\test\test\com\tcss\filewatcher\Model" />
       <recent name="C:\Users\Kassi\OneDrive\Computer\Documents\GitHub\FileWatcher\FileWatcher\src\main\resources\credentials" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.com.tcss.filewatcher.Viewer.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.tcss_360.filewatcher.Viewer.Main" />
+  <component name="RunManager" selected="JUnit.EmailClientTest.testStartWithLargeCsvFile">
+    <configuration name="All in FileWatcher" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FileWatcher" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.tcss_360.filewatcher.Viewer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="com.tcss.filewatcher.Viewer.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Viewer.Main" />
+    <configuration name="EmailClientTest.testStartWithDirectoryInsteadOfFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FileWatcher" />
-      <option name="VM_PARAMETERS" value="--enable-native-access=org.xerial.sqlitejdbc --enable-native-access=javafx.graphics,org.xerial.sqlitejdbc" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Viewer.*" />
+          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
+      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.EmailClientTest" />
+      <option name="METHOD_NAME" value="testStartWithDirectoryInsteadOfFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EmailClientTest.testStartWithLargeCsvFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FileWatcher" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
+      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.EmailClientTest" />
+      <option name="METHOD_NAME" value="testStartWithLargeCsvFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <dir value="$PROJECT_DIR$/src/test/test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EmailClientTest.testStartWithSpacesOnlyEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FileWatcher" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
+      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.EmailClientTest" />
+      <option name="METHOD_NAME" value="testStartWithSpacesOnlyEmail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test in FileWatcher" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FileWatcher" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/test" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
-      <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.All in FileWatcher" />
+      <item itemvalue="JUnit.EmailClientTest.testStartWithDirectoryInsteadOfFile" />
+      <item itemvalue="JUnit.EmailClientTest.testStartWithLargeCsvFile" />
+      <item itemvalue="JUnit.EmailClientTest.testStartWithSpacesOnlyEmail" />
+      <item itemvalue="JUnit.test in FileWatcher" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Application.com.tcss.filewatcher.Viewer.Main" />
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.EmailClientTest.testStartWithLargeCsvFile" />
+        <item itemvalue="JUnit.All in FileWatcher" />
+        <item itemvalue="JUnit.EmailClientTest.testStartWithDirectoryInsteadOfFile" />
+        <item itemvalue="JUnit.EmailClientTest.testStartWithSpacesOnlyEmail" />
+        <item itemvalue="JUnit.test in FileWatcher" />
       </list>
     </recent_temporary>
   </component>
@@ -187,7 +262,7 @@
       <workItem from="1755283495941" duration="534000" />
       <workItem from="1755296351885" duration="14116000" />
       <workItem from="1755534144286" duration="28361000" />
-      <workItem from="1755571753309" duration="2795000" />
+      <workItem from="1755571753309" duration="6951000" />
     </task>
     <task id="LOCAL-00001" summary=".idea commits">
       <option name="closed" value="true" />
@@ -349,7 +424,23 @@
       <option name="project" value="LOCAL" />
       <updated>1755561966172</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml">
+      <option name="closed" value="true" />
+      <created>1755574869453</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1755574869453</updated>
+    </task>
+    <task id="LOCAL-00022" summary="updated .gitignore to ignore workspace.xml">
+      <option name="closed" value="true" />
+      <created>1755574919104</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1755574919104</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,6 +458,8 @@
     <MESSAGE value="Fixed UX with date Picker in Query scene, the Todate can no longer go beyond todays date." />
     <MESSAGE value="I think I fixed all of the bugs" />
     <MESSAGE value="Fixed the bug where the query table initializes the full history rather than 1 years worth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed the bug where the query table initializes the full history rather than 1 years worth" />
+    <MESSAGE value="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml" />
+    <MESSAGE value="updated .gitignore to ignore workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated .gitignore to ignore workspace.xml" />
   </component>
 </project>

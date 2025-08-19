@@ -864,8 +864,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         } else if (theEvent.getPropertyName().equals(Properties.CLOSED.toString())) {
             handleFileWatcherIconButton();
 
-        } else if (theEvent.getPropertyName().equals(Properties.RESET_TABLE.toString())) {
-
         }
     }
 }

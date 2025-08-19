@@ -2,7 +2,7 @@ module com.tcss.filewatcher {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
-    requires javafx.web;                // keep only if you use WebView
+    requires javafx.web;
 
     // JDK / JDBC
     requires java.logging;

@@ -413,7 +413,6 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     private void handleQueryIconButton() {
         openQueryScene();
-        myChanges.firePropertyChange(Properties.QUERY_ALL.toString(), null, null);
     }
 
     /**

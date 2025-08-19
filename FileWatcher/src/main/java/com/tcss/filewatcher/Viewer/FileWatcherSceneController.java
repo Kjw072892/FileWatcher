@@ -172,7 +172,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
         final Path tmp = EmailFileController.getTmpFilePath();
 
-        EmailFileController.send(myTableview, tmp, "Entries within 24 hours");
+        EmailFileController.send(myTableview, tmp, "Live Entries");
 
         final String email = myUserEmailAddress;
 

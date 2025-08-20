@@ -1,5 +1,6 @@
-package com.tcss.filewatcher.Model;
-
+import com.tcss.filewatcher.Model.DirectoryEntry;
+import com.tcss.filewatcher.Model.FileExtensionHandler;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +50,7 @@ class FileExtensionHandlerTest {
     void testCanAddExtensionWithAllExtensions() {
         extensionList.add("All Extensions");
 
-        assertTrue(FileExtensionHandler.canAddExtension(extensionList, textEntry),
+        Assertions.assertTrue(FileExtensionHandler.canAddExtension(extensionList, textEntry),
                 "Should allow .txt file when 'All Extensions' is in list");
         assertTrue(FileExtensionHandler.canAddExtension(extensionList, javaEntry),
                 "Should allow .java file when 'All Extensions' is in list");

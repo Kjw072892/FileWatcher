@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge conflicts addressed" />
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Merge conflicts addressed">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileWatcher.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FileWatcher.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/DataBaseManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/DataBaseManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/DirectoryEntryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/DirectoryEntryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/EmailClientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/EmailClientTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileDirectoryDataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/FileDirectoryDataBaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/FileEventWatcherTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileExtensionHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/FileExtensionHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/RegDataBaseManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/RegDataBaseManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/SceneHandlerTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,7 +93,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Application.Main.executor": "Debug",
+    "Application.Main.executor": "Run",
     "Application.com.tcss.filewatcher.Viewer.Main.executor": "Run",
     "JUnit.All in FileWatcher.executor": "Coverage",
     "JUnit.DataBaseManagerTest.executor": "Run",
@@ -102,6 +113,7 @@
     "JUnit.RegDataBaseManagerTest.testInsertUserWithNullValues.executor": "Run",
     "JUnit.RegDataBaseManagerTest.testIsExistingUserWithEmptyEmail.executor": "Run",
     "JUnit.SceneHandlerTest.executor": "Run",
+    "JUnit.test in FileWatcher (1).executor": "Run",
     "JUnit.test in FileWatcher.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -132,7 +144,7 @@
       <recent name="C:\Users\Kassi\OneDrive\Computer\Documents\GitHub\FileWatcher\FileWatcher\src\main\resources\credentials" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.test in FileWatcher (1)">
     <configuration name="All in FileWatcher" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FileWatcher" />
       <option name="PACKAGE_NAME" value="" />
@@ -141,16 +153,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DirectoryEntryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FileWatcher" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="DirectoryEntryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="EmailClientTest.testStartWithDirectoryInsteadOfFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FileWatcher" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
+          <option name="PATTERN" value=".*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.EmailClientTest" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="EmailClientTest" />
       <option name="METHOD_NAME" value="testStartWithDirectoryInsteadOfFile" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
@@ -161,12 +182,12 @@
       <module name="FileWatcher" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
+          <option name="PATTERN" value=".*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.EmailClientTest" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="EmailClientTest" />
       <option name="METHOD_NAME" value="testStartWithLargeCsvFile" />
       <option name="TEST_OBJECT" value="method" />
       <dir value="$PROJECT_DIR$/src/test/test" />
@@ -174,44 +195,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmailClientTest.testStartWithSpacesOnlyEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="FileWatcher" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.tcss.filewatcher.Model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.tcss.filewatcher.Model" />
-      <option name="MAIN_CLASS_NAME" value="com.tcss.filewatcher.Model.EmailClientTest" />
-      <option name="METHOD_NAME" value="testStartWithSpacesOnlyEmail" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="test in FileWatcher" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="test in FileWatcher (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="FileWatcher" />
       <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test/test" />
+      <dir value="$PROJECT_DIR$/src/test" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.DirectoryEntryTest" />
+      <item itemvalue="JUnit.test in FileWatcher (1)" />
       <item itemvalue="JUnit.All in FileWatcher" />
       <item itemvalue="JUnit.EmailClientTest.testStartWithDirectoryInsteadOfFile" />
       <item itemvalue="JUnit.EmailClientTest.testStartWithLargeCsvFile" />
-      <item itemvalue="JUnit.EmailClientTest.testStartWithSpacesOnlyEmail" />
-      <item itemvalue="JUnit.test in FileWatcher" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.test in FileWatcher (1)" />
+        <item itemvalue="JUnit.DirectoryEntryTest" />
         <item itemvalue="JUnit.EmailClientTest.testStartWithLargeCsvFile" />
         <item itemvalue="JUnit.All in FileWatcher" />
         <item itemvalue="JUnit.EmailClientTest.testStartWithDirectoryInsteadOfFile" />
-        <item itemvalue="JUnit.EmailClientTest.testStartWithSpacesOnlyEmail" />
-        <item itemvalue="JUnit.test in FileWatcher" />
       </list>
     </recent_temporary>
   </component>
@@ -423,7 +428,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755659134787</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Merge conflicts addressed">
+      <option name="closed" value="true" />
+      <created>1755659204235</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1755659204235</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

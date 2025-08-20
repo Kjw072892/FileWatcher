@@ -1,5 +1,5 @@
-package com.tcss.filewatcher.Model;
-
+import com.tcss.filewatcher.Model.DataBaseManager;
+import com.tcss.filewatcher.Model.DirectoryEntry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -7,29 +7,34 @@ public class FileExtensionHandler {
     }
 
 
-    public static boolean canAddExtension(final List<String> theExtensions,
+    public static boolean canAddExtension(final List<String> theListOfDirExten,
                                           final DirectoryEntry theEntry) {
 
-        final String name = theEntry.getFileName();
+        final String fileName = theEntry.getFileName().toLowerCase();
+        final String extension = theEntry.getFileExtension();
 
-        if (name.equalsIgnoreCase(".DS_Store")) {
+        System.out.println("Entry: " + theEntry.getDirectory());
+        System.out.println("Extension: " + theEntry.getFileExtension());
+        System.out.println("The List of Extensions for Dir: "+theListOfDirExten);
+
+        if (fileName.equalsIgnoreCase(".DS_Store")) {
             return false;
         }
 
-        if (theExtensions == null) {
+        if (theListOfDirExten == null) {
             return false;
         }
 
-        if (theExtensions.contains("All Extensions")) {
+        if (theListOfDirExten.contains("All Extensions")) {
+            
             new DataBaseManager(false).insertFileEvent(theEntry.getDate(), theEntry.getTime(),
-                    name, theEntry.getDirectory(), theEntry.getModificationType());
+                    fileName, theEntry.getDirectory(), theEntry.getModificationType());
             return true;
         }
 
-        final String ext = theEntry.getFileExtension();
-        if (ext != null && theExtensions.contains(ext)) {
+        if (extension != null && theListOfDirExten.contains(extension)) {
             new DataBaseManager(false).insertFileEvent(theEntry.getDate(), theEntry.getTime(),
-                    name, theEntry.getDirectory(), theEntry.getModificationType());
+                    fileName, theEntry.getDirectory(), theEntry.getModificationType());
             return true;
         }
 

@@ -665,6 +665,8 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
             if (extension.equals("All Extensions")) {
 
+                System.out.println("added all extensions to myFileWatcher");
+
                 myFileWatcher.addWatchPath(directory);
 
             } else {

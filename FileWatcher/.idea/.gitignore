@@ -18,3 +18,4 @@ out/
 # Any credentials anywhere
 **/credentials/
 **/gmail_oauth.json
+workspace.xml

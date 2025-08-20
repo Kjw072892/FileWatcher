@@ -293,13 +293,16 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
             final DirectoryEntry entry = (DirectoryEntry) theEvent.getNewValue();
 
-            Platform.runLater(() -> {
-                final List<String> extensions = getExtensionsFromDir(entry.getDirectory());
+            System.out.println(entry);
 
-                if (FileExtensionHandler.canAddExtension(extensions, entry)) {
+            Platform.runLater(() -> {
+                final List<String> entriesExtensions = getExtensionsFromDir(entry.getDirectory());
+
+                if (FileExtensionHandler.canAddExtension(entriesExtensions, entry)) {
                     myTableview.add(entry);
                     logger.log(Level.INFO, "Added file to table: " + entry.getFileName() + "\n");
                 }
+
             });
 
         } else if (theEvent.getPropertyName().equals(Properties.USERS_EMAIL.toString())) {

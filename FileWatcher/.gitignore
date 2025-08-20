@@ -1,15 +1,25 @@
-# Default ignored files
+# IDE
+/.idea/
+/*.iml
 /shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
+# (workspace.xml is inside .idea, so this is redundant if .idea/ is ignored)
+# /workspace.xml
+
+# Build outputs
+/target/
+/out/
+/build/
+/artifacts/
+
+# Runtime / local data
+/filewatcher.db
+*.log
+
+# Secrets (keep these out of git)
+/src/main/resources/credentials/*.json
+
+# Misc IntelliJ tools
 /httpRequests/
-# Environment-dependent path to Maven home directory
 /mavenHomeManager.xml
-# Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-workspace.xml
-filewatcher.db
-credentials/gmail_oauth.json
-
-/src/main/resources/credentials/*.json

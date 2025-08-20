@@ -11,12 +11,15 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -130,6 +133,12 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     private Stage myStage;
 
+    /**
+     * Formatter used for dates in entries.
+     */
+    private static final DateTimeFormatter ENTRY_FMT =
+            DateTimeFormatter.ofPattern("dd MMM, uuuu", java.util.Locale.ENGLISH);
+
 
     /**
      * Initializes the query scene.
@@ -137,15 +146,25 @@ public class QuerySceneController implements PropertyChangeListener {
     @FXML
     private void initialize() {
         addPropertyChangeListener(this);
-        myDateColumn.setCellValueFactory(theCellData -> theCellData.getValue().dateProperty());
-        myTimeColumn.setCellValueFactory(theCellData -> theCellData.getValue().timeProperty());
-        myDirectory.setCellValueFactory(theCellData -> theCellData.getValue().directoryProperty());
-        myModificationType.setCellValueFactory(theCellData -> theCellData.getValue().modificationTypeProperty());
-        myFileNameColumn.setCellValueFactory(theCellData -> theCellData.getValue().fileNameProperty());
+
+        myDateColumn.setCellValueFactory(cd -> cd.getValue().dateProperty());
+        myTimeColumn.setCellValueFactory(cd -> cd.getValue().timeProperty());
+        myDirectory.setCellValueFactory(cd -> cd.getValue().directoryProperty());
+        myModificationType.setCellValueFactory(cd -> cd.getValue().modificationTypeProperty());
+        myFileNameColumn.setCellValueFactory(cd -> cd.getValue().fileNameProperty());
         myQuerySceneTable.setItems(myTableView);
 
         myFromDatePicker.setValue(LocalDate.now().minusYears(1));
         myToDatePicker.setValue(LocalDate.now());
+
+        myTableView.clear();
+        final List<DirectoryEntry> all = myDataBaseManager.getAllEntries();
+        myMasterCopy.setAll(all);
+        mySubCopy.setAll(all);
+
+        final String from = myFromDatePicker.getValue().format(ENTRY_FMT);
+        final String to = myToDatePicker.getValue().format(ENTRY_FMT);
+        addEntriesHelper(from, to);
 
 
     }
@@ -155,26 +174,21 @@ public class QuerySceneController implements PropertyChangeListener {
      */
     @FXML
     private void handleModifyComboBox() {
-        final String selectedItem = myModificationComboBox.getSelectionModel().getSelectedItem();
-        List<DirectoryEntry> entryList = new ArrayList<>();
+        final String selected = myModificationComboBox.getSelectionModel().getSelectedItem();
 
-        myTableView.setAll(mySubCopy);
-
-
-        for (final DirectoryEntry entries : myTableView) {
-
-            if (entries.getModificationType().equals(selectedItem)) {
-                entryList.add(entries);
-
-            } else if ("ALL_TYPES".equals(selectedItem)) {
-                entryList.addAll(myTableView);
-                break;
-            }
+        if (selected == null || "ALL_TYPES".equals(selected)) {
+            myTableView.setAll(mySubCopy);
+            myQuerySceneTable.setItems(myTableView);
+            return;
         }
 
-
-        myTableView.clear();
-        myTableView.setAll(entryList);
+        final List<DirectoryEntry> filtered = new ArrayList<>();
+        for (final DirectoryEntry e : mySubCopy) {
+            if (selected.equals(e.getModificationType())) {
+                filtered.add(e);
+            }
+        }
+        myTableView.setAll(filtered);
         myQuerySceneTable.setItems(myTableView);
 
     }
@@ -185,18 +199,12 @@ public class QuerySceneController implements PropertyChangeListener {
     @FXML
     private void handleFromDatePicker() {
 
-        String fromDate;
-        String defaultToDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                "yyyy"));
-        try {
-            fromDate =
-                    myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                            "yyyy"));
-        } catch (final RuntimeException theRunTimeException) {
-            fromDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
-        }
+        normalizePickers();
+        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
 
-        addEntriesHelper(fromDate, defaultToDate);
+        final String from = myFromDatePicker.getValue().format(ENTRY_FMT);
+        final String to = myToDatePicker.getValue().format(ENTRY_FMT);
+        addEntriesHelper(from, to);
     }
 
     /**
@@ -205,26 +213,48 @@ public class QuerySceneController implements PropertyChangeListener {
     @FXML
     private void handleToDatePicker() {
 
-        String toDate;
-        String fromDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM," +
-                " " +
-                "yyyy"));
-        try {
-            toDate =
-                    myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                            "yyyy"));
+        normalizePickers();
+        myModificationComboBox.setValue(myModificationComboBox.getPromptText());
 
-            if (myFromDatePicker.getValue() != null) {
-                fromDate = myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern(
-                        "dd MMM, yyyy"));
-            }
-        } catch (final RuntimeException theRunTimeException) {
-            toDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM, yyyy"));
-        }
-
-        addEntriesHelper(fromDate, toDate);
+        final String from = myFromDatePicker.getValue().format(ENTRY_FMT);
+        final String to = myToDatePicker.getValue().format(ENTRY_FMT);
+        addEntriesHelper(from, to);
 
     }
+
+
+    /**
+     * Normalizes the values of the date pickers.
+     * Ensures no null values and that the from-date is before the to-date.
+     */
+    private void normalizePickers() {
+        LocalDate today = LocalDate.now();
+
+        if (myFromDatePicker.getValue() == null)
+            myFromDatePicker.setValue(today.minusYears(1));
+        if (myToDatePicker.getValue() == null) myToDatePicker.setValue(today);
+
+        if (myToDatePicker.getValue().isAfter(today)) {
+            myToDatePicker.setValue(today);
+        }
+        if (myFromDatePicker.getValue().isAfter(myToDatePicker.getValue())) {
+            myFromDatePicker.setValue(myToDatePicker.getValue());
+        }
+    }
+
+    /**
+     * Helper method for adding entries between two dates.
+     *
+     * @param theFromDate the lower bound date string
+     * @param theToDate   the upper bound date string
+     */
+    private void addEntriesHelper(final String theFromDate, final String theToDate) {
+        final List<DirectoryEntry> entryList = new ArrayList<>();
+        addEntriesHelper(theFromDate, theToDate, entryList);
+        mySubCopy.setAll(myTableView);
+        myQuerySceneTable.setItems(myTableView);
+    }
+
 
     /**
      * Resets the table to its original state.
@@ -245,20 +275,12 @@ public class QuerySceneController implements PropertyChangeListener {
         final Path tempFile = EmailFileController.getTmpFilePath();
 
         final String filterParam =
-                //Date from:
-                "Date From: " + (myFromDatePicker != null ?
-                myFromDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                        "yyyy")) : LocalDate.now().format(DateTimeFormatter.ofPattern("dd " +
-                "MMM, yyyy"))) + "\n" +
-
-                //Date to
-                "Date To: " + (myToDatePicker != null ?
-                myToDatePicker.getValue().format(DateTimeFormatter.ofPattern("dd MMM, " +
-                        "yyyy")) : LocalDate.now().format(DateTimeFormatter.ofPattern("dd " +
-                "MMM, yyyy"))) + "\n" +
-
-                        //Modification typ
-                "Modification type: " + myModificationComboBox.getValue();
+                "Date From: " + myFromDatePicker.getValue().format(ENTRY_FMT) + "\n" +
+                "Date To: "   + myToDatePicker.getValue().format(ENTRY_FMT)   + "\n" +
+                "Modification type: " +
+                (myModificationComboBox.getValue() == null
+                        ? myModificationComboBox.getPromptText()
+                        : myModificationComboBox.getValue());
 
         EmailFileController.send(myTableView, tempFile, filterParam);
 
@@ -267,16 +289,15 @@ public class QuerySceneController implements PropertyChangeListener {
         new Thread(() -> {
             if (start(email, tempFile)) {
                 Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setResizable(false);
                     alert.setContentText("Email sent Successfully");
                     alert.show();
+                    Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
                 });
-
             } else {
                 Platform.runLater(() -> {
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    final Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setContentText("Email had failed to send!");
                     alert.setResizable(false);
                     alert.show();
@@ -287,50 +308,33 @@ public class QuerySceneController implements PropertyChangeListener {
 
 
     /**
-     * Helper method to add filter entries to table view.
+     * Helper method for adding entries between two dates into a list.
      *
-     * @param theFromDate the user Specified from date.
-     * @param theToDate   the user specified to date.
+     * @param theFromDate  the lower bound date string
+     * @param theToDate    the upper bound date string
+     * @param theEntryList the list to populate
      */
-    private void addEntriesHelper(final String theFromDate, final String theToDate) {
-
-        final List<DirectoryEntry> entryList = new ArrayList<>();
-        addEntriesHelper(theFromDate, theToDate, entryList);
-
-        mySubCopy.setAll(myTableView);
-        myQuerySceneTable.setItems(myTableView);
-    }
-
-    /**
-     * Overridden helper method.
-     *
-     * @param theFromDate  the date from the "from" date picker.
-     * @param theToDate    the date from the "to" date picker.
-     * @param theEntryList the entry list of which gets modified.
-     */
-    private void addEntriesHelper(final String theFromDate, final String theToDate,
+    private void addEntriesHelper(final String theFromDate,
+                                  final String theToDate,
                                   final List<DirectoryEntry> theEntryList) {
-        final String[] splitFrom = theFromDate.split(" ");
-        final String[] splitTo = theToDate.split(" ");
-        final int fromDay = Integer.parseInt(splitFrom[0]);
-        final int toDay = Integer.parseInt(splitTo[0]);
-        myTableView.clear();
+        final LocalDate from = LocalDate.parse(theFromDate, ENTRY_FMT);
+        final LocalDate to = LocalDate.parse(theToDate, ENTRY_FMT);
+
         myTableView.setAll(myMasterCopy);
-        if (!myTableView.isEmpty()) {
-            for (final DirectoryEntry theEntry : myTableView) {
+        theEntryList.clear();
 
-                final String[] splitDate = theEntry.getDate().split(" ");
-                final int day = Integer.parseInt(splitDate[0]);
-
-                if (day >= fromDay && day <= toDay) {
-                    theEntryList.add(theEntry);
+        for (final DirectoryEntry entry : myMasterCopy) {
+            try {
+                final LocalDate date = LocalDate.parse(entry.getDate(), ENTRY_FMT);
+                if (!date.isBefore(from) && !date.isAfter(to)) {
+                    theEntryList.add(entry);
                 }
+            } catch (DateTimeException ex) {
+                Logger.getAnonymousLogger().log(Level.FINE,
+                        "Skipping entry with unparsable date: " + entry.getDate());
             }
         }
-
-        myTableView.clear();
-        myTableView.addAll(theEntryList);
-
+        myTableView.setAll(theEntryList);
     }
 
 
@@ -369,70 +373,60 @@ public class QuerySceneController implements PropertyChangeListener {
     public void propertyChange(final PropertyChangeEvent theEvent) {
 
         List<DirectoryEntry> entryList = new ArrayList<>();
-        Properties prop = Properties.valueOf(String.valueOf(theEvent.getPropertyName()));
+        final Properties prop = Properties.valueOf(String.valueOf(theEvent.getPropertyName()));
         switch (prop) {
             case Properties.QUERY_ALL: {
-                myStage.setTitle("Historical Query");
+                myStage.setTitle("Historical Events");
                 entryList = myDataBaseManager.getAllEntries();
-                myTableView.addAll(entryList);
-                myQuerySceneTable.setItems(myTableView);
+                myTableView.setAll(entryList);
                 myMasterCopy.setAll(myTableView);
                 mySubCopy.setAll(myMasterCopy);
+                myQuerySceneTable.setItems(myTableView);
                 break;
             }
             case Properties.QUERY_EXTENSION: {
                 final String extension = (String) theEvent.getNewValue();
-                myStage.setTitle("Query by Extensions");
+                myStage.setTitle("Events Filtered by Extensions");
                 entryList = myDataBaseManager.queryByExtension(extension);
-                myTableView.addAll(entryList);
-                myQuerySceneTable.setItems(myTableView);
+                myTableView.setAll(entryList);
                 myMasterCopy.setAll(myTableView);
                 mySubCopy.setAll(myMasterCopy);
+                myQuerySceneTable.setItems(myTableView);
                 break;
             }
             case Properties.QUERY_DIRECTORY: {
                 final String directory = (String) theEvent.getOldValue();
-                myStage.setTitle("Query by Directories");
+                myStage.setTitle("Events Filtered by Directories");
                 entryList = myDataBaseManager.queryByDirectory(directory);
-                myTableView.addAll(entryList);
-                myQuerySceneTable.setItems(myTableView);
+                myTableView.setAll(entryList);
                 myMasterCopy.setAll(myTableView);
                 mySubCopy.setAll(myMasterCopy);
+                myQuerySceneTable.setItems(myTableView);
                 break;
             }
             case Properties.QUERY_DIRECTORY_EXTENSION: {
                 final String directory = (String) theEvent.getOldValue();
                 final String extension = (String) theEvent.getNewValue();
-                myStage.setTitle("Query by Directories and Extensions");
+                myStage.setTitle("Events Filtered by Directories and Extensions");
                 List<DirectoryEntry> tempList = myDataBaseManager.queryByDirectory(directory);
 
-
-                for (final DirectoryEntry entries : tempList) {
-                    if (entries.getFileExtension().equals(extension)) {
-                        entryList.add(entries);
-                    } else if (extension.equals("All Extensions")) {
-                        tempList = myDataBaseManager.queryByDirectory(directory);
-                        entryList.addAll(tempList);
-                        break;
+                for (final DirectoryEntry entry : tempList) {
+                    if ("All Extensions".equals(extension) || extension.equals(entry.getFileExtension())) {
+                        entryList.add(entry);
                     }
                 }
 
-                myTableView.addAll(entryList);
-                myQuerySceneTable.setItems(myTableView);
+                myTableView.setAll(entryList);
                 myMasterCopy.setAll(myTableView);
                 mySubCopy.setAll(myMasterCopy);
+                myQuerySceneTable.setItems(myTableView);
                 break;
             }
-
             case Properties.USERS_EMAIL: {
                 myUserEmailAddress = (String) theEvent.getNewValue();
-
+                break;
             }
-
-            default: {
-            }
+            default: { }
         }
-
-
     }
 }

@@ -27,3 +27,4 @@ src/main/resources/credentials/
 resources/credentials/
 
 FileWatcher/.idea/workspace.xml
+src/.idea/workspace.xml

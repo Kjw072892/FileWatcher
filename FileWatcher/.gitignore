@@ -10,4 +10,6 @@
 /dataSources.local.xml
 workspace.xml
 filewatcher.db
-credentials/gmail_oauth.json/src/main/resources/credentials/*.json
+credentials/gmail_oauth.json
+
+/src/main/resources/credentials/*.json

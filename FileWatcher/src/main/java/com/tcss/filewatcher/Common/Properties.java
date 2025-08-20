@@ -79,7 +79,7 @@ public enum Properties {
     USERS_EMAIL,
 
     /**
-     * Used to denote that the user succesfully logged in.
+     * Used to denote that the user successfully logged in.
      */
     LOGGED_IN,
 
@@ -97,5 +97,10 @@ public enum Properties {
      * the stage closed
      */
     CLOSED,
+
+    /**
+     * The table reset button was pressed
+     */
+    RESET_TABLE,
 
 }

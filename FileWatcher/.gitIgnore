@@ -25,3 +25,5 @@ src/main/resources/credentials/
 **/gmail_oauth.json
 
 resources/credentials/
+
+FileWatcher/.idea/workspace.xml

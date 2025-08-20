@@ -4,30 +4,29 @@ import com.tcss.filewatcher.Common.Properties;
 import com.tcss.filewatcher.Viewer.FileWatcherSceneController;
 import com.tcss.filewatcher.Viewer.MainSceneController;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
+import java.io.Serializable;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
-import java.io.Serializable;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,10 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -729,36 +727,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
     }
 
     /**
-     * Saves the current state of this FileEventWatcher to a file.
-     *
-     * @param theFilename the name of the file to save the watcher state to
-     * @throws IOException if an I/O error occurs during saving
-     */
-    public void saveToFile(final String theFilename) throws IOException {
-        try (final FileOutputStream fileOut = new FileOutputStream(theFilename);
-             final ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(this);
-
-        }
-    }
-
-    /**
-     * Loads a FileEventWatcher from a file.
-     *
-     * @param theFilename the name of the file to load the watcher state from
-     * @return the loaded FileEventWatcher instance
-     * @throws IOException            if an I/O error occurs during loading
-     * @throws ClassNotFoundException if the class of a serialized object cannot be found
-     */
-    public static FileEventWatcher loadFromFile(final String theFilename) throws IOException, ClassNotFoundException {
-        try (final FileInputStream fileIn = new FileInputStream(theFilename);
-             final ObjectInputStream in = new ObjectInputStream(fileIn)) {
-
-            return (FileEventWatcher) in.readObject();
-        }
-    }
-
-    /**
      * Returns a string representation of this FileEventWatcher.
      *
      * @return a string representation of this watcher
@@ -822,7 +790,6 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      * @author Salima Hafurova
      * @version 8.11.25
      */
-    @SuppressWarnings("ClassCanBeRecord")
     public static class FileEvent implements Serializable {
 
         /**

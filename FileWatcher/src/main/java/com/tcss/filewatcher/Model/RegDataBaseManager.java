@@ -87,20 +87,35 @@ public class RegDataBaseManager {
      */
     public final void insertNewUserData(final String theEmail, final String thePassword,
                                         final String theEmailFrequency) {
-        final String insertSQL = "INSERT INTO registration (email, password, email_freq) " +
-                "VALUES (?,?,?)";
+        if (!isExistingUser(theEmail)) {
+            try {
+                if (theEmail.isEmpty() || thePassword == null
+                        || thePassword.isEmpty() || theEmailFrequency == null
+                        || theEmailFrequency.isEmpty() || theEmail.isBlank()) {
 
-        try (final Connection conn = myDs.getConnection();
-             final PreparedStatement prepStmt = conn.prepareStatement(insertSQL)) {
+                    throw new NullPointerException("The parameters must not be null");
 
-            prepStmt.setString(1, theEmail);
-            prepStmt.setString(2, thePassword);
-            prepStmt.setString(3, theEmailFrequency);
-            prepStmt.executeUpdate();
+                }
+            } catch (final NullPointerException theEvent) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, theEvent.getMessage());
+                return;
+            }
 
-        } catch (final SQLException theE) {
-            MY_LOGGER.log(Level.SEVERE, "Error inserting users information: "
-                    + theE.getMessage() + "\n");
+            final String insertSQL = "INSERT INTO registration (email, password, email_freq) " +
+                    "VALUES (?,?,?)";
+
+            try (final Connection conn = myDs.getConnection();
+                 final PreparedStatement prepStmt = conn.prepareStatement(insertSQL)) {
+
+                prepStmt.setString(1, theEmail);
+                prepStmt.setString(2, thePassword);
+                prepStmt.setString(3, theEmailFrequency);
+                prepStmt.executeUpdate();
+
+            } catch (final SQLException theE) {
+                MY_LOGGER.log(Level.SEVERE, "Error inserting users information: "
+                        + theE.getMessage() + "\n");
+            }
         }
     }
 
@@ -111,6 +126,16 @@ public class RegDataBaseManager {
      * @return returns true if an email exists, false otherwise.
      */
     public final boolean isExistingUser(final String theEmail) {
+
+        try {
+            if (theEmail.isBlank()) {
+                return false;
+            }
+        } catch (final NullPointerException theEvent) {
+
+            return false;
+        }
+
         final String query = "SELECT 1 FROM registration WHERE LOWER(email) = LOWER(?)";
 
         try (final Connection conn = myDs.getConnection();
@@ -204,7 +229,7 @@ public class RegDataBaseManager {
 
             while (rs.next()) {
                 if (rs.getString("email").equals(theEmail)) {
-                    return true;
+                    return !theEmail.isBlank();
                 }
             }
 

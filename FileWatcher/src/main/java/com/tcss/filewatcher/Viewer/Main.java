@@ -1,5 +1,6 @@
 package com.tcss.filewatcher.Viewer;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 /**
  * The main method that initializes the main scene
@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class Main extends Application {
     @Override
-    public void start(final Stage theStage) throws IOException {
+    public void start(final Stage theStage) {
 
         try {
             final FXMLLoader loginScreen =

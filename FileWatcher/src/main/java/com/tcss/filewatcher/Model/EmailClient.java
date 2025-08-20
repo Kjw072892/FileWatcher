@@ -110,7 +110,7 @@ public class EmailClient {
      * Starts the Gmail Client API.
      */
     public static boolean start(final String theToAddress, final Path theCsvPath) {
-        if (theToAddress == null || theToAddress.isBlank()) {
+        if (theToAddress == null || theToAddress.isEmpty()) {
             Platform.runLater(() -> {
                 final Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Receiver Address Invalid");

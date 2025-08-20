@@ -1,7 +1,5 @@
-
-package com.tcss.filewatcher.Model;
-
 import com.tcss.filewatcher.Common.Properties;
+import com.tcss.filewatcher.Model.FileEventWatcher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

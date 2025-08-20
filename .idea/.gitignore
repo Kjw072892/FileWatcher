@@ -10,3 +10,5 @@
 /dataSources.local.xml
 # Ignore Google credentials
 Credentials/*.json
+# Ignore IntelliJ IDEA project files
+.idea/workspace.xml

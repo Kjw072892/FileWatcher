@@ -1,5 +1,4 @@
-package com.tcss.filewatcher.Model;
-
+import com.tcss.filewatcher.Model.DirectoryEntry;
 import javafx.beans.property.SimpleStringProperty;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -578,7 +578,7 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
             }
         }
         // check if file matches watched extensions
-        if (!matchesWatchedExtensions(filename.toString())) {
+        if (!matchesWatchedExtensions(filename.toString(), theDir)) {
             return;
         }
 
@@ -615,10 +615,10 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
      * @param theFilename the name of the file to check against watched extensions
      * @return true if the filename matches any watched extension, false otherwise
      */
-    private boolean matchesWatchedExtensions(final String theFilename) {
-//        if (myWatchedExtensions.isEmpty()) {
-//            return true; // watch all files if no extensions specified
-//        }
+    private boolean matchesWatchedExtensions(final String theFilename, final Path theDir) {
+        if (myWatchedExtensions.isEmpty() || myWatchedPaths.contains(theDir)) {
+            return true; // watch all files if no extensions specified
+        }
         final String lowerFilename = theFilename.toLowerCase();
         for (final String extension : myWatchedExtensions) {
             if (lowerFilename.endsWith(extension)) {

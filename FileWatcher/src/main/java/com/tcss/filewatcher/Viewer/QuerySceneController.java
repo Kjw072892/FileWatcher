@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -26,6 +27,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -280,14 +282,19 @@ public class QuerySceneController implements PropertyChangeListener {
                     final Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setResizable(false);
                     alert.setContentText("Email sent Successfully");
+                    final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/email_Icon.png"))));
                     alert.show();
-                    Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
                 });
             } else {
                 Platform.runLater(() -> {
                     final Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setContentText("Email had failed to send!");
                     alert.setResizable(false);
+                    final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                    .getResourceAsStream("/icons/email_Icon.png"))));
                     alert.show();
                 });
             }

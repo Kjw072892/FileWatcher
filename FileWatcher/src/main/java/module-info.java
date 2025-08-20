@@ -3,6 +3,7 @@ module com.tcss.filewatcher {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.web;
+    requires jdk.httpserver;
 
     // JDK / JDBC
     requires java.logging;

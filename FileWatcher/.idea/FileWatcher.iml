@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$" dumb="true">
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/src/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/src/main/resources/credentials" />
     </content>
   </component>
 </module>

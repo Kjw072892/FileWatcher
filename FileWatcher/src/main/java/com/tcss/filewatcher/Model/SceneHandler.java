@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -19,6 +21,11 @@ public abstract class SceneHandler {
      * Indicates whether the file watcher has started.
      */
     private static boolean myIsWatcherStarted = false;
+
+    /**
+     * Indicates whether the stop button was pushed.
+     */
+    private static boolean myIsStopped = false;
 
     /**
      * Stores a local temp container of all the extensions and correlated directories.
@@ -50,6 +57,8 @@ public abstract class SceneHandler {
     public static void stopWatcher() {
 
         myIsWatcherStarted = false;
+
+        Logger.getAnonymousLogger().log(Level.SEVERE, "Watcher stopped");
     }
 
 
@@ -60,6 +69,20 @@ public abstract class SceneHandler {
      */
     public static boolean fileWatcherStatus() {
         return watcherRunningProperty();
+    }
+
+    /**
+     * Gets the status of the stop button
+     */
+    public static boolean getStopStatus() {
+        return myIsStopped;
+    }
+
+    /**
+     * Sets the status of the stop button
+     */
+    public static void setMyIsStopped(final boolean theStopStatus) {
+        myIsStopped = theStopStatus;
     }
 
     /**

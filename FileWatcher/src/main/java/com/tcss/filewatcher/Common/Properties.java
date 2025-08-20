@@ -9,6 +9,11 @@ public enum Properties {
     STOP,
 
     /**
+     * Closed the main window when program wasnt running
+     */
+    CLOSED_MAIN,
+
+    /**
      * Starts the filewatcher program if it hasn't started yet
      */
     START,

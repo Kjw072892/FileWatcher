@@ -105,46 +105,32 @@ public class EmailAndPassCheckController {
             myPasswordTextBox.selectAll();
         } else {
 
-            if (!FileEventWatcher.fileWatcherStatus()) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(EmailAndPassCheckController.class.getResource("/com/tcss" +
-                            "/filewatcher/MainScene.fxml"));
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(EmailAndPassCheckController.class.getResource("/com/tcss" +
+                        "/filewatcher/MainScene.fxml"));
 
-                    final Scene scene = new Scene(fxmlLoader.load());
-                    final Stage mainStage = new Stage();
+                final Scene scene = new Scene(fxmlLoader.load());
+                final Stage mainStage = new Stage();
 
-                    final MainSceneController mainSceneController = fxmlLoader.getController();
+                final MainSceneController mainSceneController = fxmlLoader.getController();
 
-                    mainSceneController.setUserEmailAddress(email);
+                mainSceneController.setUserEmailAddress(email);
 
-                    mainSceneController.setStage(mainStage);
+                mainSceneController.setStage(mainStage);
 
-                    mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                            "/icons/FileWatcherIcons.png"))));
-                    mainStage.setScene(scene);
-                    mainStage.setTitle("File Watcher");
-                    mainStage.setResizable(false);
-                    mainStage.show();
+                mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+                        "/icons/FileWatcherIcons.png"))));
+                mainStage.setScene(scene);
+                mainStage.setTitle("File Watcher");
+                mainStage.setResizable(false);
+                mainStage.show();
 
-                } catch (final IOException theEvent) {
-                    myLogger.log(Level.SEVERE, theEvent.getMessage() + "\n");
-                }
-
-            } else {
-                MY_CHANGES.firePropertyChange(Properties.LOGGED_IN.toString(),
-                        null, true);
+            } catch (final IOException theEvent) {
+                myLogger.log(Level.SEVERE, theEvent.getMessage() + "\n");
             }
 
             final Stage myStage = (Stage) myEmailTextBox.getScene().getWindow();
             myStage.close();
         }
     }
-
-    /**
-     * Adds the controller as a listener
-     */
-    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-        MY_CHANGES.addPropertyChangeListener(theListener);
-    }
-
 }

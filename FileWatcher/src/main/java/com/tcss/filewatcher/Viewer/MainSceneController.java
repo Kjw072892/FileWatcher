@@ -238,6 +238,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         setDebugger(myIsDebuggerOn);
 
         addPropertyChangeListener(this);
+        setMyIsStopped(false);
         myFileWatcher = new FileEventWatcher(false);
 
         myFileWatcher.connectToControllers(this, null);
@@ -302,6 +303,7 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         myStopIconBtn.setDisable(false);
         myStartIconBtn.setDisable(true);
         myFileWatcherViewerIconBtn.setDisable(false);
+        setMyIsStopped(false);
 
 
         if (myFileWatcher == null) {
@@ -364,6 +366,14 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
             MY_LOGGER.log(Level.SEVERE, "The scene was unable to load!\n");
         }
+    }
+
+     /**
+     * Handles stopping the login screen.
+     */
+    @FXML
+    public void handleStopFileWatcher() {
+        startLoginScreen();
     }
 
     /**
@@ -497,27 +507,16 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
         }
     }
 
-
-    /**
-     * Stops the filewatcher sequences.
-     */
-    @FXML
-    private void handleStopFileWatcher() {
-        startLoginScreen();
-
-    }
-
     /**
      * Opens the login screen scene.
      */
     private void startLoginScreen() {
         try {
             final FXMLLoader loginScreen = new FXMLLoader(MainSceneController
-                    .class.getResource("/com/tcss/filewatcher/EmailAndPassCheck" +
-                    ".fxml"));
+                    .class.getResource("/com/tcss/filewatcher/LoginScene.fxml"));
             final Scene loginScene = new Scene(loginScreen.load());
             final Stage theStage = new Stage();
-            final EmailAndPassCheckController loginScreenController =
+            final LoginSceneController loginScreenController =
                     loginScreen.getController();
 
             loginScreenController.addPropertyChangeListener(this);
@@ -566,21 +565,24 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             if (myStage != null) {
                 myStage.setIconified(true);
             }
-            return;
 
+        } else if (getStopStatus()) {
+            stopWatcher();
+            myChanges.firePropertyChange(Properties.CLOSED_MAIN.toString(), null, true);
+
+            EmailFrequencyManager.shutdown();
+
+            if (myFileWatcher != null) {
+                myFileWatcher.stopWatching(); // closes WatchService, shuts down executor
+            }
+
+            if (myStage != null) {
+                myStage.close();
+            }
+            fileWatcherStage.close();
+
+            Platform.exit();
         }
-        stopWatcher();
-
-        if (myFileWatcher != null) {
-            myFileWatcher.stopWatching(); // closes WatchService, shuts down executor
-        }
-
-        if (myStage != null) {
-            myStage.close();
-        }
-        fileWatcherStage.close();
-
-        Platform.exit();
 
     }
 
@@ -727,6 +729,9 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
     @FXML
     private void handleClearButton() {
         myDirectoryToQueryTB.clear();
+        myDirectoryToMonitorTB.clear();
+        myMonitorByExtensionComBox.setPromptText("All Extensions");
+        myMonitorByExtensionComBox.setValue("All Extensions");
         myQueryByExtensionComBox.setPromptText(null);
         myQueryByExtensionComBox.setValue(null);
         myClearButton.setDisable(true);
@@ -832,18 +837,18 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
             myStopIconBtn.setDisable(false);
             myFileWatcherViewerMenuItem.setDisable(false);
             startWatcher();
+            setMyIsStopped(false);
 
         } else if (theEvent.getPropertyName().equals(Properties.STOPPING.toString())) {
-            handleStopFileWatcher();
+             startLoginScreen();
 
         } else if (theEvent.getPropertyName().equals(Properties.STOP.toString())) {
 
-            stopWatcher();
             myChanges.firePropertyChange(Properties.STOP.toString(), null, null);
             myStartIconBtn.setDisable(false);
             myStopIconBtn.setDisable(true);
             myFileWatcherViewerMenuItem.setDisable(true);
-            handleStopFileWatcher();
+            startLoginScreen();
 
         } else if (theEvent.getPropertyName().equals(Properties.NEW_ENTRY.toString())) {
 
@@ -855,17 +860,19 @@ public class MainSceneController extends SceneHandler implements PropertyChangeL
 
             if (isLoggedIn) {
 
-                myFileWatcher.stopWatching();
+                stopWatcher();
+                setMyIsStopped(true);
                 myStopIconBtn.setDisable(true);
                 myStartIconBtn.setDisable(false);
                 myChanges.firePropertyChange(Properties.STOPPED.toString(),
                         null, Properties.STOP);
-                stopWatcher();
-                EmailFrequencyManager.shutdown();
+
             }
         } else if (theEvent.getPropertyName().equals(Properties.CLOSED.toString())) {
             handleFileWatcherIconButton();
 
         }
     }
+
+
 }

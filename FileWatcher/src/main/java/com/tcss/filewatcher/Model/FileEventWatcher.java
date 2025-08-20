@@ -785,7 +785,10 @@ public class FileEventWatcher extends SceneHandler implements Serializable,
                     throw new RuntimeException(theException);
                 }
             }
-            case STOP -> stopWatching();
+            case CLOSED_MAIN -> stopWatching();
+
+
+
 
         }
     }

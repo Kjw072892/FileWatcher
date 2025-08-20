@@ -155,6 +155,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
         myChanges.firePropertyChange(Properties.STOPPING.toString(), null, true);
     }
 
+
     @FXML
     public void handleResetButton() {
         if (!watcherRunningProperty()) {
@@ -162,10 +163,11 @@ public class FileWatcherSceneController extends SceneHandler implements Property
 
         } else {
             final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+
             alert.setTitle("Unable To Clear");
             alert.setHeaderText("Unable to clear the table");
             alert.setContentText("You must stop FileWatcher before clearing the table");
-            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/watcher.png"))));
             alert.setResizable(false);
@@ -179,6 +181,10 @@ public class FileWatcherSceneController extends SceneHandler implements Property
     }
 
 
+    /**
+     * Handles the send email function.
+     * @throws IOException thrown if the file does not exist.
+     */
     @FXML
     public void handleSendEmail() throws IOException {
 
@@ -193,30 +199,36 @@ public class FileWatcherSceneController extends SceneHandler implements Property
                 if (start(email, tmp)) {
                     Platform.runLater(() -> {
 
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("Email sent Successfully");
+                        final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
                         alert.setResizable(false);
+                        alert.setContentText("Email sent Successfully");
+                        alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                                .getResourceAsStream("/icons/email_Icon.png"))));
                         alert.show();
-                        Logger.getAnonymousLogger().log(Level.INFO, "Email: " + email);
 
                     });
 
                 } else {
                     Platform.runLater(() -> {
 
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        final Alert alert = new Alert(Alert.AlertType.ERROR);
+                        final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+
                         alert.setContentText("Email had failed to send!");
                         alert.setResizable(false);
+                        alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
+                                .getResourceAsStream("/icons/email_Icon.png"))));
                         alert.show();
                     });
                 }
             }).start();
         } else {
             final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alert.setTitle("Email not sent");
             alert.setHeaderText("The email was not sent");
             alert.setContentText("You must have at least one item in the table");
-            final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass()
                     .getResourceAsStream("/icons/watcher.png"))));
             alert.setResizable(false);
@@ -289,7 +301,7 @@ public class FileWatcherSceneController extends SceneHandler implements Property
             stopWatcher();
             handleExitOnActive(myStage);
 
-        } else if (theEvent.getPropertyName().equals(Properties.NEW_FILE_EVENT.toString())) {
+        } else if (theEvent.getPropertyName().equals(Properties.NEW_FILE_EVENT.toString()) && watcherRunningProperty()) {
 
             final DirectoryEntry entry = (DirectoryEntry) theEvent.getNewValue();
 

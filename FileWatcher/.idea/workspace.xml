@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="updated .gitignore to ignore workspace.xml">
-      <change afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/EmailClientTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileExtensionHandlerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/RegDataBaseManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/filewatcher.db" beforeDir="false" afterPath="$PROJECT_DIR$/filewatcher.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Common/Properties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/CSVExporter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Controller/EmailFrequencyManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/DataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/DataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/EmailClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileDirectoryDataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileDirectoryDataBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileEventWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/FileEventWatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Model/RegDataBaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/FileWatcherSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/MainSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tcss/filewatcher/Viewer/QuerySceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/FileEventWatcherTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/test/com/tcss/filewatcher/Model/SceneHandlerTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="c99e446c-66e6-42a8-8ecd-cd140298d45c" name="Changes" comment="Added test and fixed test fails" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,7 +34,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="Salima" />
+        <entry key="$PROJECT_DIR$/.." value="Kassie" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -437,7 +415,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755574919104</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Added test and fixed test fails">
+      <option name="closed" value="true" />
+      <created>1755660225772</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1755660225772</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,6 +443,8 @@
     <MESSAGE value="Fixed the bug where the query table initializes the full history rather than 1 years worth" />
     <MESSAGE value="Merge branch 'main' of https://github.com/Kjw072892/FileWatcher&#10;&#10;# Conflicts:&#10;#&#9;FileWatcher/.idea/workspace.xml" />
     <MESSAGE value="updated .gitignore to ignore workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated .gitignore to ignore workspace.xml" />
+    <MESSAGE value="transferred work" />
+    <MESSAGE value="Added test and fixed test fails" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added test and fixed test fails" />
   </component>
 </project>
